@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TikTok Shop US 대시보드 - 광고관리</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="assets/styles.css?v=top-refresh-20260726" />
+</head>
+<body>
+  <section class="layout">
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-brand">
+            <div class="logo">TT</div>
+            <div>
+              <strong>Admin 계정</strong>
+              <p>관리자 전용 대시보드</p>
+            </div>
+          </div>
+          <button type="button" class="menu-button sidebar-toggle" onclick="toggleSidebar()" aria-label="사이드바 토글">
+            <span style="font-size: 22px;">☰</span>
+          </button>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="guide.html" id="nav-guide">틱톡샵 가이드</a>
+          <a href="tiktok_shop_dashboard.html" id="nav-total">전체 매출</a>
+          <a href="data-center.html" id="nav-data-center">데이터센터</a>
+          <a href="products.html" id="nav-product">상품별매출</a>
+          <a href="product-leaderboard.html" id="nav-product-leaderboard">상품 리더보드</a>
+          <a href="inventory.html" id="nav-inventory">재고관리</a>
+          <a href="affiliate.html" id="nav-affiliate">어필리에이터 관리</a>
+          <a href="ads.html" id="nav-ads">광고관리</a>
+          <a href="admin.html" id="nav-admin">Admin</a>
+        </nav>
+        <div class="sidebar-footer">
+          <strong>데이터 기준</strong>
+          <p>Shop 7/26 · Campaign 7/27 · Affiliate Core 7/25 · 상세 7/24</p>
+        </div>
+      </aside>
+
+      <div class="main-content">
+        <div class="top-bar">
+          <button type="button" class="menu-button sidebar-toggle" onclick="toggleSidebar()" aria-label="사이드바 열기/닫기">☰</button>
+          <div class="brand">
+            <div class="logo">TT</div>
+            <div>
+              <h1>광고관리</h1>
+              <p>Campaign overview 실제 광고비·Gross revenue·ROI 성과.</p>
+            </div>
+          </div>
+        </div>
+
+        <section class="card">
+          <div class="control-row" style="margin-top: 0;">
+            <label>시작월<input type="month" id="startMonthInput"></label>
+            <label>종료월<input type="month" id="endMonthInput"></label>
+            <button type="button" id="resetMonthRangeBtn">전체 기간</button>
+            <span class="page-note" style="margin-top: 0;">Campaign overview 일별 결합본 2025-07-03 ~ 2026-07-27 · 7월 Cost는 공식 Overview 총계 적용</span>
+          </div>
+        </section>
+
+        <section class="grid cards-4" style="margin-top: 20px;">
+          <article class="card kpi"><span class="label">캠페인 광고비</span><span class="value" id="campaignCost">$0.00</span><span class="desc">PDF Cost 합계</span></article>
+          <article class="card kpi"><span class="label">광고 Gross revenue</span><span class="value" id="campaignRevenue">$0.00</span><span class="desc">Current shop 귀속</span></article>
+          <article class="card kpi"><span class="label">캠페인 ROI</span><span class="value" id="campaignRoi">0.00x</span><span class="desc">Gross revenue ÷ Cost</span></article>
+          <article class="card kpi"><span class="label">SKU 주문 / CPA</span><span class="value" id="campaignOrders">0건</span><span class="desc" id="campaignCpa">CPA $0.00</span></article>
+        </section>
+
+        <section class="grid cards-2" style="margin-top: 20px;">
+          <article class="card chart-card">
+            <div class="chart-title"><div><h2>비용 구조</h2><small>원가·시딩비·수수료·물류비·기타 (스냅샷)</small></div></div>
+            <canvas id="costBreakdown"></canvas>
+          </article>
+          <article class="card chart-card">
+            <div class="chart-title"><div><h2>광고비 / Gross revenue / ROI</h2><small id="adSpendRangeLabel"></small></div></div>
+            <canvas id="adSpendChart"></canvas>
+          </article>
+        </section>
+
+        <section class="grid cards-2" style="margin-top: 20px;">
+          <a href="product-leaderboard.html" class="card linked" data-href="product-leaderboard.html">
+            <div class="chart-title"><div><h2>🏆 상품 성과 리더보드</h2><small>광고비를 어떤 상품에 더 태울지 판단할 때 참고</small></div></div>
+            <p class="page-note" style="margin-top: 0;">매출 순위·전환율·재고 리스크를 상품별로 확인하고 광고 예산 배분에 활용하세요.</p>
+          </a>
+        </section>
+
+        <section class="card" style="margin-top: 20px;">
+          <div class="chart-title"><div><h2>월별 Campaign overview</h2><small>PDF·XLSX 일별 데이터를 월별 합산 · ROI는 월 합계 기준 재계산</small></div><span class="badge good">7/27 원본 대조 완료</span></div>
+          <div class="table-scroll"><table class="table" id="adSummaryTable">
+            <thead>
+              <tr>
+                <th>월</th><th>광고비</th>
+                <th><span class="metric-term">SKU 주문 <span class="term-help" tabindex="0" role="button" aria-label="SKU 주문 설명" data-tooltip="상품 옵션 단위 주문 수예요. 한 주문에 여러 옵션이 있으면 여러 건으로 셀 수 있습니다.">?</span></span></th>
+                <th><span class="metric-term">CPA <span class="term-help" tabindex="0" role="button" aria-label="CPA 설명" data-tooltip="주문 1건을 만드는 데 사용한 평균 광고비예요.">?</span></span></th>
+                <th><span class="metric-term">Gross revenue <span class="term-help" tabindex="0" role="button" aria-label="Gross revenue 설명" data-tooltip="해당 캠페인에 귀속된 총매출이에요.">?</span></span></th>
+                <th><span class="metric-term">ROI <span class="term-help" tabindex="0" role="button" aria-label="ROI 설명" data-tooltip="광고비 $1당 얼마의 매출이 발생했는지 보여줘요. 1.0x면 광고비와 매출이 같은 수준입니다.">?</span></span></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table></div>
+          <p class="page-note">※ 최신 결합 합계: 광고비 $100,480.97 · SKU 주문 2,724건 · Gross revenue $55,259.58 · ROI 0.55x. 2026년 7월 Cost는 공식 Overview 총계 $34,164.02에 맞췄으며, Shop Analytics 전체 GMV와 Campaign Gross revenue는 귀속 기준이 달라 별도 관리합니다.</p>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <script src="assets/nav.js?v=dashboard-20260724"></script>
+  <script src="assets/data-store.js?v=data-sync-20260724"></script>
+  <script src="assets/campaign-overview-data.js?v=20260727"></script>
+  <script src="assets/cost-items-data.js?v=data-sync-20260724"></script>
+  <script>
+    let costItems = loadData(DATA_KEYS.costItems, defaultCostItems);
+    let startMonth = campaignOverviewFirstMonth;
+    let endMonth = campaignOverviewLastMonth;
+    let costBreakdownChart, adSpendChart;
+
+    const costValueLabels = {
+      id: 'costValueLabels',
+      afterDatasetsDraw(chart) {
+        const dataset = chart.data.datasets[0];
+        const total = dataset.data.reduce((sum, value) => sum + Number(value || 0), 0);
+        const arcs = chart.getDatasetMeta(0).data;
+        if (!total || !arcs.length) return;
+
+        const ctx = chart.ctx;
+        const center = arcs[0].getProps(['x', 'y'], true);
+        const centerValue = `$${Math.round(total).toLocaleString('en-US')}`;
+
+        ctx.save();
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = '#64748b';
+        ctx.font = '600 13px system-ui, -apple-system, sans-serif';
+        ctx.fillText('총 비용', center.x, center.y - 12);
+        ctx.fillStyle = '#0f172a';
+        ctx.font = '800 20px system-ui, -apple-system, sans-serif';
+        ctx.fillText(centerValue, center.x, center.y + 13);
+
+        arcs.forEach((arc, index) => {
+          const value = Number(dataset.data[index] || 0);
+          const percentage = (value / total) * 100;
+          if (percentage < 4) return;
+          const props = arc.getProps(
+            ['x', 'y', 'startAngle', 'endAngle', 'innerRadius', 'outerRadius'],
+            true
+          );
+          const angle = (props.startAngle + props.endAngle) / 2;
+          const radius = (props.innerRadius + props.outerRadius) / 2;
+          const x = props.x + Math.cos(angle) * radius;
+          const y = props.y + Math.sin(angle) * radius;
+          ctx.fillStyle = '#ffffff';
+          ctx.font = '800 13px system-ui, -apple-system, sans-serif';
+          ctx.shadowColor = 'rgba(15, 23, 42, 0.35)';
+          ctx.shadowBlur = 4;
+          ctx.fillText(`${percentage.toFixed(1)}%`, x, y);
+          ctx.shadowBlur = 0;
+        });
+        ctx.restore();
+      }
+    };
+
+    function filteredMonthlyData() {
+      return campaignOverviewMonthly.filter(item => item.month >= startMonth && item.month <= endMonth);
+    }
+
+    function formatCampaignCurrency(value) {
+      return '$' + Number(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function campaignTotals() {
+      const totals = filteredMonthlyData().reduce((acc, item) => {
+        acc.cost += item.cost;
+        acc.orders += item.orders;
+        acc.grossRevenue += item.grossRevenue;
+        return acc;
+      }, { cost: 0, orders: 0, grossRevenue: 0 });
+      totals.roi = totals.cost ? totals.grossRevenue / totals.cost : 0;
+      totals.cpa = totals.orders ? totals.cost / totals.orders : 0;
+      return totals;
+    }
+
+    function renderCampaignKpis() {
+      const totals = campaignTotals();
+      document.getElementById('campaignCost').textContent = formatCampaignCurrency(totals.cost);
+      document.getElementById('campaignRevenue').textContent = formatCampaignCurrency(totals.grossRevenue);
+      document.getElementById('campaignRoi').textContent = totals.roi.toFixed(2) + 'x';
+      document.getElementById('campaignOrders').textContent = totals.orders.toLocaleString('en-US') + '건';
+      document.getElementById('campaignCpa').textContent = 'CPA ' + formatCampaignCurrency(totals.cpa);
+    }
+
+    function renderAdSummaryTable() {
+      const body = document.querySelector('#adSummaryTable tbody');
+      body.innerHTML = filteredMonthlyData().map(item => `<tr>
+        <td><strong>${item.month}</strong></td>
+        <td>${formatCampaignCurrency(item.cost)}</td>
+        <td>${item.orders.toLocaleString('en-US')}건</td>
+        <td>${item.orders ? formatCampaignCurrency(item.cpa) : '–'}</td>
+        <td>${formatCampaignCurrency(item.grossRevenue)}</td>
+        <td><strong>${item.roi.toFixed(2)}x</strong></td>
+      </tr>`).join('');
+    }
+
+    function createCharts() {
+      const filtered = filteredMonthlyData();
+      costBreakdownChart = new Chart(document.getElementById('costBreakdown'), {
+        type: 'doughnut',
+        plugins: [costValueLabels],
+        data: {
+          labels: costItems.map(item => item.label),
+          datasets: [{
+            data: costItems.map(item => item.value),
+            backgroundColor: ['#2563eb', '#14b8a6', '#f59e0b', '#ef4444', '#a855f7'],
+            borderColor: '#ffffff',
+            borderWidth: 3,
+            hoverOffset: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          cutout: '58%',
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: { usePointStyle: true, pointStyle: 'circle', padding: 14 }
+            }
+          }
+        }
+      });
+
+      adSpendChart = new Chart(document.getElementById('adSpendChart'), {
+        data: {
+          labels: filtered.map(item => item.month),
+          datasets: [
+            { type: 'line', label: '광고비', data: filtered.map(item => item.cost), borderColor: '#f59e0b', backgroundColor: '#f59e0b', pointRadius: 4, borderWidth: 3, tension: 0.2, yAxisID: 'y' },
+            { type: 'line', label: 'Gross revenue', data: filtered.map(item => item.grossRevenue), borderColor: '#2563eb', backgroundColor: '#2563eb', pointRadius: 4, borderWidth: 3, tension: 0.2, yAxisID: 'y' },
+            { type: 'line', label: 'ROI', data: filtered.map(item => item.roi), borderColor: '#14b8a6', backgroundColor: '#14b8a6', borderDash: [6, 5], pointRadius: 4, borderWidth: 3, tension: 0.2, yAxisID: 'y1' }
+          ]
+        },
+        options: {
+          responsive: true,
+          interaction: { mode: 'index', intersect: false },
+          plugins: { legend: { position: 'top' } },
+          scales: {
+            y: { beginAtZero: true, position: 'left', ticks: { callback: v => '$' + Number(v).toLocaleString('en-US') } },
+            y1: { beginAtZero: true, position: 'right', grid: { drawOnChartArea: false }, ticks: { callback: v => Number(v).toFixed(1) + 'x' } }
+          }
+        }
+      });
+      document.getElementById('adSpendRangeLabel').textContent = `${startMonth} ~ ${endMonth}`;
+    }
+
+    function refreshAll() {
+      costItems = loadData(DATA_KEYS.costItems, defaultCostItems);
+      renderCampaignKpis();
+      renderAdSummaryTable();
+
+      costBreakdownChart.data.labels = costItems.map(item => item.label);
+      costBreakdownChart.data.datasets[0].data = costItems.map(item => item.value);
+      costBreakdownChart.update();
+
+      const filtered = filteredMonthlyData();
+      adSpendChart.data.labels = filtered.map(item => item.month);
+      adSpendChart.data.datasets[0].data = filtered.map(item => item.cost);
+      adSpendChart.data.datasets[1].data = filtered.map(item => item.grossRevenue);
+      adSpendChart.data.datasets[2].data = filtered.map(item => item.roi);
+      adSpendChart.update();
+      document.getElementById('adSpendRangeLabel').textContent = `${startMonth} ~ ${endMonth}`;
+    }
+
+    function initMonthRangeInputs() {
+      const startInput = document.getElementById('startMonthInput');
+      const endInput = document.getElementById('endMonthInput');
+      startInput.min = campaignOverviewFirstMonth; startInput.max = campaignOverviewLastMonth; startInput.value = startMonth;
+      endInput.min = campaignOverviewFirstMonth; endInput.max = campaignOverviewLastMonth; endInput.value = endMonth;
+
+      startInput.addEventListener('change', () => {
+        startMonth = startInput.value;
+        if (startMonth > endMonth) { endMonth = startMonth; endInput.value = endMonth; }
+        refreshAll();
+      });
+      endInput.addEventListener('change', () => {
+        endMonth = endInput.value;
+        if (endMonth < startMonth) { startMonth = endMonth; startInput.value = startMonth; }
+        refreshAll();
+      });
+      document.getElementById('resetMonthRangeBtn').addEventListener('click', () => {
+        startMonth = campaignOverviewFirstMonth;
+        endMonth = campaignOverviewLastMonth;
+        startInput.value = startMonth;
+        endInput.value = endMonth;
+        refreshAll();
+      });
+    }
+
+    renderCampaignKpis();
+    renderAdSummaryTable();
+    createCharts();
+    initMonthRangeInputs();
+    onDataChange(DATA_KEYS.costItems, refreshAll);
+  </script>
+</body>
+</html>

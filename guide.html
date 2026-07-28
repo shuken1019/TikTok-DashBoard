@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TikTok Shop US 대시보드 - 가이드</title>
+  <link rel="stylesheet" href="assets/styles.css?v=top-refresh-20260726" />
+</head>
+<body>
+  <section class="layout">
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-brand">
+            <div class="logo">TT</div>
+            <div>
+              <strong>Admin 계정</strong>
+              <p>관리자 전용 대시보드</p>
+            </div>
+          </div>
+          <button type="button" class="menu-button sidebar-toggle" onclick="toggleSidebar()" aria-label="사이드바 토글">
+            <span style="font-size: 22px;">☰</span>
+          </button>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="guide.html" id="nav-guide">틱톡샵 가이드</a>
+          <a href="tiktok_shop_dashboard.html" id="nav-total">전체 매출</a>
+          <a href="data-center.html" id="nav-data-center">데이터센터</a>
+          <a href="products.html" id="nav-product">상품별매출</a>
+          <a href="product-leaderboard.html" id="nav-product-leaderboard">상품 리더보드</a>
+          <a href="inventory.html" id="nav-inventory">재고관리</a>
+          <a href="affiliate.html" id="nav-affiliate">어필리에이터 관리</a>
+          <a href="ads.html" id="nav-ads">광고관리</a>
+          <a href="admin.html" id="nav-admin">Admin</a>
+        </nav>
+        <div class="sidebar-footer">
+          <strong>데이터 기준</strong>
+          <p>Shop 7/26 · Campaign 7/27 · Affiliate Core 7/25 · 상세 7/24</p>
+        </div>
+      </aside>
+
+      <div class="main-content">
+        <div class="top-bar">
+          <button type="button" class="menu-button sidebar-toggle" onclick="toggleSidebar()" aria-label="사이드바 열기/닫기">☰</button>
+          <div class="brand">
+            <div class="logo">TT</div>
+            <div>
+              <h1>틱톡샵 가이드</h1>
+              <p>TikTok Shop US 대시보드를 200% 활용하는 방법.</p>
+            </div>
+          </div>
+        </div>
+
+        <section class="card">
+          <h2 style="margin-top: 0;">대시보드 사용법</h2>
+          <p class="page-note">이 대시보드는 TikTok Shop US 전용 판매 분석을 위해 설계되었습니다. 거래 실적, 광고비 집행, 비용 구조, 재고 위험, 분기별 forecast를 한 곳에서 확인하고, GMV(총거래액)와 ROAS/ROI를 중심으로 실적을 해석하는 것이 핵심입니다. Admin 페이지에서 값을 수정하면 각 페이지에 바로 반영됩니다.</p>
+        </section>
+
+        <section class="card" style="margin-top: 20px;">
+          <h2 style="margin-top: 0;">GMV Max 운영 가이드</h2>
+          <p class="page-note">TikTok Shop에서 매출을 극대화하기 위한 광고(GMV Max) 실무 가이드 요약입니다. 왜 사용해야 하는지, 어떻게 세팅·운영하는지, 성과를 어떻게 해석하는지, 막히는 지점을 어떻게 푸는지 순서로 정리했습니다.</p>
+          <ul class="page-note">
+            <li><a href="#gmv-definition">먼저 보기: GMV Max 정확한 정의</a></li>
+            <li><a href="#gmv-updates">최근 업데이트</a></li>
+            <li><a href="#gmv-what">1. Product GMV Max란?</a></li>
+            <li><a href="#gmv-creative">2. 광고(소재) 운영</a></li>
+            <li><a href="#gmv-campaign">3. 캠페인 운영</a></li>
+            <li><a href="#gmv-mizon">MIZON 적용 기준</a></li>
+            <li><a href="#gmv-report">4. 성과 측정 및 보고</a></li>
+            <li><a href="#gmv-live">5. LIVE GMV Max란?</a></li>
+            <li><a href="#gmv-troubleshoot">6. 문제 해결 &amp; FAQ</a></li>
+          </ul>
+        </section>
+
+        <section class="card guide-definition-hero" id="gmv-definition" style="margin-top: 20px;">
+          <div>
+            <span class="guide-eyebrow">OFFICIAL DEFINITION · 2026.07 확인</span>
+            <h2>GMV Max는 ‘매출 숫자’가 아니라<br> TikTok Shop의 자동 광고 캠페인입니다.</h2>
+            <p class="page-note">선택한 상품 또는 LIVE의 <strong>유료 광고와 오가닉 트래픽을 함께 최적화</strong>해 전체 채널 GMV를 키우는 자동화 솔루션입니다. 소재 선택, 광고 생성·중단, 타겟과 게재를 시스템이 자동 운영합니다.</p>
+          </div>
+          <div class="guide-metric-grid">
+            <article class="guide-metric-card">
+              <span>Product GMV Max ROI</span>
+              <strong>선택 상품의 총 GMV ÷ 광고비</strong>
+              <small>캠페인 중 발생한 유료·오가닉·Affiliate 주문 포함</small>
+            </article>
+            <article class="guide-metric-card">
+              <span>LIVE GMV Max ROI</span>
+              <strong>LIVE 룸 총 GMV ÷ 광고비</strong>
+              <small>해당 LIVE 안에서 발생한 유료·오가닉 전환 포함</small>
+            </article>
+            <article class="guide-metric-card">
+              <span>ROAS</span>
+              <strong>광고 귀속 매출 ÷ 광고비</strong>
+              <small>Paid-only 광고 효율 지표로 GMV Max ROI와 범위가 다름</small>
+            </article>
+          </div>
+          <div class="guide-callout guide-callout-warn">
+            <strong>대표님 보고 시 가장 중요한 주의점</strong>
+            <p>GMV Max 대시보드에 잡힌 총 GMV는 캠페인 실행 중 선택 상품에서 발생한 주문을 넓게 포함합니다. 고객이 광고를 보거나 클릭하지 않은 오가닉 주문도 포함될 수 있으므로, <strong>GMV Max ROI를 ‘광고가 순수하게 추가로 만든 매출’ 또는 순이익으로 해석하면 안 됩니다.</strong></p>
+          </div>
+        </section>
+
+        <section class="card" id="gmv-updates" style="margin-top: 20px;">
+          <h2 style="margin-top: 0;">🆕 최근 업데이트</h2>
+          <p class="page-note"><strong>Product GMV Max</strong></p>
+          <ul class="page-note">
+            <li>2026.06 — Pre-promotion Periods: 사전 프로모션 기간과 프로모션 기간에 선택한 영상의 노출을 증대</li>
+            <li>2026.04 — Auto Budget Increase: ROI 목표 달성 + 일일 예산 소진 임박 시 예산 자동 상향</li>
+            <li>2026.02 — GMV Max 크로스보더 ACA (US↔UK): UK 셀러가 동일 상품 기준 US 어필리에이트 영상 자동 활용 가능</li>
+            <li>2026.01 — Shoppable Photos 지원: 영상 없이 상품 이미지 기반 광고 가능</li>
+          </ul>
+          <p class="page-note"><strong>LIVE GMV Max</strong></p>
+          <ul class="page-note">
+            <li>2026.03 — Mega LIVE: 중요 LIVE 이벤트에 TikTok 트래픽을 집중시키는 사전 예약 기능</li>
+            <li>2025.12 — Auto Remix: 라이브 영상+상품 정보 기반 짧은 광고 영상 자동 생성</li>
+          </ul>
+          <p class="page-note"><strong>공통</strong></p>
+          <ul class="page-note">
+            <li>2026.01 — 리포팅 크리에이티브 수 표시 개선 (상태별 개수 상세 표시)</li>
+            <li>2026.01 — Creative Violation Smart Fix: AI가 광고 거절 사유 자동 식별 + 수정 가이드 제공</li>
+          </ul>
+        </section>
+
+        <section class="card" id="gmv-what" style="margin-top: 20px;">
+          <h2 style="margin-top: 0;">1. Product GMV Max란?</h2>
+          <p class="page-note">Product GMV Max는 TikTok Shop의 <strong>상품 단위 자동 광고 캠페인</strong>입니다. 선택 상품의 유료(Paid)·오가닉 트래픽을 동시에 최적화해 전체 채널 ROI와 비LIVE GMV를 키우고, 광고 운영 리소스를 줄이도록 설계되었습니다. 고도화된 자동화와 AI로 사용 가능한 모든 크리에이티브를 대규모로 통합 운영하며, 성과 우수 소재를 자동 식별·확대합니다.</p>
+          <p class="page-note"><strong>2025년 7월부터 GMV Max가 TikTok Shop Ads의 기본 캠페인 유형</strong>입니다. Custom Shop Ads(VSA/PSA)는 신규 생성·수정·복제가 제한되며 GMV Max로 전환해야 합니다.</p>
+          <table class="table">
+            <thead><tr><th>구분</th><th>Custom Shop Ads (VSA/PSA)</th><th>GMV Max (Product GMV Max)</th></tr></thead>
+            <tbody>
+              <tr><td>운영 방식</td><td>입찰·타겟팅 수동 설정, 포맷별 캠페인 분리 운영</td><td>입찰·타겟팅 자동화, VSA+PSA 통합 운영</td></tr>
+              <tr><td>크리에이티브</td><td>셀러가 직접 선택</td><td>승인된 소재 자동 전체 활용 (Affiliate 포함)</td></tr>
+              <tr><td>최적화 범위</td><td>광고(Paid) 트래픽만</td><td>광고 + 오가닉 트래픽 전체 매출 극대화</td></tr>
+              <tr><td>전환 기여 단위</td><td>Shop 단위</td><td>제품 단위 (제품당 캠페인 1개만 운영 가능)</td></tr>
+              <tr><td>보고 방식</td><td>광고 귀속 전환/GMV 중심</td><td>캠페인 중 선택 상품에서 발생한 유료+오가닉+Affiliate 주문 포함</td></tr>
+              <tr><td>주요 지표</td><td>ROAS = 광고 귀속 매출 ÷ 광고비</td><td>Product GMV Max ROI = 선택 상품 총 GMV ÷ 광고비</td></tr>
+              <tr><td>기여 기간/방식</td><td>기존 광고 유형별 기준 적용</td><td>선택 상품 기준 · 당일 주문 · 1일 어트리뷰션 윈도</td></tr>
+            </tbody>
+          </table>
+          <div class="guide-callout">
+            <strong>어트리뷰션 예시</strong>
+            <p>Product A를 캠페인에 넣었다면 캠페인 실행 중 Product A의 유료·오가닉 주문은 GMV Max에 포함됩니다. 광고를 보지 않고 Product A를 산 주문도 포함되지만, 다른 Product B 주문이나 3일 뒤 주문은 Product A 캠페인에 포함되지 않습니다.</p>
+          </div>
+        </section>
+
+        <section class="card" id="gmv-creative" style="margin-top: 20px;">
+          <h2 style="margin-top: 0;">2. 광고(소재) 운영</h2>
+
+          <h3>노출 위치</h3>
+          <p class="page-note">TikTok 피드, TikTok 검색 결과, Shop 탭 추천/검색 결과 — Product Card(PSA), Video Card(VSA) 형태로 노출. 국가별로 Pangle·Tokopedia 등 추가 지면 노출 가능.</p>
+
+          <h3>소재 등록: Auto-select 권장</h3>
+          <table class="table">
+            <thead><tr><th>Manual Select (수동)</th><th>Auto-select (자동, 권장)</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>소재 최대 400개 제한 · 실시간 모니터링/교체 수작업 필요 · 최적 타이밍 놓칠 수 있음 · ACA 미활성 Affiliate 영상은 ad code 개별 수집 필요</td>
+                <td>소재 수 제한 없음 · ACA 활성 영상 자동 리프레시 · AI가 우수 영상 자동 선별 · 필요 시 수동 중단/Boost 가능</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>소재 출처 (승인된 곳만 자동 활용)</h3>
+          <ul class="page-note">
+            <li>Shop 연결 TikTok 공식/비즈니스 계정, Business Center 권한 부여 계정</li>
+            <li>GMV Max 캠페인 운영 광고 계정(TTAM)에서 승인된 Spark Ads 게시물</li>
+            <li>ACA(Affiliate Creatives for Ads) — 크리에이터가 Creator Center에서 "Authorize sellers to use affiliate videos in Shop Ads" 토글을 켜면 ad code 수집 없이 자동 활용. <strong>상위 GMV 드라이버 Affiliate에게 필수 활성화 요청 권장</strong></li>
+          </ul>
+
+          <h3>광고 최적화 방법</h3>
+          <p class="page-note"><strong>① 고성과 소재 개발</strong> — 정량 지표뿐 아니라 메시지 전달력, 몰입도, 초반 훅 강도, 구매 전환 유도 구조 등 정성적 기준도 함께 판단. TikTok Market Scope(TTMS)에서 Audience→Transition, Brand Perception→Vertical/Search Insight, Merchandise→Market Insight/Brand Performance 탭 활용 권장.</p>
+          <p class="page-note"><strong>② L3+ Affiliate 협업 확대</strong> — 크리에이터는 L0~L8 등급으로 분류(GMV, 활동 지속성, 상품 선정력, 이커머스 운영 능력 종합 반영).</p>
+          <table class="table">
+            <thead><tr><th>Level</th><th>역할</th><th>운영 방식</th></tr></thead>
+            <tbody>
+              <tr><td>L6~8</td><td>전략 파트너</td><td>장기 파트너십, 1:1 전담 관리, VIP 초청, 공동 캠페인/앰버서더화</td></tr>
+              <tr><td>L3~5</td><td>핵심 매출 견인 그룹</td><td>전용 커뮤니티(Discord/Lark), LIVE Flash Sale 우선권, 선런치, 성과 기반 차등 커미션</td></tr>
+              <tr><td>L1~2</td><td>선별적 확장/육성 풀</td><td>오픈 플랜 대규모 운영, 샘플링·TAP 캠페인, 성과 기반 Tier-up</td></tr>
+            </tbody>
+          </table>
+          <p class="page-note">브랜드 인지도가 낮을 때 L3+ 접점 확대 전략: (1) Agency 활용 (2) TikTok 캠페인 참여 (3) Creative Boost/Consideration Ads로 광고 지원 (4) 상위 Affiliate에 차등 커미션(Open→Target Collaboration 전환, 최소 L3·권장 L5+)</p>
+          <p class="page-note"><strong>③ TTO(TikTok One) CCAS 활용</strong> — 초기 콘텐츠 확보가 어려울 때 Creator Content at Scale로 다수 크리에이터 콘텐츠를 확보, GMV Max에 자동 연동. Physical Product(샘플링) 옵션으로 실제 제품 발송 가능. 흐름: 프로젝트 생성 → 크리에이터 모집 → 제품 발송 → 콘텐츠 제작 → Spark Ads로 자동 활용.</p>
+          <p class="page-note"><strong>④ 주 단위 소재 관리</strong> — ROI 하락 전후 GMV/주문수/CTR/6s VTR 동시 감소 시 소재 피로도 신호. "Delivering" 필터로 최근 업로드 시점 확인, "Customize table"→"Time posted"로 등록일 확인, Export로 기간별 RAW 데이터 비교 가능.</p>
+          <p class="page-note"><strong>Creative Boost</strong> — 지정 기간 특정 소재에 추가 예산 배정, 트래픽·학습 속도 단기 강화.</p>
+          <table class="table">
+            <thead><tr><th>우선순위</th><th>현재 상태</th><th>Boost 목적</th></tr></thead>
+            <tbody>
+              <tr><td>1순위 Hidden Gem</td><td>Not Delivering이나 오가닉 성과 우수</td><td>즉각 재노출로 신규 위너 발굴</td></tr>
+              <tr><td>2순위 Scale-Up</td><td>Delivering 중, 예산 제약으로 노출 부족</td><td>검증된 성과 확대</td></tr>
+              <tr><td>3순위 Partnership</td><td>주력 Affiliate 신규 협업 콘텐츠</td><td>브랜드 임팩트·파트너십 가치 극대화</td></tr>
+            </tbody>
+          </table>
+          <ul class="page-note">
+            <li>Target ROI 캠페인에서만 사용 가능(Max Delivery 불가), Boost 예산은 ROI Protection 계산 미포함</li>
+            <li>캠페인당 최대 100개 영상 부스팅 가능</li>
+            <li>예시: 기본예산 $100(영상 4개)+영상1에 Boost $10 → 영상1은 $100+$10 별도 소진, 전체 지출 최대 $110</li>
+            <li>영상이 타겟 ROI 내 $1 이상 소진하면 "Delivering" 전환, 3일 학습 후에도 미달성 시 "Not Delivering"</li>
+          </ul>
+          <p class="page-note"><strong>Accelerate New Creative</strong> — 최근 7일 이내 등록/승인된 신규 소재에 우선 테스트 기회 자동 부여. GMV Max는 매일 최대 약 20% 예산을 신규 소재 테스트에 사용.</p>
+
+          <h3>게재 상태별 대응</h3>
+          <table class="table">
+            <thead><tr><th>상태</th><th>정의</th><th>권장 조치</th></tr></thead>
+            <tbody>
+              <tr><td>Authorization needed (승인 필요)</td><td>광고 사용 승인 미완료 (승인 후 최대 20분 내 반영)</td><td>Auto-select로 소재 확대, 상위 Affiliate ACA 활성화 요청</td></tr>
+              <tr><td>In queue (대기 중)</td><td>예산 소진 속도 조절로 테스트 대기 중</td><td>잠재력 높은 영상은 Creative Boost로 테스트 가속</td></tr>
+              <tr><td>Learning (학습 중)</td><td>최대 3일 테스트, 타겟 ROI 내 $1 이상 소진 시 Delivering 전환</td><td>3일 학습 기간 확보, 조급하게 변경하지 않기</td></tr>
+              <tr><td>Delivering (집행 중)</td><td>캠페인 일환으로 정기 프로모션 중</td><td>우수 영상 기반 유사 콘텐츠 추가 제작, 별도 Boost는 비권장</td></tr>
+              <tr><td>Not delivering (미집행)</td><td>전환 가능성 낮음 판단 또는 소재 피로도</td><td>잠재력 있다 판단되면 Creative Boost로 재테스트</td></tr>
+              <tr><td>Excluded (제외됨)</td><td>수동 제외 상태</td><td>필요 시 제외 리스트에서 제거해 재추가</td></tr>
+              <tr><td>Unavailable (사용 불가)</td><td>영상/상품링크/계정 문제, 승인 만료 등</td><td>Affiliate 권한·상품 앵커·상품 유효성(Seller Center) 점검</td></tr>
+              <tr><td>Rejected (반려됨)</td><td>콘텐츠 심의 실패</td><td>가이드라인 참고해 소재 수정 후 Appeal</td></tr>
+              <tr><td>Not active (비활성)</td><td>업로드 후 30일 초과 + 최근 30일 매출 0</td><td>소재 피로도 방지 위해 신규 영상 지속 업로드</td></tr>
+            </tbody>
+          </table>
+
+          <h3>소재 추가/제외 방법</h3>
+          <ul class="page-note">
+            <li>Shoppable 소재(오렌지색 카트 아이콘): 승인 출처(공식 계정/비즈니스 계정/Affiliate 콘텐츠 일괄 승인)에서 자동 인식</li>
+            <li>Non-shoppable 소재: GMV Max 탭 → Edit campaign → Ad Creatives → Manage → Add posts(Add video codes / Add custom posts)</li>
+            <li>Shoppable Photos(신규): 최소 2장(권장 5~7장) + 상품 링크만 있으면 게시 가능, 자동 연동. 영상 대비 약 2배 참여율, 판매 70%+ 비팔로워에서 발생. 성과는 Ads Manager Product Card 지표 / Seller Center Shoppable videos에서 확인</li>
+            <li>개별 소재 제외: Campaign list → Analytics → View creatives → Select bulk action → Exclude</li>
+            <li>조건 기반 일괄 제외: Edit campaign → Ad Creatives Manage → Exclusions → Add</li>
+          </ul>
+        </section>
+
+        <section class="card" id="gmv-campaign" style="margin-top: 20px;">
+          <h2 style="margin-top: 0;">3. 캠페인 운영</h2>
+          <p class="page-note">핵심은 제품 성숙도에 맞춰 캠페인을 분리 운영하는 것 (New → Potential → Hero → Super Hero). 전체 상품을 한 캠페인에 묶으면 시스템이 ROI 달성 가능한 Hero SKU에만 예산을 집중해 신제품이 노출 기회를 못 얻습니다.</p>
+
+          <h3>Target ROI (기본 최적화 방식)</h3>
+          <p class="page-note">TikTok 공식 시작점은 <strong>권장 ROI = 과거 비LIVE GMV ÷ 과거 광고비</strong>입니다. 낮은 목표는 집행·GMV 확장을 돕지만 광고비가 늘 수 있고, 높은 목표는 효율 기준을 강화하는 대신 지출과 매출 확장을 제한할 수 있습니다. 처음에는 시스템 권장값을 사용하고, 각 설정을 최소 3일 유지한 뒤 조정하세요.</p>
+          <table class="table">
+            <thead><tr><th>광고 재투자 가능 비율</th><th>tROI 권장값</th></tr></thead>
+            <tbody>
+              <tr><td>10%</td><td>10</td></tr>
+              <tr><td>20%</td><td>5</td></tr>
+              <tr><td>40%</td><td>2.5</td></tr>
+              <tr><td>50%</td><td>2</td></tr>
+              <tr><td>60%</td><td>1.6</td></tr>
+              <tr><td>80%</td><td>1.25</td></tr>
+              <tr><td>100%</td><td>1</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Max Delivery</h3>
+          <p class="page-note">ROI 달성 여부와 관계없이 예산을 최대한 소진하는 제품 단위 모드. 활용 상황: ① 신규 Shop/상품 Cold Start(첫 5~7일) ② 판매 가속 필요 상품(미판매 SKU, 재고 소진, Hero 부스팅) ③ ROI보다 GMV 확장이 중요한 경우 ④ 쇼핑 시즌/메가 세일. 설정: Campaign list → View details → Optimization mode를 Max Delivery로 변경 (예산은 캠페인 예산과 별도, 제품별 Daily Budget 필요).</p>
+
+          <h3>Promotion Days</h3>
+          <p class="page-note">주요 쇼핑 시즌에 ROI 목표를 완화하고 예산을 확장. Target ROI는 최근 7일 BAU 기준값과 입력값 중 <strong>더 낮은 값</strong>으로 완화됨. 기본 프로모션 캘린더에 따라 자동 활성화되며 커스텀 기간 설정도 가능. 설정: 신규 캠페인 생성 시 또는 캠페인 "..." → Edit → Turn on promotion days.</p>
+
+          <h3>Pre-promotion Periods</h3>
+          <p class="page-note">Promotion Days 설정 화면 하단 "Include pre-promotion periods" 활성화 시, 사전 프로모션 기간용 Promotional videos를 별도 지정 가능 → 더 빠른 소재 탐색·효율적 예산 배분.</p>
+
+          <h3>Auto Budget Increase</h3>
+          <p class="page-note"><strong>발동 조건</strong>: 당일 ROI 목표 90% 이상 달성 + 당일 예산 80% 이상 소진 시 동시 충족. 원래 일일 예산의 <strong>50%씩 증액</strong>, 최대 <strong>6배</strong>까지 확장(다음 날 원래 예산으로 리셋). 항목: Daily Budget(기준), Increase Percentage(50~300%), Increase Limit(1~10회).</p>
+          <p class="page-note">💡 Promotion Days와 병행 시 Promotion Days 증액 기본값이 <strong>50% × 최대 10회</strong>로 확장됨(대형 쇼핑 이벤트 권장). 운영 팁: 이벤트 3~5일 전 사전 활성화, 현실적 tROI 설정, 이벤트 전 신규 크리에이티브 집중 업로드.</p>
+
+          <h3>Commission(보상 구조) 점검</h3>
+          <p class="page-note">Ads Commission은 <strong>Standard Commission의 50~75% 수준</strong> 권장. 커미션이 불공정하다고 인식되면 Affiliate가 ACA를 비활성화 → 소재 풀 감소 → GMV 성장 제한으로 이어질 수 있음.</p>
+
+          <h3>Collaboration(협업 구조) 점검</h3>
+          <ul class="page-note">
+            <li><strong>Open Collaboration</strong>: 협업 풀 부족 초기 단계, 대량 콘텐츠 확보, 성과 크리에이터 탐색 단계에 적합</li>
+            <li><strong>Target Collaboration</strong>: 검증된 크리에이터 협업, 신규 Shop/SKU 확장, Hero SKU 집중, 브랜드 메시지 통제, LIVE/대형 캠페인에 적합. 동일 상품이 두 협업에 동시 포함 시 크리에이터는 Target Collaboration 커미션만 적용받음.</li>
+          </ul>
+        </section>
+
+        <section class="card" id="gmv-mizon" style="margin-top: 20px;">
+          <span class="guide-eyebrow">MIZON INTERNAL GUARDRAIL</span>
+          <h2 style="margin-top: 8px;">MIZON 적용 기준: GMV보다 먼저 마진을 확인</h2>
+          <p class="page-note">아래 값은 제공된 「MIZON전용 TikTok Shop 분석리포트」의 판매가·비용표를 옮긴 <strong>내부 계획 기준</strong>입니다. ‘Affiliate 적용 후 잔여 마진’은 추가 광고비를 차감하기 전 값이므로, 이 비율보다 광고비까지 더 쓰면 실제 손익은 더 낮아집니다.</p>
+          <table class="table">
+            <thead><tr><th>상품</th><th>보고서 판매가</th><th>Affiliate 적용 후 잔여 마진</th><th>운영 판단</th></tr></thead>
+            <tbody>
+              <tr><td>7 Vegan Peptide Booster Serum</td><td>$20.00</td><td>$5.88 · 23.52%</td><td><strong class="guide-status-ok">상대적 여유</strong> · 우선 테스트</td></tr>
+              <tr><td>Rice Toner</td><td>$23.75</td><td>$4.68 · 18.72%</td><td><strong class="guide-status-ok">테스트 가능</strong> · 비용 상한 관리</td></tr>
+              <tr><td>Rice Foam</td><td>$17.99</td><td>$1.99 · 9.94%</td><td><strong class="guide-status-watch">주의</strong> · 단독 고비용 집행 제한</td></tr>
+              <tr><td>Collagen 100</td><td>$18.48</td><td>$1.99 · 9.47%</td><td><strong class="guide-status-watch">주의</strong> · 번들/가격 재검토</td></tr>
+              <tr><td>Snail Repair Intensive BB Cream</td><td>$14.99</td><td>$0.53 · 3.37%</td><td><strong class="guide-status-risk">고위험</strong> · 추가 광고 전 손익 재계산</td></tr>
+              <tr><td>Hero Bundle (Collagen + 7 Vegan)</td><td>$38.99</td><td>$4.32 · 9.39%</td><td><strong class="guide-status-watch">주의</strong> · 객단가보다 순기여 확인</td></tr>
+              <tr><td>Rice Bundle (Toner + Foam)</td><td>$38.89</td><td>$6.67 · 14.82%</td><td><strong class="guide-status-ok">테스트 가능</strong> · 번들 전환율 확인</td></tr>
+            </tbody>
+          </table>
+          <div class="guide-callout guide-callout-warn">
+            <strong>MIZON 계획값과 실제값을 구분하세요</strong>
+            <p>보고서의 크리에이터 채널 85%, Affiliate 수수료 25%, 샘플 전환율 21.3%, 12월 매출 $150K는 운영 계획을 위한 가정입니다. 실제 실적처럼 보고하지 말고 매월 Shop Analytics·Campaign Overview·Affiliate 원본으로 재검증해야 합니다.</p>
+          </div>
+        </section>
+
+        <section class="card" id="gmv-report" style="margin-top: 20px;">
+          <h2 style="margin-top: 0;">4. 성과 측정 및 보고</h2>
+          <table class="table">
+            <thead><tr><th>보고 지표</th><th>무엇을 답하는가</th><th>주의점</th></tr></thead>
+            <tbody>
+              <tr><td>GMV Max ROI</td><td>선택 상품/LIVE의 총 GMV 대비 광고비 효율</td><td>오가닉·Affiliate 포함, 순수 광고 증분 아님</td></tr>
+              <tr><td>Paid ROAS</td><td>광고 귀속 매출 대비 광고비 효율</td><td>GMV Max ROI와 분모는 같아도 분자 범위가 다름</td></tr>
+              <tr><td>총 Shop GMV 증감</td><td>캠페인 전후 사업 전체 매출이 실제 성장했는가</td><td>요일·프로모션·재고·가격 영향 함께 비교</td></tr>
+              <tr><td>광고 차감 후 기여이익</td><td>매출이 아니라 실제로 돈을 남겼는가</td><td>원가·수수료·물류·샘플비·광고비 모두 포함</td></tr>
+            </tbody>
+          </table>
+          <ul class="page-note">
+            <li><strong>운영 전후 비교</strong>: GMV Max 적용 전(VSA/PSA 등 기준선) vs 적용 후 매출 변화 추이 확인</li>
+            <li><strong>ROI/예산 변경 후 비교</strong>: 변경 시점이 그래프에 표시되며 전/후 흐름 비교 가능 (단, ROI 지표는 가장 최근 변경값만 반영 — 하루 여러 번 변경 시 해석이 어려워짐)</li>
+            <li><strong>데이터 추출</strong>: 일자별 추출은 미지원. ① 캠페인별 실시간 데이터(Export → Real-time campaign data) ② 상품별 기간 데이터(View details → Product list → Export) ③ 크리에이티브별 기간 데이터(Export → Creative data for all campaigns, 약 5분 소요)</li>
+          </ul>
+          <p class="page-note"><strong>지표 해석</strong>: SKU Orders는 유료+오가닉 주문 모두 포함. Ad Conversion Rate/Product Ad Clicks/Impressions는 유료 광고 성과만 반영. Orders(주문 단위)와 Ad Conversion(아이템 수 단위)은 집계 기준이 달라 수치가 일치하지 않을 수 있음.</p>
+          <p class="page-note">⚠️ <strong>Product Card 소재 성과가 Affiliate 콘텐츠보다 높게 보이는 이유</strong>: 실제 클릭 행동이 아니라 어트리뷰션 구조 때문. 장바구니 단계에서 상품/SKU가 변경되면 이전 클릭·노출 기반 어트리뷰션이 무효화되고, 최종 구매 상품의 Product Card로 GMV가 귀속됩니다.</p>
+          <div class="guide-callout">
+            <strong>권장 보고 문장</strong>
+            <p>“GMV Max 보고 ROI는 선택 상품의 유료·오가닉 주문을 포함한 총채널 지표입니다. 따라서 광고 증분 성과는 Paid 지표와 캠페인 전후 총 Shop GMV를 함께 보고, 최종 의사결정은 광고비 차감 후 기여이익으로 판단했습니다.”</p>
+          </div>
+        </section>
+
+        <section class="card" id="gmv-live" style="margin-top: 20px;">
+          <h2 style="margin-top: 0;">5. LIVE GMV Max란?</h2>
+          <p class="page-note">Product GMV Max가 TikTok Shop 매출 전체를 키우는 솔루션이라면, LIVE GMV Max는 라이브룸 자체의 매출을 극대화하는 자동화 솔루션입니다.</p>
+          <table class="table">
+            <thead><tr><th>구분</th><th>Custom LIVE Shopping Ads (LSA)</th><th>LIVE GMV Max</th></tr></thead>
+            <tbody>
+              <tr><td>핵심</td><td>광고 성과 최적화</td><td>라이브 매출 전체 성장 최적화</td></tr>
+              <tr><td>성과 기준</td><td>ROAS = 광고 매출 ÷ 광고비</td><td>ROI = 라이브 전체 매출 ÷ 광고비</td></tr>
+              <tr><td>기여 기준</td><td>7일 클릭/1일 조회, Shop 레벨</td><td>실시간 라이브룸 기준(라이브 내 구매만 집계)</td></tr>
+              <tr><td>입찰 전략</td><td>Target ROAS/CPA 또는 Maximum delivery</td><td>Target ROI 또는 Maximum delivery</td></tr>
+              <tr><td>크리에이티브</td><td>LIVE-to-LIVE, Video-to-LIVE(수동 업로드)</td><td>LIVE-to-LIVE, Video-to-LIVE(최근 30일 성과 좋은 영상 자동 선택)</td></tr>
+            </tbody>
+          </table>
+
+          <h3>집행 전 필수 확인</h3>
+          <ul class="page-note">
+            <li><strong>Identity 충돌 확인</strong>: 동일 TikTok 계정은 동시에 하나의 LIVE 광고 유형만 운영 가능 (LSA/기존 LIVE GMV Max가 모든 광고 계정에서 종료·중지 상태여야 함)</li>
+            <li><strong>적합 조건</strong>: 정기 LIVE 운영, 최근 7일 LIVE GMV $1,000 이상, 오가닉 LIVE 성과 존재. LIVE 운영 이력 없는 셀러는 비권장</li>
+            <li>캠페인당 TikTok 계정 1개만 선택 가능 (복수 계정은 개별 캠페인 필요)</li>
+            <li>Optimization goal은 자동 "Gross Revenue" 유지 권장, ROI/예산은 시스템 권장값 사용 권장</li>
+            <li>최소 2주 이상 운영 권장(어려우면 최소 3~5일), 기본 설정은 즉시 시작+지속 노출</li>
+          </ul>
+
+          <h3>우수사례 체크리스트</h3>
+          <ul class="page-note">
+            <li><strong>운영 기간/예산</strong>: 최소 3일 이상, 세션당 6시간+(하루 8시간+ 권장), 예산은 충분히 높게 설정. 미국 기준 오전 11~12시, 오후 7~10시 트래픽 高</li>
+            <li><strong>Always-on</strong>: 종료 시간(End Time) 설정하지 않는 것을 강력 권장, 진행 시점/시간 일정하게 유지</li>
+            <li><strong>라이브룸 선택</strong>: 최근 7일 매출 $1,000+ 계정, GMV 성과 좋은 프로필 우선</li>
+            <li><strong>SKU 전략</strong>: 검증된 Hero 상품 중심 운영, 혜택 다양화로 거래 밀도 강화, 신상품은 라이브 전 최소 3~7일 시딩 필요</li>
+            <li><strong>Creatives</strong>: Video-to-LIVE가 LIVE-to-LIVE 대비 유입·전환 성과 우수 — Auto-select 사용, 추가 영상 업로드, Preferred Video(최대 10개) 지정, 공식 계정 승인 권장</li>
+          </ul>
+
+          <h3>Preferred Video 설정</h3>
+          <p class="page-note">Ad creatives → Manage → Auto-select 모드 확인 → 갤러리 상단 "Preferred Videos" 토글 ON → 우선 노출할 영상 체크(최대 10개) → Save. 라이브 주제에 맞게 지속 업데이트 권장.</p>
+
+          <h3>Mega LIVE Day</h3>
+          <p class="page-note">대형 라이브 이벤트를 라이브 최소 24시간 전 설정하면 TikTok이 추가 트래픽·프로모션 노출을 지원. 권장 ROI/예산 설정 유지, 피크 타임 최대 4시간까지 설정 가능. Preferred video로 연관 소재 활용, 초반/피크에 Viewer boost(전체 예산 약 5%) 활용 권장.</p>
+
+          <h3>Creative Boost (LIVE 버전)</h3>
+          <ul class="page-note">
+            <li>대기 중/일시중지 영상에 권장, Unavailable 영상엔 적용 불가. Maximum Delivery 활성화·캠페인 일시중지·계정 정지 시 비활성화됨</li>
+            <li>최소 예산 $10(Daily Budget), Daily Duration 0.5~24시간(기본 2시간), 라이브 ON AIR 상태에서만 게재</li>
+            <li>Target ROI 캠페인 종료/일시중지 시 Creative Boost도 함께 중단. 단, Target ROI 예산 소진과 무관하게 Boost 자체 예산이 남아있으면 계속 집행</li>
+          </ul>
+
+          <h3>Auto Remix</h3>
+          <p class="page-note">라이브스트림 영상+제품 정보 기반 약 25초 영상을 자동 생성해 Video-to-LIVE 소재로 활용. 캠페인 생성 시 Live Promotion → Auto Remix 옵션 활성화. 비활성화하거나 생성 영상을 제거하면 캠페인 성과에 영향을 줄 수 있음.</p>
+        </section>
+
+        <section class="card" id="gmv-troubleshoot" style="margin-top: 20px;">
+          <h2 style="margin-top: 0;">6. 문제 해결 &amp; FAQ</h2>
+
+          <h3>Cold Start (초기 운영)</h3>
+          <p class="page-note">최근 7일 GMV가 $1,000 미만이면 신규 상품 여부와 무관하게 모두 Cold Start로 분류됩니다. 유형: ① TikTok Shop 신규 셀러 ② Product GMV Max 신규 광고주 ③ LIVE GMV Max 신규 광고주 — 초기에 통제하려 할수록 성과가 느려지고, 시스템에 맡길수록 이후 스케일이 붙는 구조입니다.</p>
+
+          <h3>자주 묻는 질문</h3>
+          <p class="page-note"><strong>기존 광고 전환</strong> — GMV Max는 기존 Shop Ads(VSA/PSA/LSA)와 동시 운영 불가. 기존 캠페인 OFF 후 GMV Max 신규 생성 권장. PSA도 별도 세팅 없이 GMV Max가 자동으로 트래픽을 통합 활용합니다.</p>
+          <p class="page-note"><strong>크리에이티브</strong> — 광고 사용 권한을 승인한 Affiliate 영상만 광고로 활용(미승인 영상은 오가닉에만 포함). 신규 소재 테스트에 일부 예산이 쓰이지만 장기적으로 효율 좋은 소재에 예산이 집중됩니다. 광고용 음원은 Commercial Music Library 기준을 따라야 합니다.</p>
+          <p class="page-note"><strong>타겟팅</strong> — GMV Max는 관심사/리타겟팅/지역 등 수동 타겟 설정이 불가한 Broad 자동 최적화 구조입니다.</p>
+          <p class="page-note"><strong>예산·Target ROI</strong> — ROI Target은 <strong>하루 최대 1회</strong>, 한 번에 <strong>10~30% 범위</strong> 조정 권장(잦은 변경은 학습 데이터를 초기화시킬 수 있음). 예산 소진이 느리면 tROI 소폭 하향 또는 Max Delivery 전환, 빠르면 예산 증액 또는 tROI 소폭 상향. 추천 예산은 "확장 가능 최대치"이며 실제 지출은 ROI 조건 충족 시에만 발생합니다.</p>
+          <p class="page-note"><strong>성과 분석</strong> — 핵심 지표 우선순위: ① Total GMV ② ROI 달성률(80~120%) ③ 예산 소진율. CTR/CPC 등 소재 지표도 소재 피로도 판단에 필요하므로 무시하면 안 됩니다. 삭제된 캠페인 데이터는 최대 3개월(추후 6개월 확대 예정) 보관됩니다.</p>
+          <p class="page-note"><strong>Seller Center와 수치 차이</strong> — GMV Max "Orders (Current shop)"는 SKU 주문 단위, Seller Center "Orders"는 주문(Order) 단위로 집계 기준이 달라 수치가 다른 것이 정상입니다. 또한 GMV Max "Gross Revenue"는 TikTok의 price subsidy(가격 보조금)를 포함하지만 Seller Center "GMV"는 포함하지 않아 GMV Max 쪽 수치가 더 크게 나타날 수 있습니다.</p>
+          <div class="guide-source-list">
+            <strong>공식 기준 문서 · 2026-07-26 확인</strong>
+            <a href="https://ads.tiktok.com/help/article/about-product-gmv-max?lang=en" target="_blank" rel="noreferrer">About Product GMV Max</a>
+            <a href="https://ads.tiktok.com/help/article/about-attribution-for-gmv-max?lang=en" target="_blank" rel="noreferrer">About attribution for GMV Max</a>
+            <a href="https://ads.tiktok.com/help/article/best-practices-for-product-gmv-max?lang=en" target="_blank" rel="noreferrer">Product GMV Max best practices</a>
+            <a href="https://ads.tiktok.com/help/article/about-live-gmv-max?lang=en" target="_blank" rel="noreferrer">About LIVE GMV Max</a>
+          </div>
+          <p class="page-note" style="margin-top: 16px; font-size: 12px;">※ TikTok 정책과 기능은 변경될 수 있습니다. 실제 집행 전 Ads Manager와 공식 도움말의 최신 표시를 우선하세요. MIZON 수치는 제공된 내부 분석리포트 기준이며 공식 TikTok 정의와 별도입니다.</p>
+        </section>
+
+        <section class="grid cards-4" style="margin-top: 20px;">
+          <article class="card linked" data-nav="nav-total" data-href="tiktok_shop_dashboard.html">
+            <div class="chart-title"><h2>전체 매출</h2></div>
+            <p class="page-note">월별 매출·광고비·순이익과 Forecast를 확인하세요.</p>
+          </article>
+          <article class="card linked" data-nav="nav-product" data-href="products.html">
+            <div class="chart-title"><h2>상품별 매출</h2></div>
+            <p class="page-note">상품별 매출 추이와 마진 구조를 확인하세요.</p>
+          </article>
+          <article class="card linked" data-nav="nav-inventory" data-href="inventory.html">
+            <div class="chart-title"><h2>재고관리</h2></div>
+            <p class="page-note">재고 리스크 현황을 확인하세요.</p>
+          </article>
+          <article class="card linked" data-nav="nav-ads" data-href="ads.html">
+            <div class="chart-title"><h2>광고관리</h2></div>
+            <p class="page-note">비용 구조와 광고 집행 현황을 확인하세요.</p>
+          </article>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <script src="assets/nav.js?v=dashboard-20260724"></script>
+</body>
+</html>

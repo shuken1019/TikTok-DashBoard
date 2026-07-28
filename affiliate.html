@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TikTok Shop US 대시보드 - 어필리에이터 성장 센터</title>
+  <link rel="stylesheet" href="assets/styles.css?v=affiliate-plan-range-v2-20260726" />
+</head>
+<body class="affiliate-mode-overview">
+  <section class="layout">
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-brand">
+            <div class="logo">TT</div>
+            <div>
+              <strong>Admin 계정</strong>
+              <p>관리자 전용 대시보드</p>
+            </div>
+          </div>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="guide.html" id="nav-guide">틱톡샵 가이드</a>
+          <a href="tiktok_shop_dashboard.html" id="nav-total">전체 매출</a>
+          <a href="data-center.html" id="nav-data-center">데이터센터</a>
+          <a href="products.html" id="nav-product">상품별매출</a>
+          <a href="product-leaderboard.html" id="nav-product-leaderboard">상품 리더보드</a>
+          <a href="inventory.html" id="nav-inventory">재고관리</a>
+          <a href="affiliate.html" id="nav-affiliate">어필리에이터 관리</a>
+          <a href="ads.html" id="nav-ads">광고관리</a>
+          <a href="admin.html" id="nav-admin">Admin</a>
+        </nav>
+        <div class="sidebar-footer">
+          <strong>데이터 기준</strong>
+          <p>Shop 7/26 · Campaign 7/27 · Affiliate Core 7/25 · 상세 7/24</p>
+        </div>
+      </aside>
+
+      <div class="main-content">
+        <div class="top-bar">
+          <div class="brand">
+            <div class="logo">TT</div>
+            <div>
+              <h1>어필리에이터 성장 센터</h1>
+              <p>크리에이터 풀 → 콘텐츠 생산 → 매출 전환을 관리합니다.</p>
+            </div>
+          </div>
+          <div class="affiliate-report-state"><span class="status-dot"></span>Core KPI 2026.07.25 · 상세 목록 2026.07.24</div>
+        </div>
+
+        <section class="card affiliate-shared-filter">
+          <div class="affiliate-toolbar">
+            <div class="affiliate-date-filter">
+              <div>
+                <span class="eyebrow">REPORT RANGE</span>
+                <strong id="affiliateSelectedRange">2026-07-19 ~ 2026-07-25</strong>
+              </div>
+              <label>시작일<input type="date" id="affiliateStartDate" min="2026-02-01" max="2026-07-25" value="2026-07-19" onchange="applyAffiliateDateRange()"></label>
+              <span class="range-separator">→</span>
+              <label>종료일<input type="date" id="affiliateEndDate" min="2026-02-01" max="2026-07-25" value="2026-07-25" onchange="applyAffiliateDateRange()"></label>
+              <button type="button" onclick="setAffiliateFullRange()">전체 데이터</button>
+            </div>
+            <p class="affiliate-source-note" id="affiliateRangeNote">선택 7일 · 운영 차트·표에 적용 · 상단 KPI는 원본 전체 기간 누적값</p>
+          </div>
+        </section>
+
+        <nav class="affiliate-section-nav" aria-label="어필리에이터 상세 메뉴">
+          <a href="affiliate.html?detail=samples" class="samples" data-affiliate-mode="samples"><span>01</span><div><strong>샘플·제품 계획</strong><small>발송·영상·발주·비용</small></div><b>→</b></a>
+          <a href="affiliate.html?detail=creators" class="creators" data-affiliate-mode="creators"><span>02</span><div><strong>크리에이터 관리</strong><small>풀·활성·운영 가이드</small></div><b>→</b></a>
+          <a href="affiliate.html?detail=content" class="content" data-affiliate-mode="content"><span>03</span><div><strong>영상 성과</strong><small>TOP 영상·판매 요인</small></div><b>→</b></a>
+          <a href="affiliate.html?detail=finance" class="finance" data-affiliate-mode="finance"><span>04</span><div><strong>매출·비용·ROI</strong><small>GMV·수수료·샘플비</small></div><b>→</b></a>
+        </nav>
+        <a class="affiliate-back-link" href="affiliate.html">← 어필리에이터 대시보드로</a>
+
+        <section class="card affiliate-plan-range-card">
+          <div>
+            <span class="eyebrow">PLAN RANGE</span>
+            <strong id="affiliatePlanPeriod">2026-08-01 ~ 2026-12-31</strong>
+            <small>제공된 MIZON 8–12월 계획 데이터</small>
+          </div>
+          <div class="affiliate-plan-granularity" aria-label="계획 집계 기준">
+            <button type="button" id="affiliatePlanDayButton" onclick="setAffiliatePlanGranularity('day')">날짜별</button>
+            <button type="button" id="affiliatePlanMonthButton" class="active" onclick="setAffiliatePlanGranularity('month')">월별</button>
+          </div>
+          <div class="affiliate-plan-date-controls hidden" id="affiliatePlanDayControls">
+            <label>시작일<input type="date" id="affiliatePlanStartDate" min="2026-08-01" max="2026-12-31" value="2026-08-01" onchange="calculateAffiliatePlanRange()"></label>
+            <span>→</span>
+            <label>종료일<input type="date" id="affiliatePlanEndDate" min="2026-08-01" max="2026-12-31" value="2026-12-31" onchange="calculateAffiliatePlanRange()"></label>
+          </div>
+          <div class="affiliate-plan-date-controls" id="affiliatePlanMonthControls">
+            <label>시작월<input type="month" id="affiliatePlanStartMonth" min="2026-08" max="2026-12" value="2026-08" onchange="calculateAffiliatePlanRange()"></label>
+            <span>→</span>
+            <label>종료월<input type="month" id="affiliatePlanEndMonth" min="2026-08" max="2026-12" value="2026-12" onchange="calculateAffiliatePlanRange()"></label>
+          </div>
+          <span class="badge warn">12월 목표는 원본 검토값</span>
+        </section>
+
+        <section class="card affiliate-overview-only affiliate-overview-funnel">
+          <div><span class="eyebrow">EXECUTION SNAPSHOT</span><h2>선택 기간 목표 실행 흐름</h2><p id="affiliateOverviewPlanPeriod">2026-08-01 ~ 2026-12-31 · 현재 발송과 필요한 실행량을 비교합니다.</p></div>
+          <div class="affiliate-overview-steps">
+            <div><span>현재 발송</span><strong>2,099</strong></div><i>→</i>
+            <div><span>목표 샘플</span><strong id="affiliateOverviewSamples">22,708</strong></div><i>→</i>
+            <div><span>예상 영상</span><strong id="affiliateOverviewVideos">14,410</strong></div><i>→</i>
+            <div><span>매출 목표</span><strong id="affiliateOverviewRevenue">$391,000</strong></div>
+          </div>
+          <a href="affiliate.html?detail=samples">실행계획 자세히 보기 →</a>
+        </section>
+
+        <section class="grid affiliate-kpis affiliate-overview-core affiliate-finance-content">
+          <article class="card kpi affiliate-kpi purple">
+            <span class="label">영상 내 고유 크리에이터 풀</span>
+            <span class="value">6,272명</span>
+            <span class="desc">7/1–7/24 Creator 상세 목록 고유 계정</span>
+          </article>
+          <article class="card kpi affiliate-kpi teal">
+            <span class="label">분석 영상 / 판매 영상</span>
+            <span class="value">702개</span>
+            <span class="desc">7/1–7/25 게시 영상 · 상세 판매 발생 영상 103개</span>
+          </article>
+          <article class="card kpi affiliate-kpi blue">
+            <span class="label">Creator-attributed GMV</span>
+            <span class="value">$7,007.76</span>
+            <span class="desc">동일 기간 Shop GMV의 73.03% · 영상/LIVE/쇼케이스 포함</span>
+          </article>
+          <article class="card kpi affiliate-kpi rose">
+            <span class="label">어필리에이터 ROI</span>
+            <span class="value">3.07x</span>
+            <span class="desc">귀속 GMV ÷ 커미션 $2,282.78</span>
+          </article>
+          <article class="card kpi affiliate-kpi amber">
+            <span class="label">45일 샘플 ROI</span>
+            <span class="value">0.64x</span>
+            <span class="desc">샘플 2,099건 → 콘텐츠 1,332건</span>
+          </article>
+        </section>
+
+        <section class="card affiliate-share-strip affiliate-overview-core affiliate-finance-content">
+          <div class="affiliate-share-score">
+            <span class="eyebrow">REVENUE CONTRIBUTION</span>
+            <strong>73.03%</strong>
+            <p>전체 Shop GMV 중<br>Creator-attributed GMV 비중</p>
+          </div>
+          <div class="affiliate-share-reasons">
+            <div><span>01</span><p><strong>후행 구매까지 귀속</strong>creator link를 누른 뒤 나중에 산 주문도 포함됩니다.</p></div>
+            <div><span>02</span><p><strong>설명이 필요한 카테고리</strong>고민–성분–사용법 시연이 구매 결정을 돕습니다.</p></div>
+            <div><span>03</span><p><strong>반복 노출과 언어 확장</strong>후속편과 스페인어 문제 해결형 콘텐츠가 상위권에 반복됩니다.</p></div>
+          </div>
+          <div class="affiliate-share-caution">
+            <span>해석 주의</span>
+            <p>영상 직접 매출이 아니라 영상·LIVE·쇼케이스를 합친 귀속 매출입니다.</p>
+          </div>
+        </section>
+
+        <section class="card affiliate-detail-section affiliate-finance-content affiliate-finance-breakdown">
+          <div class="affiliate-plan-heading">
+            <div><span class="eyebrow">COST &amp; RETURN</span><h2>현재 실적과 8–12월 계획 비용</h2><p>실적과 미래 계획을 섞지 않고 나란히 비교합니다.</p></div>
+            <span class="badge warn">계획값은 가정 기반</span>
+          </div>
+          <div class="grid cards-4">
+            <article><span>현재 귀속 GMV</span><strong>$7,007.76</strong><small>7/1–7/25 Core</small></article>
+            <article><span>현재 수수료</span><strong>$2,282.78</strong><small>현재 ROI 3.07x</small></article>
+            <article><span>8–12월 예상 수수료</span><strong id="affiliatePlanTotalCommission">$83,088</strong><small>크리에이터 매출 85% × 25%</small></article>
+            <article><span>8–12월 예상 샘플비</span><strong id="affiliatePlanTotalSampleCost">$201,052</strong><small>번들 중복 제거 기준</small></article>
+          </div>
+          <p class="affiliate-plan-footnote" id="affiliatePlanTotalCostNote">계획 총비용은 수수료와 샘플비 합계 $284,140입니다. 물류비와 광고비는 포함하지 않았습니다.</p>
+          <p class="page-note"><a href="admin.html#affiliatePlan">계획 수정하기 →</a></p>
+        </section>
+
+        <section class="card affiliate-plan-dashboard affiliate-detail-section affiliate-samples-content">
+          <div class="affiliate-plan-heading">
+            <div>
+              <span class="eyebrow">SAMPLE → CONTENT → REVENUE</span>
+              <h2><span id="affiliatePlanHeadingPeriod">2026-08-01 ~ 2026-12-31</span> 샘플·영상·매출 실행계획</h2>
+              <p>제품별 샘플 발송량에서 예상 영상과 매출 목표, 수수료·샘플비까지 한 번에 연결합니다.</p>
+            </div>
+            <span class="badge warn">MIZON 5개 제품 · Village/PETINUBE 제외</span>
+          </div>
+
+          <div class="affiliate-plan-flow">
+            <div><span>01 샘플 패키지</span><strong id="affiliatePlanSamples">22,708개</strong><small>제품 수요식 기준</small></div>
+            <i>→</i>
+            <div><span>02 예상 영상</span><strong id="affiliatePlanVideos">14,410개</strong><small>콘텐츠 전환율 63.5%</small></div>
+            <i>→</i>
+            <div><span>03 크리에이터 매출</span><strong id="affiliatePlanCreatorRevenue">$332,350</strong><small>전체 목표의 85%</small></div>
+            <i>→</i>
+            <div><span>04 전체 매출 목표</span><strong id="affiliatePlanRevenue">$391,000</strong><small id="affiliatePlanFlowPeriod">2026-08-01 ~ 2026-12-31</small></div>
+          </div>
+
+          <div class="grid affiliate-plan-summary">
+            <article><span>현재 누적 발송</span><strong>2,099개</strong><small>기존 Sample Performance 전체 기간</small></article>
+            <article><span>선택 기간 추가 필요</span><strong id="affiliatePlanGap">+20,609개</strong><small>제품 샘플 계획 대비 단순 차이</small></article>
+            <article><span>예상 샘플비</span><strong id="affiliatePlanSampleCost">$201,052</strong><small>판매가 × 샘플수 × COGS 30%</small></article>
+            <article><span>예상 수수료</span><strong id="affiliatePlanCommission">$83,088</strong><small>크리에이터 매출 85% × 수수료 25%</small></article>
+            <article><span>필요 Active</span><strong id="affiliatePlanActive">4,295명·월</strong><small>선택 기간 월별 필요 Active 합계</small></article>
+          </div>
+
+          <div class="grid affiliate-plan-comparison">
+            <article class="affiliate-sample-gap">
+              <div class="chart-title">
+                <div><h3>현재 발송 vs 목표 샘플</h3><small>범위가 다른 누적값이므로 실행 규모 참고용</small></div>
+                <strong id="affiliatePlanProgress">9.2%</strong>
+              </div>
+              <div class="sample-progress-track"><span id="affiliatePlanProgressBar" style="width:9.2%"></span></div>
+              <div class="sample-progress-labels"><span>현재 2,099</span><span id="affiliatePlanTargetLabel">목표 22,708</span></div>
+              <div class="affiliate-model-check">
+                <span>모델 교차검증</span>
+                <p id="affiliatePlanModelCheck">크리에이터 퍼널식 필요 샘플은 20,164개입니다. 제품 수요식은 22,708개이며 두 모델을 함께 비교해 실행량을 정합니다.</p>
+              </div>
+            </article>
+
+            <article class="affiliate-month-plan">
+              <div class="chart-title"><div><h3 id="affiliatePlanRowsTitle">월별 목표와 비용</h3><small>2026년 8월부터 12월까지 제공 자료 기준</small></div></div>
+              <div id="affiliatePlanRows"></div>
+            </article>
+          </div>
+
+          <div class="table-scroll">
+            <table class="table affiliate-product-plan-table">
+              <thead><tr><th>제품/번들</th><th>매출 목표</th><th>샘플 패키지</th><th>예상 영상</th><th>최종 발주</th><th>샘플비</th></tr></thead>
+              <tbody id="affiliateProductPlanRows"></tbody>
+            </table>
+          </div>
+
+          <p class="affiliate-plan-footnote">
+            계산 가정: 샘플→콘텐츠 63.5%(1,332/2,099), 크리에이터 채널 85%, 수수료 25%, 샘플 COGS 30%.
+            수수료 상한은 선택 기간 전체 매출에 25%를 적용합니다. 12월 매출 $150,000·예산 $90,000은 제공 파일에 추정 검토값으로 표시되어 있어 실제 목표 확정 시 갱신이 필요합니다.
+          </p>
+        </section>
+
+        <section id="monthlyPanel" class="affiliate-period-panel affiliate-detail-section affiliate-creators-content">
+          <div class="grid affiliate-main-grid">
+            <article class="card affiliate-static-chart">
+              <div class="chart-title"><div><span class="eyebrow">MONTHLY SUPPLY</span><h2>월별 풀과 영상 생산량</h2><small>영상 수 / 활성 크리에이터</small></div></div>
+              <div class="static-bar-chart">
+                <div class="static-bar-row"><span>2월</span><div><i style="width:6%"></i><b style="left:5%">36 / 28명</b></div></div>
+                <div class="static-bar-row"><span>3월</span><div><i style="width:10%"></i><b style="left:9%">57 / 45명</b></div></div>
+                <div class="static-bar-row"><span>4월</span><div><i style="width:15%"></i><b style="left:14%">89 / 78명</b></div></div>
+                <div class="static-bar-row"><span>5월</span><div><i style="width:12%"></i><b style="left:11%">69 / 59명</b></div></div>
+                <div class="static-bar-row"><span>6월</span><div><i style="width:12%"></i><b style="left:11%">72 / 39명</b></div></div>
+                <div class="static-bar-row highlight"><span>7월*</span><div><i style="width:100%"></i><b style="left:78%">702 / 314명</b></div></div>
+              </div>
+            </article>
+            <article class="card affiliate-static-chart">
+              <div class="chart-title"><div><span class="eyebrow">MONTHLY OUTPUT</span><h2>영상 직접 GMV</h2><small>전체 귀속 GMV와 별도</small></div></div>
+              <div class="static-gmv-stack">
+                <div><span>2월</span><i style="height:5%"></i><b>$65</b></div>
+                <div><span>3월</span><i style="height:38%"></i><b>$490</b></div>
+                <div><span>4월</span><i style="height:9%"></i><b>$112</b></div>
+                <div><span>5월</span><i style="height:1%"></i><b>$0</b></div>
+                <div><span>6월</span><i style="height:26%"></i><b>$328</b></div>
+                <div class="highlight"><span>7월*</span><i style="height:100%"></i><b>$6,566.57</b></div>
+              </div>
+            </article>
+          </div>
+
+          <section class="card affiliate-table-card">
+            <div class="chart-title"><div><span class="eyebrow">SELECTED RANGE</span><h2>선택 날짜와 겹치는 운영 구간</h2></div><span class="badge warn">Core 7/25 · 상세 7/24</span></div>
+            <div class="table-scroll">
+              <table class="table affiliate-table">
+                <thead><tr><th>기간</th><th>영상</th><th>활성 크리에이터</th><th>누적 풀</th><th>영상 증감</th><th>판매 영상</th><th>영상 GMV</th><th>노출</th></tr></thead>
+                <tbody>
+                  <tr data-start="2026-02-01" data-end="2026-02-28"><td><strong>2026-02</strong></td><td>36</td><td>28</td><td>28</td><td>–</td><td>3 (8.3%)</td><td>$65</td><td>1,018</td></tr>
+                  <tr data-start="2026-03-01" data-end="2026-03-31"><td><strong>2026-03</strong></td><td>57</td><td>45</td><td>67</td><td><span class="affiliate-delta up">▲ 58.3%</span></td><td>4 (7.0%)</td><td>$490</td><td>65,676</td></tr>
+                  <tr data-start="2026-04-01" data-end="2026-04-30"><td><strong>2026-04</strong></td><td>89</td><td>78</td><td>140</td><td><span class="affiliate-delta up">▲ 56.1%</span></td><td>4 (4.5%)</td><td>$112</td><td>4,050</td></tr>
+                  <tr data-start="2026-05-01" data-end="2026-05-31"><td><strong>2026-05</strong></td><td>69</td><td>59</td><td>192</td><td><span class="affiliate-delta down">▼ 22.5%</span></td><td>0 (0%)</td><td>$0</td><td>927</td></tr>
+                  <tr data-start="2026-06-01" data-end="2026-06-30"><td><strong>2026-06</strong></td><td>72</td><td>39</td><td>215</td><td><span class="affiliate-delta up">▲ 4.3%</span></td><td>8 (11.1%)</td><td>$328</td><td>14,322</td></tr>
+                  <tr data-start="2026-07-01" data-end="2026-07-25"><td><strong>2026-07</strong><small class="partial-label">진행 중</small></td><td>702</td><td>314</td><td>6,272</td><td><span class="affiliate-delta up">▲ 875.0%</span></td><td>103 (14.7%)</td><td>$6,566.57</td><td>576,817</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section id="weeklyPanel" class="affiliate-period-panel hidden affiliate-detail-section affiliate-creators-content">
+          <section class="card affiliate-table-card">
+            <div class="chart-title"><div><span class="eyebrow">SELECTED RANGE</span><h2>선택 날짜와 겹치는 운영 구간</h2></div><span class="badge warn">운영 집계 최신 2026.07.23</span></div>
+            <div class="table-scroll">
+              <table class="table affiliate-table">
+                <thead><tr><th>주</th><th>영상</th><th>크리에이터</th><th>판매 영상</th><th>영상 GMV</th><th>노출</th><th>주문</th></tr></thead>
+                <tbody>
+                  <tr data-start="2026-05-18" data-end="2026-05-24"><td>05/18–05/24</td><td>23</td><td>21</td><td>0</td><td>$0</td><td>63</td><td>0</td></tr>
+                  <tr data-start="2026-05-25" data-end="2026-05-31"><td>05/25–05/31</td><td>4</td><td>4</td><td>0</td><td>$0</td><td>462</td><td>0</td></tr>
+                  <tr data-start="2026-06-01" data-end="2026-06-07"><td>06/01–06/07</td><td>12</td><td>9</td><td>2</td><td>$231</td><td>12,883</td><td>25</td></tr>
+                  <tr data-start="2026-06-08" data-end="2026-06-14"><td>06/08–06/14</td><td>16</td><td>13</td><td>1</td><td>$10</td><td>179</td><td>0</td></tr>
+                  <tr data-start="2026-06-15" data-end="2026-06-21"><td>06/15–06/21</td><td>10</td><td>7</td><td>2</td><td>$35</td><td>877</td><td>3</td></tr>
+                  <tr data-start="2026-06-22" data-end="2026-06-28"><td>06/22–06/28</td><td>25</td><td>18</td><td>2</td><td>$34</td><td>227</td><td>2</td></tr>
+                  <tr data-start="2026-06-29" data-end="2026-07-05"><td>06/29–07/05</td><td>40</td><td>29</td><td>4</td><td>$58</td><td>650</td><td>5</td></tr>
+                  <tr data-start="2026-07-06" data-end="2026-07-12"><td>07/06–07/12</td><td>43</td><td>25</td><td>5</td><td>$362</td><td>32,377</td><td>33</td></tr>
+                  <tr data-start="2026-07-13" data-end="2026-07-19"><td>07/13–07/19</td><td>262</td><td>179</td><td>29</td><td>$742</td><td>53,846</td><td>71</td></tr>
+                  <tr data-start="2026-07-20" data-end="2026-07-23"><td>07/20–07/23 <small class="partial-label">진행 중</small></td><td>245</td><td>186</td><td>9</td><td>$143</td><td>27,043</td><td>19</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section class="grid affiliate-decision-grid affiliate-detail-section affiliate-creators-content">
+          <article class="card affiliate-plan-card">
+            <span class="eyebrow">CAPACITY PLAN</span>
+            <h2>다음 달 운영 목표</h2>
+            <p class="page-note">관리 인원과 1인당 콘텐츠 약속을 넣으면 필요한 영상 수를 계산합니다.</p>
+            <div class="affiliate-plan-inputs">
+              <label>목표 협업 크리에이터<input id="targetCreators" type="number" min="1" value="340" oninput="calculateAffiliatePlan()"><span>현재 Core 기준 314명</span></label>
+              <label>1인당 목표 영상<input id="videosPerCreator" type="number" min="0.5" step="0.5" value="1.5" oninput="calculateAffiliatePlan()"><span>권장 1.5–2.0개</span></label>
+            </div>
+            <div class="affiliate-plan-result">
+              <div><small>예상 영상</small><strong id="expectedVideos">510개</strong></div>
+              <div><small>필요 증원</small><strong id="neededCreators">+26명</strong></div>
+              <div><small>주간 검수량</small><strong id="weeklyReviews">128개</strong></div>
+            </div>
+          </article>
+          <article class="card affiliate-insight-card">
+            <span class="eyebrow">WHY THE POOL GREW</span>
+            <h2>7월 풀 급증 진단</h2>
+            <div class="insight-callout"><strong>신규 +341명 · 영상 +509개</strong><p>전월 대비 관찰 풀과 게시량이 동시에 급증했습니다.</p></div>
+            <ul class="reason-list">
+              <li><span>01</span><div><strong>샘플 운영 확대</strong><p>누적 2,099건 발송, 샘플 콘텐츠 1,332건이 확인됩니다.</p></div></li>
+              <li><span>02</span><div><strong>상품 소재 확장</strong><p>Rice Toner·BB Cream·Collagen 등 제품/메시지가 넓어졌습니다.</p></div></li>
+              <li><span>03</span><div><strong>집중 게시</strong><p>7/13–19 한 주에 262개가 게시됐습니다.</p></div></li>
+            </ul>
+            <p class="inference-note">※ 캠페인 ID가 없어 위 원인은 콘텐츠·샘플 데이터에 기반한 추정입니다.</p>
+          </article>
+        </section>
+
+        <section class="card affiliate-detail-section affiliate-content-content">
+          <div class="chart-title">
+            <div><span class="eyebrow" id="contentEyebrow">VIDEO LEADERBOARD</span><h2 id="contentTitle">매출 기여 영상 TOP 5</h2><small id="contentSubtitle">Shoppable video GMV 기준</small></div>
+            <div class="segmented-control affiliate-content-tabs">
+              <button type="button" id="videoContentButton" class="active" onclick="setAffiliateContent('video')">영상 TOP 5</button>
+              <button type="button" id="liveContentButton" onclick="setAffiliateContent('live')">LIVE 성과</button>
+            </div>
+          </div>
+          <div class="affiliate-video-list" id="videoContentPanel">
+            <article class="affiliate-video-row"><span class="affiliate-rank rank-1">1</span><div class="affiliate-video-copy"><strong>7 Vegan Peptide · 문제 해결형 스페인어 콘텐츠</strong><span>@nathaliegaby1 · 2026-06-08</span><p>높은 노출과 6.07% CTR이 함께 작동해 170주문을 만들었습니다.</p></div><div class="affiliate-video-metric"><small>영상 GMV</small><strong>$1,284.54</strong></div><div class="affiliate-video-metric"><small>주문</small><strong>170</strong></div><div class="affiliate-video-metric"><small>노출</small><strong>61,460</strong></div><div class="affiliate-video-metric"><small>CTR</small><strong>6.07%</strong></div></article>
+            <article class="affiliate-video-row"><span class="affiliate-rank rank-2">2</span><div class="affiliate-video-copy"><strong>다크서클·눈가 주름 문제 해결형 아이패치</strong><span>@radiel141 · 2026-03-06</span><p>CTR은 낮지만 대규모 노출이 52주문으로 연결됐습니다.</p></div><div class="affiliate-video-metric"><small>영상 GMV</small><strong>$650.83</strong></div><div class="affiliate-video-metric"><small>주문</small><strong>52</strong></div><div class="affiliate-video-metric"><small>노출</small><strong>160,014</strong></div><div class="affiliate-video-metric"><small>CTR</small><strong>0.48%</strong></div></article>
+            <article class="affiliate-video-row"><span class="affiliate-rank rank-3">3</span><div class="affiliate-video-copy"><strong>Rice Milky Toner &amp; Rice Glow Mask Cleanser 번들</strong><span>@blankitaoro17 · 2026-07-21</span><p>번들 사용 맥락이 39주문을 만들었습니다.</p></div><div class="affiliate-video-metric"><small>영상 GMV</small><strong>$451.96</strong></div><div class="affiliate-video-metric"><small>주문</small><strong>39</strong></div><div class="affiliate-video-metric"><small>노출</small><strong>38,041</strong></div><div class="affiliate-video-metric"><small>CTR</small><strong>2.26%</strong></div></article>
+            <article class="affiliate-video-row"><span class="affiliate-rank">4</span><div class="affiliate-video-copy"><strong>7 Vegan Peptide Booster Serum 루틴</strong><span>@blankitaoro17 · 2026-03-24</span><p>6.34% CTR과 76주문이 동시에 확인됐습니다.</p></div><div class="affiliate-video-metric"><small>영상 GMV</small><strong>$421.20</strong></div><div class="affiliate-video-metric"><small>주문</small><strong>76</strong></div><div class="affiliate-video-metric"><small>노출</small><strong>28,701</strong></div><div class="affiliate-video-metric"><small>CTR</small><strong>6.34%</strong></div></article>
+            <article class="affiliate-video-row"><span class="affiliate-rank">5</span><div class="affiliate-video-copy"><strong>Rice Water Milky Toner · 글래스 스킨 메시지</strong><span>@blankitaoro17 · 2026-07-12</span><p>제품 효능과 사용 장면이 30주문으로 이어졌습니다.</p></div><div class="affiliate-video-metric"><small>영상 GMV</small><strong>$341.53</strong></div><div class="affiliate-video-metric"><small>주문</small><strong>30</strong></div><div class="affiliate-video-metric"><small>노출</small><strong>37,300</strong></div><div class="affiliate-video-metric"><small>CTR</small><strong>2.56%</strong></div></article>
+          </div>
+          <div class="affiliate-live-panel hidden" id="liveContentPanel">
+            <div class="affiliate-live-summary">
+              <div><small>LIVE GMV</small><strong>$81.49</strong><span>확인 기간 누적</span></div>
+              <div><small>전체 GMV 비중</small><strong>0.21%</strong><span>Shop GMV 대비</span></div>
+              <div><small>매출 발생일</small><strong>3일</strong><span>4월·6월·7월</span></div>
+              <div class="pending"><small>LIVE ROI</small><strong>산출 대기</strong><span>LIVE 비용/커미션 필요</span></div>
+            </div>
+            <div class="table-scroll">
+              <table class="table affiliate-live-table">
+                <thead><tr><th>월</th><th>LIVE GMV</th><th>매출 발생일</th><th>상태</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>2026-04</strong></td><td>$25.31</td><td>1일</td><td><span class="badge good">마감</span></td></tr>
+                  <tr><td><strong>2026-06</strong></td><td>$19.98</td><td>1일</td><td><span class="badge good">마감</span></td></tr>
+                  <tr><td><strong>2026-07</strong></td><td>$36.20</td><td>1일</td><td><span class="badge warn">부분 집계</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="inference-note">LIVE 호스트·세션·광고비 또는 커미션이 원본에 없어 LIVE 전용 ROI는 계산하지 않았습니다. 해당 비용이 추가되면 LIVE GMV ÷ LIVE 비용으로 산출할 수 있습니다.</p>
+          </div>
+        </section>
+
+        <section class="grid affiliate-analysis-grid affiliate-detail-section affiliate-content-content">
+          <article class="card affiliate-analysis-card win"><span class="eyebrow">WHAT SELLS</span><h2>잘 팔리는 영상</h2><ol><li><strong>고민을 먼저 말함</strong><span>다크서클·붓기·모공 중 한 문제를 첫 문장에 고정</span></li><li><strong>사용 장면이 명확함</strong><span>세안 후 첫 단계 등 루틴 속 위치를 보여줌</span></li><li><strong>근거가 구체적임</strong><span>성분과 기대 결과를 연결</span></li><li><strong>검증된 화자의 반복</strong><span>승자 크리에이터 후속편이 상위권에 재등장</span></li></ol></article>
+          <article class="card affiliate-analysis-card risk"><span class="eyebrow">WHY IT DOESN'T</span><h2>안 팔리는 영상</h2><ol><li><strong>노출 부족</strong><span>수십 회 노출로 성과를 판정하면 배포 문제와 혼동</span></li><li><strong>제품명만 제시</strong><span>고민–사용–결과 서사가 없음</span></li><li><strong>귀속 지연</strong><span>신규 영상은 7일 전 실패 확정 금지</span></li><li><strong>CTR 단독 판단</strong><span>주문·GPM·환불까지 함께 확인</span></li></ol></article>
+          <article class="card affiliate-analysis-card action"><span class="eyebrow">DECISION RULES</span><h2>영상 판정 기준</h2><div class="rule-grid"><div><span class="badge good">확대</span><p>7일 경과 + 주문 2건 이상 또는 CTR 4% 이상 &amp; GPM $30 이상</p></div><div><span class="badge warn">보류</span><p>게시 7일 미만 또는 노출 300 미만</p></div><div><span class="badge bad">개선</span><p>노출 2,000 이상인데 CTR 1.5% 미만이면 첫 3초 훅 교체</p></div></div></article>
+        </section>
+
+        <section class="card affiliate-playbook affiliate-detail-section affiliate-creators-content">
+          <div class="chart-title"><div><span class="eyebrow">OPERATING PLAYBOOK</span><h2>어필리에이터 관리 가이드라인</h2></div><span class="badge good">매주 월요일 갱신</span></div>
+          <div class="playbook-grid">
+            <div><span>1</span><strong>모집</strong><p>상품별 타깃·언어·피부 고민과 유입경로를 기록합니다.</p><small>Owner · Affiliate manager</small></div>
+            <div><span>2</span><strong>샘플 승인</strong><p>게시 빈도, 평균 조회, 카테고리 적합도와 기존 GMV를 확인합니다.</p><small>SLA · 48시간</small></div>
+            <div><span>3</span><strong>브리프 전달</strong><p>3초 훅, 고민, 사용 장면, 근거 2개, CTA를 제공합니다.</p><small>금지 · 과장 효능</small></div>
+            <div><span>4</span><strong>7일 리뷰</strong><p>300 노출 전에는 보류하고 CTR·GPM·주문·환불을 봅니다.</p><small>Cadence · 주 1회</small></div>
+            <div><span>5</span><strong>확대/중단</strong><p>상위 훅은 후속편과 유사 타깃 5명에게 재배포합니다.</p><small>Scale · 5개 변형</small></div>
+          </div>
+        </section>
+
+        <section class="affiliate-definition-note affiliate-detail-section affiliate-shared-detail">
+          <strong>데이터 정의</strong>
+          <p>고유 풀 6,272명은 7/1–7/24 Creator 상세 목록 값, 협업 314명은 7/1–7/25 Core Metrics 값입니다. Creator-attributed GMV에는 영상·LIVE·쇼케이스의 후행 구매가 포함됩니다.</p>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <script src="assets/nav.js?v=dashboard-20260724"></script>
+  <script src="assets/data-store.js?v=data-sync-20260727"></script>
+  <script src="assets/affiliate-plan-data.js?v=data-sync-20260727"></script>
+  <script>
+    let AFFILIATE_PLAN_INPUTS = loadData(DATA_KEYS.affiliatePlan, defaultAffiliatePlanMonths);
+    let AFFILIATE_PLAN_PRODUCTS = loadData(DATA_KEYS.affiliatePlanProducts, defaultAffiliatePlanProducts);
+    let AFFILIATE_PLAN_MONTHS = AFFILIATE_PLAN_INPUTS.map(m => deriveAffiliatePlanMonth(m, AFFILIATE_PLAN_PRODUCTS));
+    const AFFILIATE_PLAN_SCALABLE = ['revenueGoal', 'creatorRevenueGoal', 'activeCreatorsNeeded', 'funnelSamplesNeeded', 'productSamplePackages', 'expectedVideos', 'expectedCommission', 'sampleCost'];
+    let affiliatePlanGranularity = 'month';
+    const affiliateNumber = value => new Intl.NumberFormat('en-US').format(Math.round(value));
+    const affiliateCurrency = value => '$' + new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(Math.round(value));
+    function affiliateDaysInMonth(month) {
+      const [year, value] = month.split('-').map(Number);
+      return new Date(year, value, 0).getDate();
+    }
+    function setAffiliatePlanGranularity(mode) {
+      affiliatePlanGranularity = mode;
+      document.getElementById('affiliatePlanDayButton').classList.toggle('active', mode === 'day');
+      document.getElementById('affiliatePlanMonthButton').classList.toggle('active', mode === 'month');
+      document.getElementById('affiliatePlanDayControls').classList.toggle('hidden', mode !== 'day');
+      document.getElementById('affiliatePlanMonthControls').classList.toggle('hidden', mode !== 'month');
+      calculateAffiliatePlanRange();
+    }
+    function calculateAffiliatePlanRange() {
+      const startDateInput = document.getElementById('affiliatePlanStartDate');
+      const endDateInput = document.getElementById('affiliatePlanEndDate');
+      const startMonthInput = document.getElementById('affiliatePlanStartMonth');
+      const endMonthInput = document.getElementById('affiliatePlanEndMonth');
+      if (affiliatePlanGranularity === 'day' && startDateInput.value > endDateInput.value) endDateInput.value = startDateInput.value;
+      if (affiliatePlanGranularity === 'month' && startMonthInput.value > endMonthInput.value) endMonthInput.value = startMonthInput.value;
+      const start = affiliatePlanGranularity === 'day' ? startDateInput.value : `${startMonthInput.value}-01`;
+      const end = affiliatePlanGranularity === 'day'
+        ? endDateInput.value
+        : `${endMonthInput.value}-${String(affiliateDaysInMonth(endMonthInput.value)).padStart(2, '0')}`;
+      const rows = AFFILIATE_PLAN_MONTHS.flatMap(item => {
+        const monthStart = `${item.month}-01`;
+        const monthEnd = `${item.month}-${String(affiliateDaysInMonth(item.month)).padStart(2, '0')}`;
+        const overlapStart = start > monthStart ? start : monthStart;
+        const overlapEnd = end < monthEnd ? end : monthEnd;
+        if (overlapStart > overlapEnd) return [];
+        const overlapDays = Math.round((new Date(`${overlapEnd}T12:00:00`) - new Date(`${overlapStart}T12:00:00`)) / 86400000) + 1;
+        const fraction = overlapDays / affiliateDaysInMonth(item.month);
+        const row = { ...item, overlapDays, fraction };
+        AFFILIATE_PLAN_SCALABLE.forEach(key => row[key] = item[key] * fraction);
+        return [row];
+      });
+      const totals = Object.fromEntries(AFFILIATE_PLAN_SCALABLE.map(key => [key, 0]));
+      rows.forEach(row => AFFILIATE_PLAN_SCALABLE.forEach(key => totals[key] += row[key]));
+      const period = `${start} ~ ${end}`;
+      const progress = totals.productSamplePackages ? (2099 / totals.productSamplePackages) * 100 : 0;
+      const gap = totals.productSamplePackages - 2099;
+      const text = (id, value) => { const node = document.getElementById(id); if (node) node.textContent = value; };
+      text('affiliatePlanPeriod', period);
+      text('affiliateOverviewPlanPeriod', `${period} · 현재 발송과 필요한 실행량을 비교합니다.`);
+      text('affiliateOverviewSamples', affiliateNumber(totals.productSamplePackages));
+      text('affiliateOverviewVideos', affiliateNumber(totals.expectedVideos));
+      text('affiliateOverviewRevenue', affiliateCurrency(totals.revenueGoal));
+      text('affiliatePlanHeadingPeriod', period);
+      text('affiliatePlanFlowPeriod', period);
+      text('affiliatePlanSamples', `${affiliateNumber(totals.productSamplePackages)}개`);
+      text('affiliatePlanVideos', `${affiliateNumber(totals.expectedVideos)}개`);
+      text('affiliatePlanCreatorRevenue', affiliateCurrency(totals.creatorRevenueGoal));
+      text('affiliatePlanRevenue', affiliateCurrency(totals.revenueGoal));
+      text('affiliatePlanGap', `${gap >= 0 ? '+' : ''}${affiliateNumber(gap)}개`);
+      text('affiliatePlanSampleCost', affiliateCurrency(totals.sampleCost));
+      text('affiliatePlanCommission', affiliateCurrency(totals.expectedCommission));
+      text('affiliatePlanActive', `${affiliateNumber(totals.activeCreatorsNeeded)}명·월`);
+      text('affiliatePlanProgress', `${progress.toFixed(1)}%`);
+      text('affiliatePlanTargetLabel', `목표 ${affiliateNumber(totals.productSamplePackages)}`);
+      text('affiliatePlanModelCheck', `크리에이터 퍼널식 필요 샘플은 ${affiliateNumber(totals.funnelSamplesNeeded)}개입니다. 제품 수요식은 ${affiliateNumber(totals.productSamplePackages)}개이며 두 모델을 함께 비교해 실행량을 정합니다.`);
+      text('affiliatePlanRowsTitle', affiliatePlanGranularity === 'day' ? '선택 날짜의 월별 환산' : '월별 목표와 비용');
+      const bar = document.getElementById('affiliatePlanProgressBar');
+      if (bar) bar.style.width = `${Math.min(progress, 100)}%`;
+      const monthRows = document.getElementById('affiliatePlanRows');
+      if (monthRows) monthRows.innerHTML = rows.map(item => `
+        <div class="month-plan-row">
+          <strong>${item.month}${item.fraction < 1 ? ` · ${item.overlapDays}일` : ''}${item.estimated ? ' *' : ''}</strong>
+          <div><span>매출 목표</span><b>${affiliateCurrency(item.revenueGoal)}</b></div>
+          <div><span>샘플</span><b>${affiliateNumber(item.productSamplePackages)}개</b></div>
+          <div><span>영상</span><b>${affiliateNumber(item.expectedVideos)}개</b></div>
+          <div><span>비용+수수료</span><b>${affiliateCurrency(item.sampleCost + item.expectedCommission)}</b></div>
+        </div>`).join('');
+      const productRows = document.getElementById('affiliateProductPlanRows');
+      if (productRows) productRows.innerHTML = AFFILIATE_PLAN_PRODUCTS.map(item => {
+        const revenue = totals.revenueGoal * item.share;
+        const samples = revenue / item.unitPrice * 1.714;
+        const videos = samples * (1332 / 2099);
+        const finalOrder = samples * 1.25;
+        const sampleCost = samples * item.unitPrice * 0.30;
+        return `<tr><td><strong>${item.product}</strong><small>${item.detail}</small></td><td>${affiliateCurrency(revenue)} <small>${(item.share * 100).toFixed(1)}%</small></td><td><strong>${affiliateNumber(samples)}개</strong></td><td>${affiliateNumber(videos)}개</td><td>${item.each ? '각 ' : ''}${affiliateNumber(finalOrder)}개</td><td>${affiliateCurrency(sampleCost)}</td></tr>`;
+      }).join('');
+
+      const fullCommission = AFFILIATE_PLAN_MONTHS.reduce((s, m) => s + m.expectedCommission, 0);
+      const fullSampleCost = AFFILIATE_PLAN_MONTHS.reduce((s, m) => s + m.sampleCost, 0);
+      text('affiliatePlanTotalCommission', affiliateCurrency(fullCommission));
+      text('affiliatePlanTotalSampleCost', affiliateCurrency(fullSampleCost));
+      text('affiliatePlanTotalCostNote', `계획 총비용은 수수료와 샘플비 합계 ${affiliateCurrency(fullCommission + fullSampleCost)}입니다. 물류비와 광고비는 포함하지 않았습니다.`);
+    }
+
+    function initAffiliateMode() {
+      const mode = new URLSearchParams(location.search).get('detail') || 'overview';
+      const allowed = ['overview', 'samples', 'creators', 'content', 'finance'];
+      const current = allowed.includes(mode) ? mode : 'overview';
+      allowed.forEach((item) => document.body.classList.remove(`affiliate-mode-${item}`));
+      document.body.classList.add(`affiliate-mode-${current}`);
+      document.querySelector(`[data-affiliate-mode="${current}"]`)?.classList.add('active');
+      const titles = {
+        overview: ['어필리에이터 대시보드', '핵심 성과와 오늘의 실행 우선순위를 한눈에 확인합니다.'],
+        samples: ['샘플·제품 계획', '제품별 샘플 발송에서 영상·매출·발주·비용까지 연결합니다.'],
+        creators: ['크리에이터 관리', '크리에이터 풀과 콘텐츠 생산량, 협업 운영 기준을 관리합니다.'],
+        content: ['영상 성과 분석', '판매 영상 순위와 잘 팔리는 이유, 개선 기준을 확인합니다.'],
+        finance: ['어필리에이터 매출·비용·ROI', '귀속 매출과 수수료·샘플비, ROI 구조를 확인합니다.']
+      };
+      const brand = document.querySelector('.top-bar .brand');
+      if (brand) {
+        brand.querySelector('h1').textContent = titles[current][0];
+        brand.querySelector('p').textContent = titles[current][1];
+      }
+    }
+
+    function setAffiliateView(view) {
+      document.getElementById('monthlyPanel').classList.toggle('hidden', view !== 'monthly');
+      document.getElementById('weeklyPanel').classList.toggle('hidden', view !== 'weekly');
+    }
+
+    function applyAffiliateDateRange() {
+      const startInput = document.getElementById('affiliateStartDate');
+      const endInput = document.getElementById('affiliateEndDate');
+      let start = startInput.value;
+      let end = endInput.value;
+      if (start > end) {
+        end = start;
+        endInput.value = end;
+      }
+      const days = Math.round((new Date(`${end}T12:00:00`) - new Date(`${start}T12:00:00`)) / 86400000) + 1;
+      const view = days <= 45 ? 'weekly' : 'monthly';
+      setAffiliateView(view);
+      document.getElementById('affiliateSelectedRange').textContent = `${start} ~ ${end}`;
+      document.getElementById('affiliateRangeNote').textContent = `선택 ${days}일 · 운영 차트·표에 적용 · 상단 KPI는 원본 전체 기간 누적값`;
+      document.querySelectorAll('.affiliate-period-panel tbody tr[data-start]').forEach(row => {
+        row.hidden = row.dataset.end < start || row.dataset.start > end;
+      });
+    }
+
+    function setAffiliateFullRange() {
+      document.getElementById('affiliateStartDate').value = '2026-02-01';
+      document.getElementById('affiliateEndDate').value = '2026-07-25';
+      applyAffiliateDateRange();
+    }
+
+    function setAffiliateContent(content) {
+      const isVideo = content === 'video';
+      document.getElementById('videoContentPanel').classList.toggle('hidden', !isVideo);
+      document.getElementById('liveContentPanel').classList.toggle('hidden', isVideo);
+      document.getElementById('videoContentButton').classList.toggle('active', isVideo);
+      document.getElementById('liveContentButton').classList.toggle('active', !isVideo);
+      document.getElementById('contentEyebrow').textContent = isVideo ? 'VIDEO LEADERBOARD' : 'LIVE PERFORMANCE';
+      document.getElementById('contentTitle').textContent = isVideo ? '매출 기여 영상 TOP 5' : 'LIVE 성과';
+      document.getElementById('contentSubtitle').textContent = isVideo ? 'Shoppable video GMV 기준' : 'Shop Analytics LIVE 채널 귀속 기준';
+    }
+
+    function calculateAffiliatePlan() {
+      const creators = Math.max(1, Number(document.getElementById('targetCreators').value) || 1);
+      const perCreator = Math.max(0.5, Number(document.getElementById('videosPerCreator').value) || 0.5);
+      const videos = Math.round(creators * perCreator);
+      document.getElementById('expectedVideos').textContent = videos + '개';
+      document.getElementById('neededCreators').textContent = '+' + Math.max(creators - 314, 0) + '명';
+      document.getElementById('weeklyReviews').textContent = Math.ceil(videos / 4) + '개';
+    }
+
+    function reloadAffiliatePlan() {
+      AFFILIATE_PLAN_INPUTS = loadData(DATA_KEYS.affiliatePlan, defaultAffiliatePlanMonths);
+      AFFILIATE_PLAN_PRODUCTS = loadData(DATA_KEYS.affiliatePlanProducts, defaultAffiliatePlanProducts);
+      AFFILIATE_PLAN_MONTHS = AFFILIATE_PLAN_INPUTS.map(m => deriveAffiliatePlanMonth(m, AFFILIATE_PLAN_PRODUCTS));
+      calculateAffiliatePlanRange();
+    }
+
+    initAffiliateMode();
+    applyAffiliateDateRange();
+    calculateAffiliatePlanRange();
+    onDataChange([DATA_KEYS.affiliatePlan, DATA_KEYS.affiliatePlanProducts], reloadAffiliatePlan);
+    onPageRestore(reloadAffiliatePlan);
+  </script>
+</body>
+</html>

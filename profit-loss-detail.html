@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TikTok Shop US 대시보드 - 월별 순이익/적자 상세</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="assets/styles.css?v=cost-audit-20260726" />
+</head>
+<body>
+  <section class="layout">
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-brand">
+            <div class="logo">TT</div>
+            <div>
+              <strong>Admin 계정</strong>
+              <p>관리자 전용 대시보드</p>
+            </div>
+          </div>
+          <button type="button" class="menu-button sidebar-toggle" onclick="toggleSidebar()" aria-label="사이드바 토글">
+            <span style="font-size: 22px;">☰</span>
+          </button>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="guide.html" id="nav-guide">틱톡샵 가이드</a>
+          <a href="tiktok_shop_dashboard.html" id="nav-total">전체 매출</a>
+          <a href="data-center.html" id="nav-data-center">데이터센터</a>
+          <a href="products.html" id="nav-product">상품별매출</a>
+          <a href="product-leaderboard.html" id="nav-product-leaderboard">상품 리더보드</a>
+          <a href="inventory.html" id="nav-inventory">재고관리</a>
+          <a href="affiliate.html" id="nav-affiliate">어필리에이터 관리</a>
+          <a href="ads.html" id="nav-ads">광고관리</a>
+          <a href="admin.html" id="nav-admin">Admin</a>
+        </nav>
+        <div class="sidebar-footer">
+          <strong>데이터 기준</strong>
+          <p>Shop 7/26 · Campaign 7/27 · Affiliate Core 7/25 · 상세 7/24</p>
+        </div>
+      </aside>
+
+      <div class="main-content">
+        <div class="top-bar">
+          <button type="button" class="menu-button sidebar-toggle" onclick="toggleSidebar()" aria-label="사이드바 열기/닫기">☰</button>
+          <div class="brand">
+            <div class="logo">TT</div>
+            <div>
+              <h1>월별 순이익 / 적자 상세</h1>
+              <p>비용 구조와 마진율을 함께 확인해 흑자·적자 원인을 분석합니다.</p>
+            </div>
+          </div>
+        </div>
+
+        <p class="page-note"><a href="tiktok_shop_dashboard.html">← 전체 매출로 돌아가기</a></p>
+
+        <section class="card">
+          <div class="control-row" style="margin-top: 0;">
+            <label>시작월<input type="month" id="startMonthInput"></label>
+            <label>종료월<input type="month" id="endMonthInput"></label>
+            <button type="button" id="resetMonthRangeBtn">전체 기간</button>
+          </div>
+        </section>
+
+        <section class="grid cards-4" style="margin-top: 20px;">
+          <article class="card kpi">
+            <span class="label">누적 순이익</span>
+            <span class="value" id="kpiProfit">$0</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">평균 마진율</span>
+            <span class="value" id="kpiMargin">0.0%</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">흑자 월수</span>
+            <span class="value" id="kpiProfitMonths">0개월</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">적자 월수</span>
+            <span class="value" id="kpiLossMonths">0개월</span>
+          </article>
+        </section>
+
+        <section class="grid cards-2" style="margin-top: 20px;">
+          <article class="card chart-card">
+            <div class="chart-title"><div><h2>월별 순이익 / 적자</h2><small id="profitRange"></small></div></div>
+            <canvas id="profitDetailChart"></canvas>
+          </article>
+          <article class="card chart-card">
+            <div class="chart-title"><div><h2>월별 마진율 추이</h2><small>순이익 ÷ 매출</small></div></div>
+            <canvas id="marginTrendChart"></canvas>
+          </article>
+        </section>
+
+        <section class="grid cards-2" style="margin-top: 20px;">
+          <article class="card chart-card cost-breakdown-card">
+            <div class="chart-title">
+              <div>
+                <h2>비용 구조</h2>
+                <small>선택 월과 무관한 Admin 비용 스냅샷</small>
+              </div>
+              <span class="badge warn">실적 원장 미연동</span>
+            </div>
+            <div class="cost-chart-shell">
+              <canvas id="costBreakdownChart"></canvas>
+            </div>
+            <div class="cost-breakdown-legend" id="costBreakdownLegend"></div>
+            <div class="cost-audit-strip">
+              <span class="badge good">계산 검산 완료</span>
+              <strong id="costAuditSummary">5개 항목 합계 $0 · 비중 합계 0.0%</strong>
+            </div>
+          </article>
+          <article class="card">
+            <div class="chart-title"><div><h2>비용 항목 상세</h2><small id="costTotalLabel">총 $0</small></div></div>
+            <table class="table" id="costItemsTable">
+              <thead><tr><th>항목</th><th>금액</th><th>비중</th></tr></thead>
+              <tbody></tbody>
+            </table>
+            <div class="cost-source-note">
+              <strong>데이터 확인 결과</strong>
+              <p>합계와 비중 계산은 정확합니다. 단, 현재 금액은 Admin에 저장된 계획·설정값이며 회계 원장이나 실제 정산서에서 자동 수집된 확정 실적은 아닙니다.</p>
+            </div>
+          </article>
+        </section>
+
+        <section class="card" style="margin-top: 20px;">
+          <div class="chart-title"><div><h2>월별 상세</h2><small>매출·총비용·순이익·마진율</small></div></div>
+          <table class="table" id="profitTable">
+            <thead>
+              <tr><th>월</th><th>매출</th><th>총비용</th><th>순이익</th><th>마진율</th><th>상태</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <p class="page-note" style="font-size: 12px;">
+            ※ 비용 항목은 현재 고정비/변동비 구분 없이 월 총액으로만 집계됩니다. SKU별 원가(FOB·생산·물류·수수료)가 연동되면 상품별 마진 기여도까지 분해할 수 있습니다.
+          </p>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <script src="assets/nav.js?v=dashboard-20260724"></script>
+  <script src="assets/data-store.js?v=data-sync-20260724"></script>
+  <script src="assets/monthly-data.js?v=data-sync-20260724"></script>
+  <script src="assets/cost-items-data.js?v=data-sync-20260724"></script>
+  <script src="assets/month-calendar.js"></script>
+  <script>
+    let monthlyData = loadData(DATA_KEYS.monthly, defaultMonthlyData).filter(hasActualData);
+    let costItems = loadData(DATA_KEYS.costItems, defaultCostItems);
+    let startMonth = monthlyData[0].month;
+    let endMonth = monthlyData[monthlyData.length - 1].month;
+    let profitDetailChart, marginTrendChart, costBreakdownChart;
+    const costColors = ['#2563eb', '#f59e0b', '#0f9f95', '#7c3aed', '#475569'];
+
+    const costBreakdownLabels = {
+      id: 'costBreakdownLabels',
+      afterDatasetsDraw(chart) {
+        const { ctx } = chart;
+        const dataset = chart.data.datasets[0];
+        const total = dataset.data.reduce((sum, value) => sum + Number(value || 0), 0);
+        const arcs = chart.getDatasetMeta(0).data;
+        if (!arcs.length || !total) return;
+
+        const { x, y } = arcs[0];
+        ctx.save();
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = '#64748b';
+        ctx.font = '700 12px sans-serif';
+        ctx.fillText('총 비광고비', x, y - 13);
+        ctx.fillStyle = '#172033';
+        ctx.font = '900 22px sans-serif';
+        ctx.fillText(formatCurrency(total), x, y + 12);
+
+        arcs.forEach((arc, index) => {
+          const value = Number(dataset.data[index] || 0);
+          const percent = value / total * 100;
+          const angle = (arc.startAngle + arc.endAngle) / 2;
+          const radius = (arc.innerRadius + arc.outerRadius) / 2;
+          const labelX = arc.x + Math.cos(angle) * radius;
+          const labelY = arc.y + Math.sin(angle) * radius;
+          ctx.fillStyle = '#ffffff';
+          ctx.shadowColor = 'rgba(15, 23, 42, .35)';
+          ctx.shadowBlur = 3;
+          ctx.font = '800 11px sans-serif';
+          ctx.fillText(formatCurrency(value), labelX, labelY - 7);
+          ctx.font = '700 10px sans-serif';
+          ctx.fillText(percent.toFixed(1) + '%', labelX, labelY + 8);
+        });
+        ctx.restore();
+      }
+    };
+
+    function filteredMonthlyData() {
+      return filterByMonthRange(monthlyData, startMonth, endMonth);
+    }
+
+    function costTotal() {
+      return costItems.reduce((sum, item) => sum + item.value, 0);
+    }
+
+    function renderKPIs() {
+      const filtered = filteredMonthlyData();
+      const revenue = filtered.reduce((sum, item) => sum + item.revenue, 0);
+      const totalCost = filtered.reduce((sum, item) => sum + item.totalCost, 0);
+      const profit = revenue - totalCost;
+      const marginPct = revenue ? (profit / revenue) * 100 : 0;
+      const profitMonths = filtered.filter(item => item.revenue - item.totalCost >= 0).length;
+      const lossMonths = filtered.length - profitMonths;
+      document.getElementById('kpiProfit').textContent = formatCurrency(profit);
+      document.getElementById('kpiMargin').textContent = marginPct.toFixed(1) + '%';
+      document.getElementById('kpiProfitMonths').textContent = profitMonths + '개월';
+      document.getElementById('kpiLossMonths').textContent = lossMonths + '개월';
+      document.getElementById('profitRange').textContent = startMonth + ' ~ ' + endMonth;
+    }
+
+    function renderCostTable() {
+      const total = costTotal();
+      const roundedPercentTotal = costItems.reduce((sum, item) => sum + Number((total ? item.value / total * 100 : 0).toFixed(1)), 0);
+      document.getElementById('costTotalLabel').textContent = '총 ' + formatCurrency(total);
+      const body = document.querySelector('#costItemsTable tbody');
+      body.innerHTML = costItems.map(item => `<tr><td>${item.label}</td><td>${formatCurrency(item.value)}</td><td>${total ? ((item.value / total) * 100).toFixed(1) : 0}%</td></tr>`).join('');
+      document.getElementById('costBreakdownLegend').innerHTML = costItems.map((item, index) => {
+        const percent = total ? item.value / total * 100 : 0;
+        return `<div class="cost-legend-item"><i style="background:${costColors[index % costColors.length]}"></i><span>${item.label}</span><strong>${formatCurrency(item.value)}</strong><b>${percent.toFixed(1)}%</b></div>`;
+      }).join('');
+      document.getElementById('costAuditSummary').textContent = `${costItems.length}개 항목 합계 ${formatCurrency(total)} · 반올림 비중 합계 ${roundedPercentTotal.toFixed(1)}%`;
+    }
+
+    function renderProfitTable() {
+      const body = document.querySelector('#profitTable tbody');
+      body.innerHTML = filteredMonthlyData().map(item => {
+        const profit = item.revenue - item.totalCost;
+        const margin = item.revenue ? (profit / item.revenue) * 100 : 0;
+        return `<tr><td>${item.month}</td><td>${formatCurrency(item.revenue)}</td><td>${formatCurrency(item.totalCost)}</td><td>${formatCurrency(profit)}</td><td>${margin.toFixed(1)}%</td><td>${profit < 0 ? '<span class="badge bad">적자</span>' : '<span class="badge good">흑자</span>'}</td></tr>`;
+      }).join('');
+    }
+
+    function createCharts() {
+      const filtered = filteredMonthlyData();
+      profitDetailChart = new Chart(document.getElementById('profitDetailChart'), {
+        type: 'bar',
+        data: {
+          labels: filtered.map(item => item.month),
+          datasets: [{ label: '순이익', data: filtered.map(item => item.revenue - item.totalCost), backgroundColor: filtered.map(item => item.revenue - item.totalCost < 0 ? '#dc2626' : '#14b8a6') }]
+        },
+        options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: v => '$' + v / 1000 + 'k' } } } }
+      });
+
+      marginTrendChart = new Chart(document.getElementById('marginTrendChart'), {
+        type: 'line',
+        data: {
+          labels: filtered.map(item => item.month),
+          datasets: [{ label: '마진율 (%)', data: filtered.map(item => item.revenue ? Math.round(((item.revenue - item.totalCost) / item.revenue) * 1000) / 10 : 0), borderColor: '#2563eb', backgroundColor: 'rgba(37, 99, 235, 0.15)', fill: true, tension: 0, pointRadius: 4 }]
+        },
+        options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: v => v + '%' } } } }
+      });
+
+      costBreakdownChart = new Chart(document.getElementById('costBreakdownChart'), {
+        type: 'doughnut',
+        data: {
+          labels: costItems.map(item => item.label),
+          datasets: [{
+            data: costItems.map(item => item.value),
+            backgroundColor: costColors,
+            borderColor: '#ffffff',
+            borderWidth: 4,
+            hoverOffset: 8
+          }]
+        },
+        plugins: [costBreakdownLabels],
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '58%',
+          layout: { padding: 8 },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label(context) {
+                  const total = context.dataset.data.reduce((sum, value) => sum + Number(value || 0), 0);
+                  const value = Number(context.raw || 0);
+                  return ` ${context.label}: ${formatCurrency(value)} (${total ? (value / total * 100).toFixed(1) : '0.0'}%)`;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function refreshAll() {
+      monthlyData = loadData(DATA_KEYS.monthly, defaultMonthlyData).filter(hasActualData);
+      costItems = loadData(DATA_KEYS.costItems, defaultCostItems);
+      renderKPIs();
+      renderProfitTable();
+      renderCostTable();
+
+      const filtered = filteredMonthlyData();
+      profitDetailChart.data.labels = filtered.map(item => item.month);
+      profitDetailChart.data.datasets[0].data = filtered.map(item => item.revenue - item.totalCost);
+      profitDetailChart.data.datasets[0].backgroundColor = filtered.map(item => item.revenue - item.totalCost < 0 ? '#dc2626' : '#14b8a6');
+      profitDetailChart.update();
+
+      marginTrendChart.data.labels = filtered.map(item => item.month);
+      marginTrendChart.data.datasets[0].data = filtered.map(item => item.revenue ? Math.round(((item.revenue - item.totalCost) / item.revenue) * 1000) / 10 : 0);
+      marginTrendChart.update();
+
+      costBreakdownChart.data.labels = costItems.map(item => item.label);
+      costBreakdownChart.data.datasets[0].data = costItems.map(item => item.value);
+      costBreakdownChart.update();
+    }
+
+    function initMonthRangeInputs() {
+      const startInput = document.getElementById('startMonthInput');
+      const endInput = document.getElementById('endMonthInput');
+      startInput.min = monthlyData[0].month; startInput.max = monthlyData[monthlyData.length - 1].month; startInput.value = startMonth;
+      endInput.min = monthlyData[0].month; endInput.max = monthlyData[monthlyData.length - 1].month; endInput.value = endMonth;
+      startInput.addEventListener('change', () => {
+        startMonth = startInput.value;
+        if (startMonth > endMonth) { endMonth = startMonth; endInput.value = endMonth; }
+        refreshAll();
+      });
+      endInput.addEventListener('change', () => {
+        endMonth = endInput.value;
+        if (endMonth < startMonth) { startMonth = endMonth; startInput.value = startMonth; }
+        refreshAll();
+      });
+      document.getElementById('resetMonthRangeBtn').addEventListener('click', () => {
+        startMonth = monthlyData[0].month;
+        endMonth = monthlyData[monthlyData.length - 1].month;
+        startInput.value = startMonth;
+        endInput.value = endMonth;
+        refreshAll();
+      });
+    }
+
+    renderKPIs();
+    renderProfitTable();
+    renderCostTable();
+    createCharts();
+    initMonthRangeInputs();
+    onDataChange([DATA_KEYS.monthly, DATA_KEYS.costItems], refreshAll);
+    onPageRestore(refreshAll);
+  </script>
+</body>
+</html>

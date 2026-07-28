@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TikTok Shop US 대시보드 - 상품별 매출</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="assets/styles.css?v=product-traffic-20260726" />
+</head>
+<body>
+  <section class="layout">
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-brand">
+            <div class="logo">TT</div>
+            <div>
+              <strong>Admin 계정</strong>
+              <p>관리자 전용 대시보드</p>
+            </div>
+          </div>
+          <button type="button" class="menu-button sidebar-toggle" onclick="toggleSidebar()" aria-label="사이드바 토글">
+            <span style="font-size: 22px;">☰</span>
+          </button>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="guide.html" id="nav-guide">틱톡샵 가이드</a>
+          <a href="tiktok_shop_dashboard.html" id="nav-total">전체 매출</a>
+          <a href="data-center.html" id="nav-data-center">데이터센터</a>
+          <a href="products.html" id="nav-product">상품별매출</a>
+          <a href="product-leaderboard.html" id="nav-product-leaderboard">상품 리더보드</a>
+          <a href="inventory.html" id="nav-inventory">재고관리</a>
+          <a href="affiliate.html" id="nav-affiliate">어필리에이터 관리</a>
+          <a href="ads.html" id="nav-ads">광고관리</a>
+          <a href="admin.html" id="nav-admin">Admin</a>
+        </nav>
+        <div class="sidebar-footer">
+          <strong>데이터 기준</strong>
+          <p>Shop 7/26 · Campaign 7/27 · Affiliate Core 7/25 · 상세 7/24</p>
+        </div>
+      </aside>
+
+      <div class="main-content">
+        <div class="top-bar">
+          <button type="button" class="menu-button sidebar-toggle" onclick="toggleSidebar()" aria-label="사이드바 열기/닫기">☰</button>
+          <div class="brand">
+            <div class="logo">TT</div>
+            <div>
+              <h1>상품별 매출</h1>
+              <p>상품 선택 + 날짜별 조회, 마진 구조까지 한 페이지에서.</p>
+            </div>
+          </div>
+        </div>
+
+        <section class="card chart-card">
+          <div class="chart-title"><div><h2>상품별 매출 추이</h2><small>상품 선택 + 날짜별 조회</small></div></div>
+          <div class="control-row">
+            <label>상품 선택<select id="productSelector"></select></label>
+            <label>시작일<input type="date" id="startDate"></label>
+            <label>종료일<input type="date" id="endDate"></label>
+          </div>
+          <canvas id="productSalesChart" style="margin-top: 18px;"></canvas>
+        </section>
+
+        <section class="grid cards-3" style="margin-top: 20px;">
+          <article class="card kpi">
+            <span class="label">선택 상품</span>
+            <span class="value" id="detailProductName">-</span>
+            <span class="desc">현재 선택된 상품</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">선택 기간 합계</span>
+            <span class="value" id="detailTotalSales">$0</span>
+            <span class="desc">선택 기간 총 매출</span>
+          </article>
+          <article class="card kpi">
+            <span class="label" id="detailAverageLabel">평균 매출</span>
+            <span class="value" id="detailAvgSales">$0</span>
+            <span class="desc" id="detailAverageDesc">선택 기간 평균</span>
+          </article>
+        </section>
+
+        <section class="card seven-vegan-profile" id="verifiedProductProfile" style="margin-top: 20px;">
+          <div class="product-profile-head">
+            <div>
+              <span class="eyebrow">VERIFIED PRODUCT TRAFFIC</span>
+              <h2 id="trafficProductName">7 Vegan Peptide Booster Serum</h2>
+              <p id="trafficProductDescription"></p>
+              <div class="product-profile-meta">
+                <span id="trafficProductId"></span>
+                <span id="trafficProductCategory"></span>
+                <span id="trafficProductPeriod"></span>
+              </div>
+            </div>
+            <span class="badge good" id="trafficSourceBadge">원본 검증</span>
+          </div>
+          <div class="grid cards-4 product-traffic-kpis">
+            <article><span id="trafficPeriodLabel">누적 GMV</span><strong id="trafficTotalGmv">$0.00</strong><small>상품 단일 실적</small></article>
+            <article><span>누적 주문</span><strong id="trafficTotalOrders">0건</strong><small id="trafficItemsSold">판매 0개</small></article>
+            <article><span>가중 평균 CTR</span><strong id="trafficWeightedCtr">0.00%</strong><small id="trafficClicks">노출·클릭 합산</small></article>
+            <article><span>최고 매출월</span><strong id="trafficPeakMonth">-</strong><small id="trafficPeakGmv">$0.00</small></article>
+          </div>
+          <div class="product-traffic-insight" id="trafficInsight"></div>
+          <div class="table-scroll">
+            <table class="table product-traffic-table">
+              <thead>
+                <tr><th>월</th><th>GMV</th><th>주문</th><th>판매</th><th>상품 노출</th><th>상품 클릭</th><th>CTR</th><th>장바구니</th><th>CTOR</th><th>Shop Tab GMV</th></tr>
+              </thead>
+              <tbody id="productTrafficTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card" style="margin-top: 20px;">
+          <div class="chart-title"><h2>상세 매출 테이블</h2><small id="detailTableSubtitle">날짜별 판매 금액</small></div>
+          <table class="table">
+            <thead><tr><th>날짜</th><th>상품</th><th>매출</th></tr></thead>
+            <tbody id="detailTableBody"></tbody>
+          </table>
+        </section>
+
+        <section class="card" style="margin-top: 20px;">
+          <div class="chart-title">
+            <div><h2>제품 가격·원가·Affiliate 마진</h2><small>2026-07-26 제공 MIZON 마진표 전사 · 본표와 별도 계산 시나리오 구분</small></div>
+            <span class="badge good">계산식 대조 완료</span>
+          </div>
+          <div class="product-cost-audit">
+            <strong>보고 기준</strong>
+            <span>Affiliate 순이익 = 실판매가 − Affiliate 적용 상품비 − Affiliate 수수료</span>
+            <span>7 Vegan: $20.00 − $14.12 − $5.00 = <b>$0.88 (4.40%)</b></span>
+          </div>
+          <div class="table-scroll">
+            <table class="table product-cost-table" id="productCostTable">
+              <thead>
+                <tr>
+                  <th>SKU / 제품</th><th>구분</th><th>소비자가</th><th>실판매가</th>
+                  <th>FOB <span class="term-help" title="해외 운송 전, 공급처에서 출고되는 기준 가격입니다.">?</span></th>
+                  <th>생산원가</th><th>유통비</th>
+                  <th>MCF <span class="term-help" title="마진표에 입력된 주문 처리·풀필먼트 기준값입니다.">?</span></th>
+                  <th>TikTok 수수료</th><th>Affiliate 수수료</th>
+                  <th>Affiliate 적용 상품비 <span class="term-help" title="마진표가 Affiliate 판매 계산에 사용하는 상품·운영비 합계입니다.">?</span></th>
+                  <th>총비용</th><th>순이익</th><th>마진</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p class="product-cost-source">※ `본표`는 상단 현재값, `별도 계산`은 원본 하단의 별도 마진 계산값입니다. 두 구간의 값은 합산하지 않습니다. 마진율은 원본 표기값을 보존했으며, 원본의 숨은 소수점 때문에 화면 금액만으로 재계산하면 최대 0.02%p 차이가 날 수 있습니다.</p>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <script src="assets/nav.js?v=dashboard-20260724"></script>
+  <script src="assets/data-store.js?v=data-sync-20260724"></script>
+  <script src="assets/product-sales-data.js"></script>
+  <script src="assets/product-costs-data.js"></script>
+  <script src="assets/product-traffic-data.js?v=product-traffic-20260726"></script>
+  <script>
+    let productSalesData = loadData(DATA_KEYS.productSales, defaultProductSalesData);
+    let productCosts = loadData(DATA_KEYS.productCosts, defaultProductCosts);
+    let productSalesChart = null;
+
+    function formatExactCurrency(value) {
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value);
+    }
+
+    function findVerifiedProduct(product) {
+      return verifiedProductTraffic.find(item => item.name === product) || null;
+    }
+
+    function getFilteredData() {
+      const product = document.getElementById('productSelector').value;
+      const startDate = new Date(document.getElementById('startDate').value || '2026-02-01');
+      const endDate = new Date(document.getElementById('endDate').value || '2026-07-26');
+      const verified = findVerifiedProduct(product);
+      const source = verified
+        ? verified.monthly.map(item => ({ date: item.date, product, sales: item.gmv }))
+        : productSalesData;
+      return source
+        .filter(item => item.product === product)
+        .filter(item => {
+          const date = new Date(item.date);
+          return date >= startDate && date <= endDate;
+        });
+    }
+
+    function renderVerifiedProductProfile(product) {
+      const profileElement = document.getElementById('verifiedProductProfile');
+      const verified = findVerifiedProduct(product);
+      profileElement.style.display = verified ? '' : 'none';
+      if (!verified) return;
+
+      const rows = verified.monthly;
+      const totalGmv = rows.reduce((sum, row) => sum + row.gmv, 0);
+      const totalOrders = rows.reduce((sum, row) => sum + row.orders, 0);
+      const totalItems = rows.reduce((sum, row) => sum + row.itemsSold, 0);
+      const totalImpressions = rows.reduce((sum, row) => sum + row.impressions, 0);
+      const totalClicks = rows.reduce((sum, row) => sum + row.clicks, 0);
+      const weightedCtr = totalImpressions ? totalClicks / totalImpressions * 100 : 0;
+      const peak = rows.reduce((best, row) => row.gmv > best.gmv ? row : best, rows[0]);
+      const latest = rows[rows.length - 1];
+      const first = rows[0];
+
+      document.getElementById('trafficProductName').textContent = verified.fullName;
+      document.getElementById('trafficProductDescription').textContent = verified.description;
+      document.getElementById('trafficProductId').textContent = `Product ID ${verified.productId}`;
+      document.getElementById('trafficProductCategory').textContent = verified.category;
+      document.getElementById('trafficProductPeriod').textContent = verified.period;
+      document.getElementById('trafficSourceBadge').textContent = `원본 ${verified.sourceCount}개 파일 검증`;
+      document.getElementById('trafficPeriodLabel').textContent = `${first.month}~${latest.month} 누적 GMV`;
+      document.getElementById('trafficTotalGmv').textContent = formatExactCurrency(totalGmv);
+      document.getElementById('trafficTotalOrders').textContent = `${totalOrders.toLocaleString('en-US')}건`;
+      document.getElementById('trafficItemsSold').textContent = `판매 ${totalItems.toLocaleString('en-US')}개`;
+      document.getElementById('trafficWeightedCtr').textContent = `${weightedCtr.toFixed(2)}%`;
+      document.getElementById('trafficClicks').textContent = `노출 ${totalImpressions.toLocaleString('en-US')} · 클릭 ${totalClicks.toLocaleString('en-US')}`;
+      document.getElementById('trafficPeakMonth').textContent = peak.month;
+      document.getElementById('trafficPeakGmv').textContent = formatExactCurrency(peak.gmv);
+      const comparison = verified.juneShopGmv
+        ? ` 6월 상품 GMV ${formatExactCurrency(latest.gmv)}는 같은 달 Shop 전체 GMV ${formatExactCurrency(verified.juneShopGmv)}의 <b>${(latest.gmv / verified.juneShopGmv * 100).toFixed(1)}%</b>입니다.`
+        : ` 최신 집계 ${latest.month} GMV는 ${formatExactCurrency(latest.gmv)}, CTR은 ${latest.ctr.toFixed(2)}%입니다.`;
+      const change = peak.month === latest.month
+        ? ' 최신 기간이 현재 최고 매출 구간입니다.'
+        : ` 최고점 이후 최신 GMV는 ${((latest.gmv / peak.gmv - 1) * 100).toFixed(1)}% 변했습니다.`;
+      document.getElementById('trafficInsight').innerHTML = `<strong>자동 분석</strong><p>${peak.month} GMV가 ${formatExactCurrency(peak.gmv)}로 최고점이며 당시 CTR은 ${peak.ctr.toFixed(2)}%입니다.${comparison}${change}</p>`;
+      document.getElementById('productTrafficTableBody').innerHTML = rows.map(row => `<tr>
+        <td>${row.month}</td><td>${formatExactCurrency(row.gmv)}</td><td>${row.orders.toLocaleString('en-US')}</td>
+        <td>${row.itemsSold.toLocaleString('en-US')}</td><td>${row.impressions.toLocaleString('en-US')}</td>
+        <td>${row.clicks.toLocaleString('en-US')}</td><td>${row.ctr.toFixed(2)}%</td>
+        <td>${row.addToCart.toLocaleString('en-US')}</td><td>${row.ctor.toFixed(2)}%</td><td>${formatExactCurrency(row.shopTabGmv)}</td>
+      </tr>`).join('');
+    }
+
+    function renderProductCostTable() {
+      const productBody = document.querySelector('#productCostTable tbody');
+      productBody.innerHTML = productCosts.map(item => {
+        const profitTone = Number(item.netProfit) >= 0 ? 'positive' : 'negative';
+        return `<tr>
+          <td><strong>${escapeHtml(item.name)}</strong></td>
+          <td><span class="cost-scope ${item.scope === '본표' ? 'current' : 'scenario'}">${escapeHtml(item.scope || '-')}</span></td>
+          <td>${formatExactCurrency(item.retailPrice)}</td><td><strong>${formatExactCurrency(item.salePrice)}</strong></td>
+          <td>${formatExactCurrency(item.fobPrice)}</td><td>${formatExactCurrency(item.productionCost)}</td>
+          <td>${formatExactCurrency(item.distribution)}</td><td>${formatExactCurrency(item.mcf)}</td>
+          <td>${formatExactCurrency(item.tiktokFee)}</td><td>${formatExactCurrency(item.affiliateFee)}</td>
+          <td>${formatExactCurrency(item.affiliateProductCost)}</td><td>${formatExactCurrency(item.totalCost)}</td>
+          <td><strong class="cost-profit ${profitTone}">${formatExactCurrency(item.netProfit)}</strong></td>
+          <td><strong class="cost-profit ${profitTone}">${Number(item.margin).toFixed(2)}%</strong></td>
+        </tr>`;
+      }).join('');
+    }
+
+    function updateProductView() {
+      const product = document.getElementById('productSelector').value;
+      const filtered = getFilteredData();
+
+      const chartData = {
+        labels: filtered.map(item => item.date),
+        datasets: [{
+          label: `${product} 매출`,
+          data: filtered.map(item => item.sales),
+          borderColor: '#2563eb',
+          backgroundColor: 'rgba(37, 99, 235, 0.15)',
+          tension: 0,
+          fill: true,
+          pointRadius: 5
+        }]
+      };
+      productSalesChart.data = chartData;
+      productSalesChart.update();
+
+      const totalSales = filtered.reduce((sum, item) => sum + item.sales, 0);
+      const avgSales = filtered.length ? Math.round(totalSales / filtered.length) : 0;
+      const verified = findVerifiedProduct(product);
+      document.getElementById('detailProductName').textContent = product;
+      document.getElementById('detailTotalSales').textContent = verified ? formatExactCurrency(totalSales) : formatCurrency(totalSales);
+      document.getElementById('detailAvgSales').textContent = verified ? formatExactCurrency(totalSales / (filtered.length || 1)) : formatCurrency(avgSales);
+      document.getElementById('detailAverageLabel').textContent = verified ? '월 평균 GMV' : '일 평균 매출';
+      document.getElementById('detailAverageDesc').textContent = verified ? `${filtered.length}개월 월 평균` : '기간의 일별 평균 매출';
+      document.getElementById('detailTableSubtitle').textContent = verified ? '월별 상품 GMV · 원본 집계' : '날짜별 판매 금액';
+      renderVerifiedProductProfile(product);
+
+      const detailBody = document.getElementById('detailTableBody');
+      detailBody.innerHTML = filtered.map(item => `<tr><td>${escapeHtml(item.date)}</td><td>${escapeHtml(item.product)}</td><td>${verified ? formatExactCurrency(item.sales) : formatCurrency(item.sales)}</td></tr>`).join('');
+    }
+
+    function initializeProductControls() {
+      const selector = document.getElementById('productSelector');
+      const uniqueProducts = [...new Set([...productSalesData.map(item => item.product), ...verifiedProductTraffic.map(item => item.name)])];
+      selector.innerHTML = uniqueProducts.map(product => `<option value="${escapeHtml(product)}">${escapeHtml(product)}</option>`).join('');
+      document.getElementById('startDate').value = '2026-02-01';
+      document.getElementById('endDate').value = '2026-07-26';
+
+      productSalesChart = new Chart(document.getElementById('productSalesChart'), {
+        type: 'line',
+        data: { labels: [], datasets: [] },
+        options: {
+          responsive: true,
+          plugins: { legend: { position: 'top' } },
+          scales: {
+            x: { title: { display: true, text: '날짜' } },
+            y: { beginAtZero: true, title: { display: true, text: '매출 (USD)' }, ticks: { callback: v => '$' + v / 1000 + 'k' } }
+          }
+        }
+      });
+
+      selector.addEventListener('change', () => {
+        const verified = findVerifiedProduct(selector.value);
+        if (verified) {
+          document.getElementById('startDate').value = verified.period.slice(0, 10);
+          document.getElementById('endDate').value = verified.period.slice(-10);
+        }
+        updateProductView();
+      });
+      document.getElementById('startDate').addEventListener('change', updateProductView);
+      document.getElementById('endDate').addEventListener('change', updateProductView);
+      updateProductView();
+    }
+
+    function refreshProductOptions() {
+      const selector = document.getElementById('productSelector');
+      const previous = selector.value;
+      const uniqueProducts = [...new Set([...productSalesData.map(item => item.product), ...verifiedProductTraffic.map(item => item.name)])];
+      selector.innerHTML = uniqueProducts.map(product => `<option value="${escapeHtml(product)}">${escapeHtml(product)}</option>`).join('');
+      if (uniqueProducts.includes(previous)) selector.value = previous;
+    }
+
+    function refreshAll() {
+      productSalesData = loadData(DATA_KEYS.productSales, defaultProductSalesData);
+      productCosts = loadData(DATA_KEYS.productCosts, defaultProductCosts);
+      refreshProductOptions();
+      renderProductCostTable();
+      updateProductView();
+    }
+
+    initializeProductControls();
+    renderProductCostTable();
+    onDataChange([DATA_KEYS.productSales, DATA_KEYS.productCosts], refreshAll);
+  </script>
+</body>
+</html>

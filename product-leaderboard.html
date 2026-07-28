@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TikTok Shop US 대시보드 - 상품 성과 리더보드</title>
+  <link rel="stylesheet" href="assets/styles.css?v=top-refresh-20260726" />
+</head>
+<body>
+  <section class="layout">
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-brand">
+            <div class="logo">TT</div>
+            <div>
+              <strong>Admin 계정</strong>
+              <p>관리자 전용 대시보드</p>
+            </div>
+          </div>
+          <button type="button" class="menu-button sidebar-toggle" onclick="toggleSidebar()" aria-label="사이드바 토글">
+            <span style="font-size: 22px;">☰</span>
+          </button>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="guide.html" id="nav-guide">틱톡샵 가이드</a>
+          <a href="tiktok_shop_dashboard.html" id="nav-total">전체 매출</a>
+          <a href="data-center.html" id="nav-data-center">데이터센터</a>
+          <a href="products.html" id="nav-product">상품별매출</a>
+          <a href="product-leaderboard.html" id="nav-product-leaderboard">상품 리더보드</a>
+          <a href="inventory.html" id="nav-inventory">재고관리</a>
+          <a href="affiliate.html" id="nav-affiliate">어필리에이터 관리</a>
+          <a href="ads.html" id="nav-ads">광고관리</a>
+          <a href="admin.html" id="nav-admin">Admin</a>
+        </nav>
+        <div class="sidebar-footer">
+          <strong>데이터 기준</strong>
+          <p>Shop 7/26 · Campaign 7/27 · Affiliate Core 7/25 · 상세 7/24</p>
+        </div>
+      </aside>
+
+      <div class="main-content">
+        <div class="top-bar">
+          <button type="button" class="menu-button sidebar-toggle" onclick="toggleSidebar()" aria-label="사이드바 열기/닫기">☰</button>
+          <div class="brand">
+            <div class="logo">TT</div>
+            <div>
+              <h1>상품 성과 리더보드</h1>
+              <p>실제 재고/판매 데이터 기준 상품별 매출 순위와 오늘 봐야 할 리스크.</p>
+            </div>
+          </div>
+        </div>
+
+        <section class="grid cards-4" style="margin-top: 20px;">
+          <article class="card kpi">
+            <span class="label">전체 SKU 매출</span>
+            <span class="value" id="kpiTotalSales">$0</span>
+            <span class="desc" id="kpiSkuCount">0개 SKU 합계</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">1위 상품 매출 집중도</span>
+            <span class="value" id="kpiTopShare">0%</span>
+            <span class="desc" id="kpiTopName"></span>
+          </article>
+          <article class="card kpi">
+            <span class="label">판매 0건 SKU</span>
+            <span class="value" id="kpiZeroSales">0개</span>
+            <span class="desc">재고만 차지 중일 가능성</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">품절 / 소진 임박</span>
+            <span class="value" id="kpiSoldOutAtRisk">0개 / 0개</span>
+            <span class="desc">즉시 조치가 필요한 SKU</span>
+          </article>
+        </section>
+
+        <section class="grid cards-2" style="margin-top: 20px;">
+          <article class="card">
+            <div class="panic-box">
+              <h3>오늘 당장 봐야 할 것</h3>
+              <ul id="panicList"></ul>
+            </div>
+          </article>
+          <article class="card">
+            <div class="chart-title"><div><h2>상품 유형별 요약</h2><small>재고 데이터 기준</small></div></div>
+            <table class="table">
+              <tbody>
+                <tr><td>누적 판매 수량</td><td id="summarySold">0개</td></tr>
+                <tr><td>누적 조회수</td><td id="summaryViews">0회</td></tr>
+                <tr><td>전체 평균 전환율</td><td id="summaryConv">0%</td></tr>
+                <tr><td>정상 판매 중 SKU</td><td id="summaryNormal">0개</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="card" style="margin-top: 20px;">
+          <div class="chart-title"><div><h2>매출 TOP 12</h2><small>매출 기준 내림차순, 막대는 1위 대비 비율</small></div></div>
+          <div class="leader-row head hide-sm">
+            <div>순위</div><div>상품</div><div>매출</div><div>판매량</div><div>전환율</div><div>상태</div><div>오늘 할 일</div>
+          </div>
+          <div id="leaderboardList"></div>
+        </section>
+
+        <section class="card" style="margin-top: 20px;">
+          <div class="chart-title"><div><h2>전체 SKU 상세</h2><small id="detailCount">0개 전체, 매출 내림차순</small></div></div>
+          <div class="control-row" style="margin-top: 0;">
+            <label>상품명/SKU 검색<input type="text" id="productSearch" placeholder="상품명 또는 SKU"></label>
+          </div>
+          <table class="table" style="margin-top: 16px;" id="detailTable">
+            <thead>
+              <tr><th>상품</th><th>재고</th><th>가격</th><th>조회수</th><th>판매</th><th>매출</th><th>전환율</th><th>상태</th><th>오늘 할 일</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <script src="assets/nav.js?v=dashboard-20260724"></script>
+  <script src="assets/data-store.js?v=data-sync-20260724"></script>
+  <script src="assets/inventory-data.js"></script>
+  <script>
+    const TOP_N = 12;
+    let inventoryData = loadData(DATA_KEYS.inventory, defaultInventoryData);
+
+    function statusOf(item) {
+      if (item.stock === 0) return { label: '품절', cls: 'bad' };
+      if (item.atRisk) return { label: '소진 임박', cls: 'warn' };
+      if (item.sales === 0) return { label: '판매 0건', cls: 'info' };
+      return { label: '정상', cls: 'good' };
+    }
+
+    function actionOf(item) {
+      if (item.stock === 0) return '재입고 필요';
+      if (item.atRisk) return '재고 보충 검토';
+      if (item.sales === 0 && item.views > 500) return '노출은 있는데 전환 0건 — 리스팅/가격 점검';
+      if (item.sales === 0) return '노출 자체가 부족 — 광고/콘텐츠 필요';
+      return '현상 유지';
+    }
+
+    function computeStats(sorted) {
+      const totalSales = inventoryData.reduce((s, i) => s + i.sales, 0);
+      const totalSold = inventoryData.reduce((s, i) => s + i.sold, 0);
+      const totalViews = inventoryData.reduce((s, i) => s + i.views, 0);
+      const zeroSales = inventoryData.filter(i => i.sales === 0).length;
+      const atRisk = inventoryData.filter(i => i.atRisk).length;
+      const soldOut = inventoryData.filter(i => i.stock === 0).length;
+      const top = sorted[0];
+      const topSharePct = top && totalSales ? (top.sales / totalSales) * 100 : 0;
+      return { totalSales, totalSold, totalViews, zeroSales, atRisk, soldOut, top, topSharePct };
+    }
+
+    function renderKPIs(stats) {
+      document.getElementById('kpiTotalSales').textContent = formatCurrency(stats.totalSales);
+      document.getElementById('kpiSkuCount').textContent = `${inventoryData.length}개 SKU 합계`;
+      document.getElementById('kpiTopShare').textContent = stats.topSharePct.toFixed(1) + '%';
+      document.getElementById('kpiTopName').textContent = stats.top ? stats.top.name : '';
+      document.getElementById('kpiZeroSales').textContent = `${stats.zeroSales}개`;
+      document.getElementById('kpiSoldOutAtRisk').textContent = `${stats.soldOut}개 / ${stats.atRisk}개`;
+    }
+
+    function renderPanic(stats) {
+      const items = [];
+      if (stats.top && stats.topSharePct > 40) {
+        items.push(`매출 1위 "${escapeHtml(stats.top.name)}"가 전체 매출의 ${stats.topSharePct.toFixed(0)}%를 차지 — 이 상품이 흔들리면 전체 매출이 흔들립니다.`);
+      }
+      if (stats.soldOut > 0) items.push(`품절 SKU ${stats.soldOut}개 — 판매 기회 손실 중, 재입고 우선순위 확인 필요.`);
+      if (stats.atRisk > 0) items.push(`재고 소진 임박 SKU ${stats.atRisk}개 — 재주문 안 하면 곧 품절.`);
+      if (stats.zeroSales > 0) items.push(`판매 0건 SKU ${stats.zeroSales}개 — 리스팅/가격/콘텐츠 점검이 필요합니다.`);
+      document.getElementById('panicList').innerHTML = items.map(text => `<li>${text}</li>`).join('');
+    }
+
+    function renderSummary(stats) {
+      document.getElementById('summarySold').textContent = `${stats.totalSold.toLocaleString('en-US')}개`;
+      document.getElementById('summaryViews').textContent = `${stats.totalViews.toLocaleString('en-US')}회`;
+      document.getElementById('summaryConv').textContent = (stats.totalViews ? (stats.totalSold / stats.totalViews) * 100 : 0).toFixed(2) + '%';
+      document.getElementById('summaryNormal').textContent = `${inventoryData.length - stats.zeroSales - stats.soldOut}개`;
+    }
+
+    function renderLeaderboard(sorted, maxSales) {
+      const top = sorted.slice(0, TOP_N);
+      document.getElementById('leaderboardList').innerHTML = top.map((item, index) => {
+        const status = statusOf(item);
+        const conv = item.views ? (item.sold / item.views) * 100 : 0;
+        const share = maxSales ? Math.min((item.sales / maxSales) * 100, 100) : 0;
+        const riskCls = (status.cls === 'bad' || status.cls === 'warn') ? 'risk' : '';
+        return `<div class="leader-row">
+          <div><span class="leader-rank ${riskCls}">${index + 1}</span></div>
+          <div class="leader-name">${escapeHtml(item.name)}<small>${escapeHtml(item.sku)}</small>
+            <div class="meter"><span style="width:${share}%"></span></div>
+          </div>
+          <div>${formatCurrency(item.sales)}</div>
+          <div>${item.sold}개</div>
+          <div>${conv.toFixed(2)}%</div>
+          <div><span class="badge ${status.cls}">${status.label}</span></div>
+          <div style="font-size:12px; color: var(--muted);">${actionOf(item)}</div>
+        </div>`;
+      }).join('');
+    }
+
+    function renderDetailTable(filterText = '', sorted) {
+      const term = filterText.trim().toLowerCase();
+      const filtered = !term ? sorted : sorted.filter(item =>
+        item.name.toLowerCase().includes(term) || item.sku.toLowerCase().includes(term)
+      );
+      document.getElementById('detailCount').textContent = `${inventoryData.length}개 전체, 매출 내림차순`;
+      const body = document.querySelector('#detailTable tbody');
+      body.innerHTML = filtered.map(item => {
+        const status = statusOf(item);
+        const conv = item.views ? (item.sold / item.views) * 100 : 0;
+        return `<tr>
+          <td>${escapeHtml(item.name)}</td>
+          <td>${item.stock.toLocaleString('en-US')}</td>
+          <td>${escapeHtml(item.price)}</td>
+          <td>${item.views.toLocaleString('en-US')}</td>
+          <td>${item.sold}개</td>
+          <td>${formatCurrency(item.sales)}</td>
+          <td>${conv.toFixed(2)}%</td>
+          <td><span class="badge ${status.cls}">${status.label}</span></td>
+          <td style="font-size:12px; color: var(--muted);">${actionOf(item)}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    function refreshAll() {
+      inventoryData = loadData(DATA_KEYS.inventory, defaultInventoryData);
+      const sorted = [...inventoryData].sort((a, b) => b.sales - a.sales);
+      const stats = computeStats(sorted);
+      const maxSales = stats.top ? stats.top.sales : 1;
+      renderKPIs(stats);
+      renderPanic(stats);
+      renderSummary(stats);
+      renderLeaderboard(sorted, maxSales);
+      renderDetailTable(document.getElementById('productSearch').value, sorted);
+    }
+
+    document.getElementById('productSearch').addEventListener('input', event => {
+      const sorted = [...inventoryData].sort((a, b) => b.sales - a.sales);
+      renderDetailTable(event.target.value, sorted);
+    });
+
+    refreshAll();
+    onDataChange(DATA_KEYS.inventory, refreshAll);
+  </script>
+</body>
+</html>

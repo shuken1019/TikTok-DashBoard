@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TikTok Shop US 대시보드 - 월별 매출 vs 광고비 상세</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="assets/styles.css?v=top-refresh-20260726" />
+</head>
+<body>
+  <section class="layout">
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-brand">
+            <div class="logo">TT</div>
+            <div>
+              <strong>Admin 계정</strong>
+              <p>관리자 전용 대시보드</p>
+            </div>
+          </div>
+          <button type="button" class="menu-button sidebar-toggle" onclick="toggleSidebar()" aria-label="사이드바 토글">
+            <span style="font-size: 22px;">☰</span>
+          </button>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="guide.html" id="nav-guide">틱톡샵 가이드</a>
+          <a href="tiktok_shop_dashboard.html" id="nav-total">전체 매출</a>
+          <a href="data-center.html" id="nav-data-center">데이터센터</a>
+          <a href="products.html" id="nav-product">상품별매출</a>
+          <a href="product-leaderboard.html" id="nav-product-leaderboard">상품 리더보드</a>
+          <a href="inventory.html" id="nav-inventory">재고관리</a>
+          <a href="affiliate.html" id="nav-affiliate">어필리에이터 관리</a>
+          <a href="ads.html" id="nav-ads">광고관리</a>
+          <a href="admin.html" id="nav-admin">Admin</a>
+        </nav>
+        <div class="sidebar-footer">
+          <strong>데이터 기준</strong>
+          <p>Shop 7/26 · Campaign 7/27 · Affiliate Core 7/25 · 상세 7/24</p>
+        </div>
+      </aside>
+
+      <div class="main-content">
+        <div class="top-bar">
+          <button type="button" class="menu-button sidebar-toggle" onclick="toggleSidebar()" aria-label="사이드바 열기/닫기">☰</button>
+          <div class="brand">
+            <div class="logo">TT</div>
+            <div>
+              <h1>월별 매출 vs 광고비 상세</h1>
+              <p>광고비 효율(ROAS)과 매출 대비 광고비 비중을 월별로 분석합니다.</p>
+            </div>
+          </div>
+        </div>
+
+        <p class="page-note"><a href="tiktok_shop_dashboard.html">← 전체 매출로 돌아가기</a></p>
+
+        <section class="card">
+          <div class="control-row" style="margin-top: 0;">
+            <label>시작월<input type="month" id="startMonthInput"></label>
+            <label>종료월<input type="month" id="endMonthInput"></label>
+            <button type="button" id="resetMonthRangeBtn">전체 기간</button>
+          </div>
+        </section>
+
+        <section class="grid cards-4" style="margin-top: 20px;">
+          <article class="card kpi">
+            <span class="label">누적 매출</span>
+            <span class="value" id="kpiRevenue">$0</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">누적 광고비</span>
+            <span class="value" id="kpiAdSpend">$0</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">ROAS</span>
+            <span class="value" id="kpiRoas">0.00x</span>
+            <span class="desc">광고비 $1당 매출 배수</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">광고비 비중</span>
+            <span class="value" id="kpiAdSpendShare">0.0%</span>
+            <span class="desc">매출 대비 광고비</span>
+          </article>
+        </section>
+
+        <section class="grid cards-2" style="margin-top: 20px;">
+          <article class="card chart-card">
+            <div class="chart-title"><div><h2>매출 vs 광고비 vs ROAS</h2><small id="revenueAdRange"></small></div></div>
+            <canvas id="revenueAdDetailChart"></canvas>
+          </article>
+          <article class="card chart-card">
+            <div class="chart-title"><div><h2>월별 광고비 비중</h2><small>광고비 ÷ 매출</small></div></div>
+            <canvas id="adSpendShareChart"></canvas>
+          </article>
+        </section>
+
+        <section class="card chart-card" style="margin-top: 20px;">
+          <div class="chart-title"><div><h2>최근 30일 일별 GMV</h2><small id="recentGmvRange">Shop Analytics 실제 데이터</small></div></div>
+          <canvas id="recentGmvTrendChart"></canvas>
+        </section>
+
+        <section class="card" style="margin-top: 20px;">
+          <div class="chart-title"><div><h2>월별 상세</h2><small>매출·광고비·ROAS</small></div></div>
+          <table class="table" id="revenueAdTable">
+            <thead>
+              <tr><th>월</th><th>매출</th><th>광고비</th><th>광고비 비중</th><th>ROAS</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <p class="page-note" style="font-size: 12px;">
+            ※ 현재 광고비는 월 단위 합계만 추적됩니다. GMV Max/어필리에이터 광고 등 채널별 분해, 일별 광고비 데이터가 추가되면 채널별 ROAS와 캠페인 단위 분석까지 가능합니다.
+          </p>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <script src="assets/nav.js?v=dashboard-20260724"></script>
+  <script src="assets/data-store.js?v=data-sync-20260724"></script>
+  <script src="assets/monthly-data.js?v=data-sync-20260724"></script>
+  <script src="assets/month-calendar.js"></script>
+  <script src="assets/shop-analytics-data.js"></script>
+  <script>
+    let monthlyData = loadData(DATA_KEYS.monthly, defaultMonthlyData).filter(hasActualData);
+    let startMonth = monthlyData[0].month;
+    let endMonth = monthlyData[monthlyData.length - 1].month;
+    let revenueAdDetailChart, adSpendShareChart, recentGmvTrendChart;
+    const recentDaily = dailyAnalytics.slice(-30);
+
+    function filteredMonthlyData() {
+      return filterByMonthRange(monthlyData, startMonth, endMonth);
+    }
+
+    function renderKPIs() {
+      const filtered = filteredMonthlyData();
+      const revenue = filtered.reduce((sum, item) => sum + item.revenue, 0);
+      const adSpend = filtered.reduce((sum, item) => sum + item.adSpend, 0);
+      const roas = adSpend ? revenue / adSpend : 0;
+      const adSpendShare = revenue ? (adSpend / revenue) * 100 : 0;
+      document.getElementById('kpiRevenue').textContent = formatCurrency(revenue);
+      document.getElementById('kpiAdSpend').textContent = formatCurrency(adSpend);
+      document.getElementById('kpiRoas').textContent = roas.toFixed(2) + 'x';
+      document.getElementById('kpiAdSpendShare').textContent = adSpendShare.toFixed(1) + '%';
+      document.getElementById('revenueAdRange').textContent = startMonth + ' ~ ' + endMonth;
+    }
+
+    function renderTable() {
+      const body = document.querySelector('#revenueAdTable tbody');
+      body.innerHTML = filteredMonthlyData().map(item => {
+        const share = item.revenue ? (item.adSpend / item.revenue) * 100 : 0;
+        const roas = item.adSpend ? item.revenue / item.adSpend : 0;
+        return `<tr><td>${item.month}</td><td>${formatCurrency(item.revenue)}</td><td>${formatCurrency(item.adSpend)}</td><td>${share.toFixed(1)}%</td><td>${roas.toFixed(2)}x</td></tr>`;
+      }).join('');
+    }
+
+    function createCharts() {
+      const filtered = filteredMonthlyData();
+      revenueAdDetailChart = new Chart(document.getElementById('revenueAdDetailChart'), {
+        data: {
+          labels: filtered.map(item => item.month),
+          datasets: [
+            { type: 'bar', label: '매출', data: filtered.map(item => item.revenue), backgroundColor: '#2563eb', yAxisID: 'y' },
+            { type: 'bar', label: '광고비', data: filtered.map(item => item.adSpend), backgroundColor: '#f59e0b', yAxisID: 'y' },
+            { type: 'line', label: 'ROAS (매출/광고비)', data: filtered.map(item => item.adSpend ? Math.round((item.revenue / item.adSpend) * 100) / 100 : 0), borderColor: '#14b8a6', backgroundColor: '#14b8a6', yAxisID: 'y1', tension: 0, pointRadius: 4 }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { position: 'top' } },
+          scales: {
+            y: { beginAtZero: true, position: 'left', title: { display: true, text: '$' }, ticks: { callback: v => '$' + v / 1000 + 'k' } },
+            y1: { beginAtZero: true, position: 'right', grid: { drawOnChartArea: false }, title: { display: true, text: 'ROAS (x)' } }
+          }
+        }
+      });
+
+      adSpendShareChart = new Chart(document.getElementById('adSpendShareChart'), {
+        type: 'bar',
+        data: {
+          labels: filtered.map(item => item.month),
+          datasets: [{ label: '광고비 비중 (%)', data: filtered.map(item => item.revenue ? Math.round((item.adSpend / item.revenue) * 1000) / 10 : 0), backgroundColor: '#f59e0b' }]
+        },
+        options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v + '%' } } } }
+      });
+
+      recentGmvTrendChart = new Chart(document.getElementById('recentGmvTrendChart'), {
+        type: 'line',
+        data: {
+          labels: recentDaily.map(d => d.date.slice(5)),
+          datasets: [{ label: '일별 GMV', data: recentDaily.map(d => d.gmv), borderColor: '#2563eb', backgroundColor: 'rgba(37, 99, 235, 0.15)', fill: true, tension: 0, pointRadius: 3 }]
+        },
+        options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, title: { display: true, text: 'GMV ($)' } } } }
+      });
+
+      document.getElementById('recentGmvRange').textContent = recentDaily[0].date + ' ~ ' + recentDaily[recentDaily.length - 1].date + ' (Shop Analytics 실제 데이터)';
+    }
+
+    function refreshAll() {
+      monthlyData = loadData(DATA_KEYS.monthly, defaultMonthlyData).filter(hasActualData);
+      renderKPIs();
+      renderTable();
+      const filtered = filteredMonthlyData();
+      revenueAdDetailChart.data.labels = filtered.map(item => item.month);
+      revenueAdDetailChart.data.datasets[0].data = filtered.map(item => item.revenue);
+      revenueAdDetailChart.data.datasets[1].data = filtered.map(item => item.adSpend);
+      revenueAdDetailChart.data.datasets[2].data = filtered.map(item => item.adSpend ? Math.round((item.revenue / item.adSpend) * 100) / 100 : 0);
+      revenueAdDetailChart.update();
+      adSpendShareChart.data.labels = filtered.map(item => item.month);
+      adSpendShareChart.data.datasets[0].data = filtered.map(item => item.revenue ? Math.round((item.adSpend / item.revenue) * 1000) / 10 : 0);
+      adSpendShareChart.update();
+    }
+
+    function initMonthRangeInputs() {
+      const startInput = document.getElementById('startMonthInput');
+      const endInput = document.getElementById('endMonthInput');
+      startInput.min = monthlyData[0].month; startInput.max = monthlyData[monthlyData.length - 1].month; startInput.value = startMonth;
+      endInput.min = monthlyData[0].month; endInput.max = monthlyData[monthlyData.length - 1].month; endInput.value = endMonth;
+      startInput.addEventListener('change', () => {
+        startMonth = startInput.value;
+        if (startMonth > endMonth) { endMonth = startMonth; endInput.value = endMonth; }
+        refreshAll();
+      });
+      endInput.addEventListener('change', () => {
+        endMonth = endInput.value;
+        if (endMonth < startMonth) { startMonth = endMonth; startInput.value = startMonth; }
+        refreshAll();
+      });
+      document.getElementById('resetMonthRangeBtn').addEventListener('click', () => {
+        startMonth = monthlyData[0].month;
+        endMonth = monthlyData[monthlyData.length - 1].month;
+        startInput.value = startMonth;
+        endInput.value = endMonth;
+        refreshAll();
+      });
+    }
+
+    renderKPIs();
+    renderTable();
+    createCharts();
+    initMonthRangeInputs();
+    onDataChange([DATA_KEYS.monthly], refreshAll);
+    onPageRestore(refreshAll);
+  </script>
+</body>
+</html>

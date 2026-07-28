@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TikTok Shop US 대시보드 - 데이터센터</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="assets/styles.css?v=data-trend-fix-20260726" />
+</head>
+<body>
+  <section class="layout">
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-brand">
+            <div class="logo">TT</div>
+            <div>
+              <strong>Admin 계정</strong>
+              <p>관리자 전용 대시보드</p>
+            </div>
+          </div>
+          <button type="button" class="menu-button sidebar-toggle" onclick="toggleSidebar()" aria-label="사이드바 토글">
+            <span style="font-size: 22px;">☰</span>
+          </button>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="guide.html" id="nav-guide">틱톡샵 가이드</a>
+          <a href="tiktok_shop_dashboard.html" id="nav-total">전체 매출</a>
+          <a href="data-center.html" id="nav-data-center">데이터센터</a>
+          <a href="products.html" id="nav-product">상품별매출</a>
+          <a href="product-leaderboard.html" id="nav-product-leaderboard">상품 리더보드</a>
+          <a href="inventory.html" id="nav-inventory">재고관리</a>
+          <a href="affiliate.html" id="nav-affiliate">어필리에이터 관리</a>
+          <a href="ads.html" id="nav-ads">광고관리</a>
+          <a href="admin.html" id="nav-admin">Admin</a>
+        </nav>
+        <div class="sidebar-footer">
+          <strong>데이터 기준</strong>
+          <p>Shop 7/26 · Campaign 7/27 · Affiliate Core 7/25 · 상세 7/24</p>
+        </div>
+      </aside>
+
+      <div class="main-content">
+        <div class="top-bar">
+          <button type="button" class="menu-button sidebar-toggle" onclick="toggleSidebar()" aria-label="사이드바 열기/닫기">☰</button>
+          <div class="brand">
+            <div class="logo">TT</div>
+            <div>
+              <h1>데이터센터</h1>
+              <p>TikTok Shop 실제 판매 데이터 기반 요약 리포트 (2025.11 ~ 2026.07, Shop Analytics 원본 기준)</p>
+            </div>
+          </div>
+          <div class="data-center-live"><span class="status-dot"></span><strong>Shop Analytics 최신</strong><small>2026.07.26</small></div>
+        </div>
+
+        <section class="card">
+          <div class="data-filter-head">
+            <div>
+              <span class="eyebrow">ANALYSIS RANGE</span>
+              <div class="control-row" style="margin-top: 0;">
+                <label>시작일<input type="date" id="startDateInput"></label>
+                <label>종료일<input type="date" id="endDateInput"></label>
+                <button type="button" id="resetRangeBtn">전체 데이터</button>
+              </div>
+            </div>
+            <div class="data-filter-actions">
+              <div class="quick-range">
+                <button type="button" class="active" onclick="setQuickRange(7, this)">최근 7일</button>
+                <button type="button" onclick="setQuickRange(28, this)">최근 28일</button>
+                <button type="button" onclick="setCurrentMonth(this)">이번 달</button>
+              </div>
+              <button type="button" class="export-button" onclick="downloadFilteredCsv()">↓ 현재 구간 CSV</button>
+            </div>
+          </div>
+          <p class="data-range-label" id="rangeLabel"></p>
+        </section>
+
+        <section class="grid data-health-grid">
+          <article class="card data-health-score">
+            <div class="data-score-ring"><strong>QA</strong><small>검증</small></div>
+            <div>
+              <span class="eyebrow">DATA HEALTH</span>
+              <h2>운영 가능 · 4개 주의사항</h2>
+              <p>Shop·Campaign·Affiliate 원본을 기간별로 분리 검증했습니다. 서로 다른 종료일의 수치를 같은 기간처럼 합산하지 않습니다.</p>
+            </div>
+          </article>
+          <article class="card data-health-summary">
+            <div><span class="health-icon good">✓</span><p><strong>Campaign 27일</strong><small>중복 날짜 0건</small></p></div>
+            <div><span class="health-icon warn">!</span><p><strong>Cost $0.88</strong><small>공식 총계와 행 합계 차이</small></p></div>
+            <div><span class="health-icon neutral">268</span><p><strong>Shop 일별 행</strong><small>GMV $32,621.48</small></p></div>
+          </article>
+        </section>
+
+        <section class="grid cards-4" style="margin-top: 20px;">
+          <article class="card kpi">
+            <span class="label metric-term">누적 GMV <span class="term-help" tabindex="0" role="button" aria-label="GMV 설명" data-tooltip="총 거래액이에요. 선택 기간에 판매된 상품 금액을 모두 더한 값입니다.">?</span></span>
+            <span class="value" id="kpiGmv">$0</span>
+            <span class="desc" id="kpiGmvDesc">-</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">누적 주문 / 고객</span>
+            <span class="value" id="kpiOrders">0건</span>
+            <span class="desc" id="kpiOrdersDesc">-</span>
+          </article>
+          <article class="card kpi">
+            <span class="label metric-term">평균 주문액(AOV) <span class="term-help" tabindex="0" role="button" aria-label="AOV 설명" data-tooltip="주문 1건당 평균 결제 금액이에요. 총매출을 주문 수로 나눠 계산합니다.">?</span></span>
+            <span class="value" id="kpiAov">$0</span>
+            <span class="desc" id="kpiAovDesc">-</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">취소·반품율</span>
+            <span class="value" id="kpiRefundRate">0%</span>
+            <span class="desc" id="kpiRefundDesc">-</span>
+          </article>
+        </section>
+
+        <section class="grid cards-4" style="margin-top: 20px;">
+          <article class="card kpi">
+            <span class="label metric-term">제품 클릭률(CTR) <span class="term-help" tabindex="0" role="button" aria-label="CTR 설명" data-tooltip="상품이 화면에 보인 횟수 중 실제로 클릭된 비율이에요.">?</span></span>
+            <span class="value" id="kpiCtr">0%</span>
+            <span class="desc" id="kpiCtrDesc">-</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">고유 노출 / 클릭</span>
+            <span class="value" id="kpiUniqueClicks">0</span>
+            <span class="desc" id="kpiUniqueImprDesc">-</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">배송비 합계</span>
+            <span class="value" id="kpiShipping">$0</span>
+            <span class="desc" id="kpiTaxDesc">-</span>
+          </article>
+          <article class="card kpi">
+            <span class="label metric-term">채널 GMV 비중 <span class="term-help" tabindex="0" role="button" aria-label="채널 GMV 설명" data-tooltip="전체 매출이 상품 카드·영상·라이브 중 어디에서 발생했는지 보여주는 비율이에요.">?</span></span>
+            <span class="value" id="kpiChannelCard">0% Card</span>
+            <span class="desc" id="kpiChannelDesc">-</span>
+          </article>
+        </section>
+
+        <section class="card" style="margin-top: 20px;">
+          <div class="chart-title"><div><h2>📈 매출 급등 포인트</h2><small>선택 구간 내 일별 GMV 상위 스파이크</small></div></div>
+          <table class="table" id="spikeTable">
+            <thead><tr><th>날짜</th><th><span class="metric-term">GMV <span class="term-help" tabindex="0" role="button" aria-label="GMV 설명" data-tooltip="총 거래액이에요. 판매된 상품 금액을 모두 더한 값입니다.">?</span></span></th><th>주문수</th><th>고객수</th></tr></thead>
+            <tbody></tbody>
+          </table>
+          <p class="page-note" id="noSpikeNote" style="display: none;">선택한 구간에는 두드러진 스파이크 데이 기록이 없습니다.</p>
+          <p class="page-note">7월 10일 단일 GMV($3,224)가 다른 달 전체 실적에 맞먹는 규모로, 대형 프로모션/세일 이벤트로 추정됩니다. 4월 중순과 7월 중하순에 매출이 반복적으로 튀는 패턴이 있어, 해당 시점의 광고·프로모션 운영을 다음 시즌에도 재현할 가치가 있습니다.</p>
+        </section>
+
+        <section class="grid cards-3" style="margin-top: 20px;">
+          <article class="card chart-card" style="grid-column: span 2;">
+            <div class="chart-title"><div><h2 id="primaryTrendTitle">GMV / 주문수 추이</h2><small id="monthlyChartRangeLabel"></small></div></div>
+            <canvas id="monthlyGmvChart"></canvas>
+          </article>
+          <article class="card chart-card">
+            <div class="chart-title"><div><h2>채널별 GMV 비중</h2><small>Product Card / Video / LIVE</small></div></div>
+            <canvas id="channelMixChart"></canvas>
+          </article>
+        </section>
+
+        <section class="card chart-card" style="margin-top: 20px;">
+          <div class="chart-title"><div><h2>최근 30일 일별 GMV</h2><small id="recentRangeLabel"></small></div></div>
+          <canvas id="recentTrendChart"></canvas>
+        </section>
+
+        <section class="card" style="margin-top: 20px;">
+          <div class="chart-title"><div><h2>월별 상세 데이터</h2><small id="monthlyTableRangeLabel"></small></div></div>
+          <table class="table" id="monthlyTable">
+            <thead>
+              <tr>
+                <th>월</th>
+                <th><span class="metric-term">GMV <span class="term-help" tabindex="0" role="button" aria-label="GMV 설명" data-tooltip="총 거래액이에요. 판매된 상품 금액을 모두 더한 값입니다.">?</span></span></th>
+                <th>주문</th><th>고객</th>
+                <th><span class="metric-term">AOV <span class="term-help" tabindex="0" role="button" aria-label="AOV 설명" data-tooltip="평균 주문액이에요. 주문 1건당 평균 결제 금액입니다.">?</span></span></th>
+                <th>취소·반품율</th>
+                <th><span class="metric-term">CTR <span class="term-help" tabindex="0" role="button" aria-label="CTR 설명" data-tooltip="클릭률이에요. 상품 노출 중 실제 클릭으로 이어진 비율입니다.">?</span></span></th>
+                <th><span class="metric-term">LIVE GMV <span class="term-help" tabindex="0" role="button" aria-label="LIVE GMV 설명" data-tooltip="라이브 방송을 통해 발생한 매출이에요.">?</span></span></th>
+                <th><span class="metric-term">Video GMV <span class="term-help" tabindex="0" role="button" aria-label="Video GMV 설명" data-tooltip="쇼핑 영상에서 발생한 매출이에요.">?</span></span></th>
+                <th><span class="metric-term">Product Card GMV <span class="term-help" tabindex="0" role="button" aria-label="Product Card GMV 설명" data-tooltip="상품 카드에 귀속된 매출이에요.">?</span></span></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <p class="page-note" style="font-size: 12px;">※ 선택 구간에 걸친 첫/마지막 달은 부분월(선택한 날짜만) 기준으로 집계됩니다. 고객수는 일별 합산 값으로, 기간 내 재구매 고객이 중복 집계될 수 있습니다. LIVE/Video/Product Card 외 세부 귀속(Creator/Seller, 직접/간접) 항목은 원본 리포트의 표 서식이 손상되어 신뢰도 있게 복원할 수 없어 제외했습니다.</p>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <script src="assets/nav.js?v=dashboard-20260724"></script>
+  <script src="assets/shop-analytics-data.js"></script>
+  <script>
+    function toLocalIsoDate(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    function shiftIsoDate(isoDate, days) {
+      const date = new Date(`${isoDate}T12:00:00`);
+      date.setDate(date.getDate() + days);
+      return toLocalIsoDate(date);
+    }
+
+    const sourceEndDate = lastDate;
+    let startDate = shiftIsoDate(sourceEndDate, -6);
+    let endDate = sourceEndDate;
+    let monthlyChart, channelChart, recentChart;
+
+    const channelValueLabels = {
+      id: 'channelValueLabels',
+      afterDatasetsDraw(chart) {
+        const dataset = chart.data.datasets[0];
+        const total = dataset.data.reduce((sum, value) => sum + Number(value || 0), 0);
+        const arcs = chart.getDatasetMeta(0).data;
+        if (!total || !arcs.length) return;
+
+        const ctx = chart.ctx;
+        const center = arcs[0].getProps(['x', 'y'], true);
+        const centerValue = total >= 1000
+          ? `$${Math.round(total).toLocaleString('en-US')}`
+          : `$${total.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
+
+        ctx.save();
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = '#64748b';
+        ctx.font = '600 13px system-ui, -apple-system, sans-serif';
+        ctx.fillText('총 GMV', center.x, center.y - 12);
+        ctx.fillStyle = '#0f172a';
+        ctx.font = '800 20px system-ui, -apple-system, sans-serif';
+        ctx.fillText(centerValue, center.x, center.y + 13);
+
+        arcs.forEach((arc, index) => {
+          const value = Number(dataset.data[index] || 0);
+          const percentage = (value / total) * 100;
+          if (percentage < 4) return;
+          const props = arc.getProps(
+            ['x', 'y', 'startAngle', 'endAngle', 'innerRadius', 'outerRadius'],
+            true
+          );
+          const angle = (props.startAngle + props.endAngle) / 2;
+          const radius = (props.innerRadius + props.outerRadius) / 2;
+          const x = props.x + Math.cos(angle) * radius;
+          const y = props.y + Math.sin(angle) * radius;
+          ctx.fillStyle = '#ffffff';
+          ctx.font = '800 14px system-ui, -apple-system, sans-serif';
+          ctx.shadowColor = 'rgba(15, 23, 42, 0.35)';
+          ctx.shadowBlur = 4;
+          ctx.fillText(`${percentage.toFixed(1)}%`, x, y);
+          ctx.shadowBlur = 0;
+        });
+        ctx.restore();
+      }
+    };
+
+    function filteredDaily() {
+      return dailyAnalytics.filter(d => d.date >= startDate && d.date <= endDate);
+    }
+
+    function filteredMonths() {
+      return groupMonths(filteredDaily());
+    }
+
+    function syncDateInputs() {
+      document.getElementById('startDateInput').value = startDate;
+      document.getElementById('endDateInput').value = endDate;
+    }
+
+    function clearQuickRange() {
+      document.querySelectorAll('.quick-range button').forEach(button => button.classList.remove('active'));
+    }
+
+    function setQuickRange(days, button) {
+      const end = new Date(`${sourceEndDate}T12:00:00`);
+      const start = new Date(end);
+      start.setDate(start.getDate() - days + 1);
+      startDate = toLocalIsoDate(start);
+      endDate = sourceEndDate;
+      syncDateInputs();
+      clearQuickRange();
+      button.classList.add('active');
+      renderAll();
+    }
+
+    function setCurrentMonth(button) {
+      startDate = `${sourceEndDate.slice(0, 7)}-01`;
+      endDate = sourceEndDate;
+      syncDateInputs();
+      clearQuickRange();
+      button.classList.add('active');
+      renderAll();
+    }
+
+    function downloadFilteredCsv() {
+      const columns = ['date', 'gmv', 'orders', 'customers', 'itemsSold', 'itemsRefunded', 'liveGmv', 'videoGmv', 'productCardGmv', 'shippingFees', 'tax', 'productImpressions', 'productClicks'];
+      const rows = filteredDaily();
+      const csv = [
+        columns.join(','),
+        ...rows.map(row => columns.map(column => row[column] ?? '').join(','))
+      ].join('\n');
+      const blob = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = `shop-analytics_${startDate}_${endDate}.csv`;
+      anchor.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function renderKPIs(stats) {
+      document.getElementById('kpiGmv').textContent = formatCurrency(stats.gmv);
+      document.getElementById('kpiGmvDesc').textContent = `세금 포함 ${formatCurrency(stats.gmvWithTax)}`;
+      document.getElementById('kpiOrders').textContent = `${stats.orders.toLocaleString('en-US')}건`;
+      document.getElementById('kpiOrdersDesc').textContent = `고객 ${stats.customers.toLocaleString('en-US')}명 · SKU 주문 ${stats.skuOrders.toLocaleString('en-US')}건`;
+      document.getElementById('kpiAov').textContent = formatCurrency(stats.aov);
+      document.getElementById('kpiAovDesc').textContent = `판매 아이템 ${stats.itemsSold.toLocaleString('en-US')}개`;
+      document.getElementById('kpiRefundRate').textContent = `${stats.refundRate}%`;
+      document.getElementById('kpiRefundDesc').textContent = `환불액 ${formatCurrency(stats.itemsRefunded)}`;
+
+      document.getElementById('kpiCtr').textContent = `${stats.ctr}%`;
+      document.getElementById('kpiCtrDesc').textContent = `노출 ${stats.productImpressions.toLocaleString('en-US')}회 · 클릭 ${stats.productClicks.toLocaleString('en-US')}회`;
+      document.getElementById('kpiUniqueClicks').textContent = stats.uniqueClicks.toLocaleString('en-US');
+      document.getElementById('kpiUniqueImprDesc').textContent = `고유 노출 ${stats.uniqueProductImpressions.toLocaleString('en-US')}회`;
+      document.getElementById('kpiShipping').textContent = formatCurrency(stats.shippingFees);
+      document.getElementById('kpiTaxDesc').textContent = `세금 합계 ${formatCurrency(stats.tax)}`;
+
+      const channelTotal = stats.productCardGmv + stats.videoGmv + stats.liveGmv;
+      const pct = (v) => (channelTotal ? Math.round((v / channelTotal) * 1000) / 10 : 0);
+      document.getElementById('kpiChannelCard').textContent = `${pct(stats.productCardGmv)}% Card`;
+      document.getElementById('kpiChannelDesc').textContent = `Video ${pct(stats.videoGmv)}% · LIVE ${pct(stats.liveGmv)}%`;
+    }
+
+    function renderSpikeTable() {
+      const filtered = topSpikeDays.filter(d => d.date >= startDate && d.date <= endDate);
+      const body = document.querySelector('#spikeTable tbody');
+      body.innerHTML = filtered.map(d => `<tr><td>${d.date}</td><td>${formatCurrency(d.gmv)}</td><td>${d.orders}건</td><td>${d.customers}명</td></tr>`).join('');
+      document.getElementById('spikeTable').style.display = filtered.length ? '' : 'none';
+      document.getElementById('noSpikeNote').style.display = filtered.length ? 'none' : '';
+    }
+
+    function renderMonthlyTable() {
+      const body = document.querySelector('#monthlyTable tbody');
+      body.innerHTML = filteredMonths().map(m => `<tr>
+        <td>${m.year}.${m.monthName}</td>
+        <td>${formatCurrency(m.gmv)}</td>
+        <td>${m.orders.toLocaleString('en-US')}</td>
+        <td>${m.customers.toLocaleString('en-US')}</td>
+        <td>${formatCurrency(m.aov)}</td>
+        <td>${m.refundRate}%</td>
+        <td>${m.ctr}%</td>
+        <td>${formatCurrency(m.liveGmv)}</td>
+        <td>${formatCurrency(m.videoGmv)}</td>
+        <td>${formatCurrency(m.productCardGmv)}</td>
+      </tr>`).join('');
+      document.getElementById('monthlyTableRangeLabel').textContent = `${startDate} ~ ${endDate} · 실제 Shop Analytics 리포트 집계 기준`;
+    }
+
+    function renderCharts(stats) {
+      const months = filteredMonths();
+      const days = filteredDaily();
+      const calendarDays = Math.round((new Date(`${endDate}T12:00:00`) - new Date(`${startDate}T12:00:00`)) / 86400000) + 1;
+      const useDailyTrend = calendarDays <= 62;
+      const trendRows = useDailyTrend ? days : months;
+      const trendLabels = useDailyTrend
+        ? trendRows.map(d => d.date.slice(5).replace('-', '/'))
+        : trendRows.map(m => m.label);
+      if (monthlyChart) monthlyChart.destroy();
+      monthlyChart = new Chart(document.getElementById('monthlyGmvChart'), {
+        data: {
+          labels: trendLabels,
+          datasets: [
+            {
+              type: 'line',
+              label: 'GMV',
+              data: trendRows.map(row => row.gmv),
+              borderColor: '#2563eb',
+              backgroundColor: '#2563eb',
+              yAxisID: 'y',
+              tension: 0.2,
+              pointRadius: 5,
+              pointHoverRadius: 7,
+              borderWidth: 3,
+              fill: false
+            },
+            {
+              type: 'line',
+              label: '주문수',
+              data: trendRows.map(row => row.orders),
+              borderColor: '#f59e0b',
+              backgroundColor: '#f59e0b',
+              yAxisID: 'y1',
+              tension: 0.2,
+              pointRadius: 5,
+              pointHoverRadius: 7,
+              borderWidth: 3,
+              borderDash: [7, 5],
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          interaction: { mode: 'index', intersect: false },
+          plugins: { legend: { position: 'top' } },
+          scales: {
+            y: {
+              beginAtZero: true,
+              position: 'left',
+              title: { display: true, text: 'GMV ($)' },
+              grid: { color: 'rgba(148, 163, 184, 0.18)' },
+              ticks: { callback: value => '$' + Number(value).toLocaleString('en-US') }
+            },
+            y1: {
+              beginAtZero: true,
+              position: 'right',
+              grid: { drawOnChartArea: false },
+              title: { display: true, text: '주문수' },
+              ticks: { callback: value => Number(value).toLocaleString('en-US') + '건' }
+            }
+          }
+        }
+      });
+      document.getElementById('primaryTrendTitle').textContent = `${useDailyTrend ? '일별' : '월별'} GMV / 주문수 추이`;
+      document.getElementById('monthlyChartRangeLabel').textContent = `${startDate} ~ ${endDate} · ${useDailyTrend ? `실제 데이터 ${days.length}일` : `${months.length}개월`} 자동 집계`;
+
+      if (channelChart) channelChart.destroy();
+      channelChart = new Chart(document.getElementById('channelMixChart'), {
+        type: 'doughnut',
+        plugins: [channelValueLabels],
+        data: {
+          labels: ['Product Card', 'Video', 'LIVE'],
+          datasets: [{
+            data: [stats.productCardGmv, stats.videoGmv, stats.liveGmv],
+            backgroundColor: ['#2563eb', '#14b8a6', '#f59e0b'],
+            borderColor: '#ffffff',
+            borderWidth: 3,
+            hoverOffset: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          cutout: '58%',
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { usePointStyle: true, pointStyle: 'circle', padding: 16 }
+            }
+          }
+        }
+      });
+
+      if (!recentChart) {
+        const recentDaily = dailyAnalytics.slice(-30);
+        recentChart = new Chart(document.getElementById('recentTrendChart'), {
+          type: 'line',
+          data: {
+            labels: recentDaily.map(d => d.date.slice(5)),
+            datasets: [{
+              label: '일별 GMV',
+              data: recentDaily.map(d => d.gmv),
+              borderColor: '#2563eb',
+              backgroundColor: 'rgba(37, 99, 235, 0.15)',
+              fill: true,
+              tension: 0,
+              pointRadius: 3
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true, title: { display: true, text: 'GMV ($)' } } }
+          }
+        });
+        document.getElementById('recentRangeLabel').textContent = `${recentDaily[0].date} ~ ${recentDaily[recentDaily.length - 1].date} (기간 선택과 무관하게 항상 최신 30일)`;
+      }
+    }
+
+    function renderAll() {
+      const stats = aggregateRange(dailyAnalytics, startDate, endDate);
+      const calendarDays = Math.round((new Date(`${endDate}T12:00:00`) - new Date(`${startDate}T12:00:00`)) / 86400000) + 1;
+      const dataDays = filteredDaily().length;
+      document.getElementById('rangeLabel').textContent = `오늘 기준 조회: ${startDate} ~ ${endDate} · ${calendarDays}일 범위 · 실제 데이터 ${dataDays}일 (최신 ${lastDate})`;
+      renderKPIs(stats);
+      renderSpikeTable();
+      renderMonthlyTable();
+      renderCharts(stats);
+    }
+
+    function initDateInputs() {
+      const startInput = document.getElementById('startDateInput');
+      const endInput = document.getElementById('endDateInput');
+      startInput.min = firstDate; startInput.max = sourceEndDate; startInput.value = startDate;
+      endInput.min = firstDate; endInput.max = sourceEndDate; endInput.value = endDate;
+
+      startInput.addEventListener('change', () => {
+        startDate = startInput.value;
+        if (startDate > endDate) { endDate = startDate; endInput.value = endDate; }
+        clearQuickRange();
+        renderAll();
+      });
+      endInput.addEventListener('change', () => {
+        endDate = endInput.value;
+        if (endDate < startDate) { startDate = endDate; startInput.value = startDate; }
+        clearQuickRange();
+        renderAll();
+      });
+      document.getElementById('resetRangeBtn').addEventListener('click', () => {
+        startDate = firstDate;
+        endDate = sourceEndDate;
+        startInput.value = startDate;
+        endInput.value = endDate;
+        clearQuickRange();
+        renderAll();
+      });
+    }
+
+    initDateInputs();
+    renderAll();
+  </script>
+</body>
+</html>

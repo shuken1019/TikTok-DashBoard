@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TikTok Shop US 대시보드 - 3/4분기 Forecast 상세</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="assets/styles.css?v=top-refresh-20260726" />
+</head>
+<body>
+  <section class="layout">
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-brand">
+            <div class="logo">TT</div>
+            <div>
+              <strong>Admin 계정</strong>
+              <p>관리자 전용 대시보드</p>
+            </div>
+          </div>
+          <button type="button" class="menu-button sidebar-toggle" onclick="toggleSidebar()" aria-label="사이드바 토글">
+            <span style="font-size: 22px;">☰</span>
+          </button>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="guide.html" id="nav-guide">틱톡샵 가이드</a>
+          <a href="tiktok_shop_dashboard.html" id="nav-total">전체 매출</a>
+          <a href="data-center.html" id="nav-data-center">데이터센터</a>
+          <a href="products.html" id="nav-product">상품별매출</a>
+          <a href="product-leaderboard.html" id="nav-product-leaderboard">상품 리더보드</a>
+          <a href="inventory.html" id="nav-inventory">재고관리</a>
+          <a href="affiliate.html" id="nav-affiliate">어필리에이터 관리</a>
+          <a href="ads.html" id="nav-ads">광고관리</a>
+          <a href="admin.html" id="nav-admin">Admin</a>
+        </nav>
+        <div class="sidebar-footer">
+          <strong>데이터 기준</strong>
+          <p>Shop 7/26 · Campaign 7/27 · Affiliate Core 7/25 · 상세 7/24</p>
+        </div>
+      </aside>
+
+      <div class="main-content">
+        <div class="top-bar">
+          <button type="button" class="menu-button sidebar-toggle" onclick="toggleSidebar()" aria-label="사이드바 열기/닫기">☰</button>
+          <div class="brand">
+            <div class="logo">TT</div>
+            <div>
+              <h1>3/4분기 Forecast 상세</h1>
+              <p>MIZON 목표 매출·광고비와 현재 비용 배부율을 적용한 모델 손익을 확인합니다.</p>
+            </div>
+          </div>
+        </div>
+
+        <p class="page-note"><a href="tiktok_shop_dashboard.html">← 전체 매출로 돌아가기</a></p>
+
+        <section class="grid cards-4">
+          <article class="card kpi">
+            <span class="label">3분기 목표 매출</span>
+            <span class="value" id="q3Revenue">$0</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">4분기 목표 매출</span>
+            <span class="value" id="q4Revenue">$0</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">3분기 목표 순이익</span>
+            <span class="value" id="q3Profit">$0</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">4분기 목표 순이익</span>
+            <span class="value" id="q4Profit">$0</span>
+          </article>
+        </section>
+
+        <section class="grid cards-2" style="margin-top: 20px;">
+          <article class="card chart-card">
+            <div class="chart-title"><div><h2>분기별 매출·광고비·순이익</h2><small>목표치</small></div></div>
+            <canvas id="forecastDetailChart"></canvas>
+          </article>
+          <article class="card chart-card">
+            <div class="chart-title"><div><h2>분기별 목표 마진율</h2><small>순이익 ÷ 매출</small></div></div>
+            <canvas id="marginByQuarterChart"></canvas>
+          </article>
+        </section>
+
+        <section class="card" id="paceSection" style="margin-top: 20px; display: none;">
+          <div class="chart-title"><div><h2>목표 대비 페이스</h2><small id="paceSubtitle"></small></div></div>
+          <p class="page-note" id="paceText"></p>
+        </section>
+
+        <section class="card" style="margin-top: 20px;">
+          <div class="chart-title"><div><h2>분기별 상세</h2><small>목표 매출·광고비·순이익·마진율·ROAS</small></div></div>
+          <table class="table" id="forecastTable">
+            <thead>
+              <tr><th>분기</th><th>목표 매출</th><th>목표 광고비</th><th>목표 순이익</th><th>목표 마진율</th><th>ROAS</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <p class="page-note" style="font-size: 12px;">
+            ※ 매출·광고비는 제공된 MIZON 분석리포트의 2026.08~12 목표 플랜이며, 순이익은 현재 비광고비 배부율을 적용한 모델값입니다.
+            12월 매출 $150,000·광고비 $90,000은 리포트에서 원본 이상치를 대체한 검토값이므로 최종 목표 확정 전 재확인이 필요합니다.
+          </p>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <script src="assets/nav.js?v=dashboard-20260724"></script>
+  <script src="assets/data-store.js?v=data-sync-20260724"></script>
+  <script src="assets/monthly-data.js?v=data-sync-20260724"></script>
+  <script src="assets/forecast-data.js?v=data-sync-20260724"></script>
+  <script>
+    let monthlyData = loadData(DATA_KEYS.monthly, defaultMonthlyData).filter(hasActualData);
+    let forecastData = loadData(DATA_KEYS.forecast, defaultForecastData);
+    let forecastDetailChart, marginByQuarterChart;
+
+    function renderKPIs() {
+      document.getElementById('q3Revenue').textContent = formatCurrency(forecastData.q3.revenue);
+      document.getElementById('q4Revenue').textContent = formatCurrency(forecastData.q4.revenue);
+      document.getElementById('q3Profit').textContent = formatCurrency(forecastData.q3.profit);
+      document.getElementById('q4Profit').textContent = formatCurrency(forecastData.q4.profit);
+    }
+
+    function renderTable() {
+      const quarters = ['q3', 'q4'].map(key => {
+        const q = forecastData[key];
+        const marginPct = q.revenue ? (q.profit / q.revenue) * 100 : 0;
+        const roas = q.adSpend ? q.revenue / q.adSpend : 0;
+        return { label: key === 'q3' ? '3분기' : '4분기', ...q, marginPct, roas };
+      });
+      const body = document.querySelector('#forecastTable tbody');
+      body.innerHTML = quarters.map(q => `<tr><td>${q.label}</td><td>${formatCurrency(q.revenue)}</td><td>${formatCurrency(q.adSpend)}</td><td>${formatCurrency(q.profit)}</td><td>${q.marginPct.toFixed(1)}%</td><td>${q.roas.toFixed(2)}x</td></tr>`).join('');
+    }
+
+    function renderPace() {
+      if (!monthlyData.length || !forecastData.q3.revenue) return;
+      const lastActualMonth = monthlyData[monthlyData.length - 1];
+      const runRateQuarter = lastActualMonth.revenue * 3;
+      const pace = Math.round((runRateQuarter / forecastData.q3.revenue) * 1000) / 10;
+      document.getElementById('paceSection').style.display = '';
+      document.getElementById('paceSubtitle').textContent = `가장 최근 실적월(${lastActualMonth.month}) 기준 환산`;
+      document.getElementById('paceText').innerHTML = `가장 최근 실적월인 <strong>${lastActualMonth.month}</strong> 매출 ${formatCurrency(lastActualMonth.revenue)}을 3개월로 환산하면 ${formatCurrency(runRateQuarter)}로, 3분기 목표 ${formatCurrency(forecastData.q3.revenue)} 대비 <strong>${pace}%</strong> 페이스입니다. (단순 런레이트 환산이며 계절성·프로모션 효과는 반영되지 않았습니다.)`;
+    }
+
+    function createCharts() {
+      forecastDetailChart = new Chart(document.getElementById('forecastDetailChart'), {
+        type: 'bar',
+        data: {
+          labels: ['3분기', '4분기'],
+          datasets: [
+            { label: '매출', data: [forecastData.q3.revenue, forecastData.q4.revenue], backgroundColor: '#2563eb' },
+            { label: '광고비', data: [forecastData.q3.adSpend, forecastData.q4.adSpend], backgroundColor: '#f59e0b' },
+            { label: '순이익', data: [forecastData.q3.profit, forecastData.q4.profit], backgroundColor: '#14b8a6' }
+          ]
+        },
+        options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: true, ticks: { callback: v => '$' + v / 1000 + 'k' } } } }
+      });
+
+      marginByQuarterChart = new Chart(document.getElementById('marginByQuarterChart'), {
+        type: 'bar',
+        data: {
+          labels: ['3분기', '4분기'],
+          datasets: [{ label: '목표 마진율 (%)', data: [forecastData.q3.revenue ? (forecastData.q3.profit / forecastData.q3.revenue) * 100 : 0, forecastData.q4.revenue ? (forecastData.q4.profit / forecastData.q4.revenue) * 100 : 0], backgroundColor: '#8b5cf6' }]
+        },
+        options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v + '%' } } } }
+      });
+    }
+
+    function refreshAll() {
+      monthlyData = loadData(DATA_KEYS.monthly, defaultMonthlyData).filter(hasActualData);
+      forecastData = loadData(DATA_KEYS.forecast, defaultForecastData);
+      renderKPIs();
+      renderTable();
+      renderPace();
+
+      forecastDetailChart.data.datasets[0].data = [forecastData.q3.revenue, forecastData.q4.revenue];
+      forecastDetailChart.data.datasets[1].data = [forecastData.q3.adSpend, forecastData.q4.adSpend];
+      forecastDetailChart.data.datasets[2].data = [forecastData.q3.profit, forecastData.q4.profit];
+      forecastDetailChart.update();
+
+      marginByQuarterChart.data.datasets[0].data = [forecastData.q3.revenue ? (forecastData.q3.profit / forecastData.q3.revenue) * 100 : 0, forecastData.q4.revenue ? (forecastData.q4.profit / forecastData.q4.revenue) * 100 : 0];
+      marginByQuarterChart.update();
+    }
+
+    renderKPIs();
+    renderTable();
+    renderPace();
+    createCharts();
+    onDataChange([DATA_KEYS.monthly, DATA_KEYS.forecast], refreshAll);
+    onPageRestore(refreshAll);
+  </script>
+</body>
+</html>

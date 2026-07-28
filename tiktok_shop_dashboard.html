@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TikTok Shop US 대시보드 - 전체 매출</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="assets/styles.css?v=top-refresh-20260726" />
+</head>
+<body>
+  <section class="layout">
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-brand">
+            <div class="logo">TT</div>
+            <div>
+              <strong>Admin 계정</strong>
+              <p>관리자 전용 대시보드</p>
+            </div>
+          </div>
+          <button type="button" class="menu-button sidebar-toggle" onclick="toggleSidebar()" aria-label="사이드바 토글">
+            <span style="font-size: 22px;">☰</span>
+          </button>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="guide.html" id="nav-guide">틱톡샵 가이드</a>
+          <a href="tiktok_shop_dashboard.html" id="nav-total">전체 매출</a>
+          <a href="data-center.html" id="nav-data-center">데이터센터</a>
+          <a href="products.html" id="nav-product">상품별매출</a>
+          <a href="product-leaderboard.html" id="nav-product-leaderboard">상품 리더보드</a>
+          <a href="inventory.html" id="nav-inventory">재고관리</a>
+          <a href="affiliate.html" id="nav-affiliate">어필리에이터 관리</a>
+          <a href="ads.html" id="nav-ads">광고관리</a>
+          <a href="admin.html" id="nav-admin">Admin</a>
+        </nav>
+        <div class="sidebar-footer">
+          <strong>데이터 기준</strong>
+          <p>Shop 7/26 · Campaign 7/27 · Affiliate Core 7/25 · 상세 7/24</p>
+        </div>
+      </aside>
+
+      <div class="main-content">
+        <div class="top-bar">
+          <button type="button" class="menu-button sidebar-toggle" onclick="toggleSidebar()" aria-label="사이드바 열기/닫기">☰</button>
+          <div class="brand">
+            <div class="logo">TT</div>
+            <div>
+              <h1>TikTok Shop US Campaign 대시보드</h1>
+              <p>Campaign Overview의 공식 Cost·Gross revenue·주문·ROI를 날짜별로 확인합니다.</p>
+            </div>
+          </div>
+          <div class="meta">
+            <strong>데이터 출처</strong>
+            <p>Campaign overview 원본 · 2026-07-27 공식 총계 보정</p>
+          </div>
+        </div>
+
+        <section class="card">
+          <div class="control-row" style="margin-top: 0;">
+            <label>시작일<input type="date" id="startDateInput"></label>
+            <label>종료일<input type="date" id="endDateInput"></label>
+            <div class="quick-range">
+              <button type="button" id="last7DaysBtn">최근 7일</button>
+              <button type="button" id="resetDateRangeBtn">전체 기간</button>
+            </div>
+            <span class="page-note" id="financialRangeLabel" style="margin-top: 0;"></span>
+          </div>
+        </section>
+
+        <section class="grid cards-4" style="margin-top: 20px;">
+          <article class="card kpi">
+            <span class="label">Campaign Gross revenue</span>
+            <span class="value" id="kpiRevenue">$0</span>
+            <span class="desc" id="kpiRevenueDesc">Campaign overview 귀속 매출</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">Campaign Cost</span>
+            <span class="value" id="kpiAdSpend">$0</span>
+            <span class="desc" id="kpiAdSpendDesc">Campaign overview 일별 합계</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">SKU 주문</span>
+            <span class="value" id="kpiTotalCost">$0</span>
+            <span class="desc" id="kpiTotalCostDesc">Cost per order</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">Campaign ROI</span>
+            <span class="value" id="kpiBreakEven">0.00x</span>
+            <span class="desc">Gross revenue ÷ Cost</span>
+          </article>
+        </section>
+
+        <section class="card finance-entry-section" style="margin-top: 20px;">
+          <div class="chart-title">
+            <div>
+              <span class="eyebrow">FINANCIAL DETAIL</span>
+              <h2>재무·손익 상세 분석</h2>
+              <small>실적, Forecast, 적자·흑자, 손익분기점을 각각 클릭해 확인하세요.</small>
+            </div>
+            <span class="finance-period-badge">2025.11 → 2026.12</span>
+          </div>
+          <div class="finance-entry-grid">
+            <a href="performance-outlook-detail.html" class="finance-entry-card primary">
+              <span>01 · 실적 + 계획</span>
+              <strong>2025.11~2026.12 매출·광고비·Forecast</strong>
+              <small>월별 매출·총비용·순이익과 적자→흑자 전환 전망</small>
+              <b>통합 전망 보기 →</b>
+            </a>
+            <a href="profit-loss-detail.html" class="finance-entry-card">
+              <span>02 · 손익</span>
+              <strong>월별 순이익 / 적자·흑자</strong>
+              <small>기간 선택, 마진율, 비용 구조와 월별 손익 상태</small>
+              <b>손익 상세 보기 →</b>
+            </a>
+            <a href="breakeven-detail.html" class="finance-entry-card">
+              <span>03 · 시뮬레이션</span>
+              <strong>손익분기점 분석</strong>
+              <small>판매가·원가·부대비용·광고비 기준 필요 판매량 계산</small>
+              <b>손익분기점 보기 →</b>
+            </a>
+            <a href="forecast-detail.html" class="finance-entry-card">
+              <span>04 · 계획</span>
+              <strong>3/4분기 Forecast 상세</strong>
+              <small>목표 매출·광고비·모델 순이익과 목표 대비 페이스</small>
+              <b>Forecast 보기 →</b>
+            </a>
+          </div>
+        </section>
+
+        <section class="grid cards-3" style="margin-top: 20px;">
+          <article class="card linked chart-card" id="campaignOverviewCard" data-href="revenue-ads-detail.html">
+            <div class="chart-title"><div><h2>Campaign Gross revenue vs Cost</h2><small id="revenueAdRange">선택 기간 · 공식 Campaign Overview 기준</small></div></div>
+            <canvas id="revenueAdChart"></canvas>
+          </article>
+          <article class="card linked chart-card" id="campaignRoiCard" data-href="revenue-ads-detail.html">
+            <div class="chart-title"><div><h2>Campaign ROI 추이</h2><small id="profitRange">Gross revenue ÷ Cost</small></div></div>
+            <canvas id="profitChart"></canvas>
+          </article>
+          <article class="card linked chart-card" data-href="forecast-detail.html">
+            <div class="chart-title"><div><h2>3/4분기 Forecast</h2><small>예상 매출·광고비·순이익 · 클릭하면 상세 페이지</small></div></div>
+            <canvas id="forecastChart"></canvas>
+          </article>
+        </section>
+
+        <section class="grid cards-2" style="margin-top: 20px;">
+          <article class="card chart-card">
+            <div class="chart-title"><div><h2>Campaign 실적 요약</h2><small>공식 Gross revenue와 Cost만 비교합니다.</small></div></div>
+            <canvas id="summaryTrendChart"></canvas>
+          </article>
+          <article class="card ai-insight-card">
+            <div class="chart-title">
+              <div>
+                <span class="eyebrow">AUTO INSIGHT</span>
+                <h2>AI 자동 경영 분석</h2>
+                <small>기간과 데이터가 바뀌면 즉시 다시 계산됩니다.</small>
+              </div>
+              <span id="autoInsightStatus" class="badge bad">규칙 기반 · 실시간</span>
+            </div>
+            <p id="autoInsightHeadline" class="ai-insight-headline">선택 기간 데이터를 분석하고 있습니다.</p>
+            <div class="ai-insight-metrics">
+              <div>
+                <span>광고 매출 격차</span>
+                <strong id="autoInsightProfit">$0</strong>
+              </div>
+              <div>
+                <span>Cost ÷ Gross revenue</span>
+                <strong id="autoInsightCostRatio">0.00x</strong>
+              </div>
+              <div>
+                <span class="metric-term">Campaign ROI <span class="term-help" tabindex="0" role="button" aria-label="Campaign ROI 설명" data-tooltip="광고비 $1당 얼마의 캠페인 매출이 발생했는지 보여줘요.">?</span></span>
+                <strong id="autoInsightRoi">0.00x</strong>
+              </div>
+            </div>
+            <div class="ai-insight-list">
+              <div class="ai-insight-item">
+                <span>최근 변화</span>
+                <p id="autoInsightChange">최근 월의 증감률을 계산하고 있습니다.</p>
+              </div>
+              <div class="ai-insight-item">
+                <span>우선 조치</span>
+                <p id="autoInsightAction">우선순위가 높은 개선 항목을 찾고 있습니다.</p>
+              </div>
+            </div>
+            <div class="ai-insight-footer">
+              <span>광고 매출 격차는 순이익이 아닙니다 · 원가·수수료·물류비 제외</span>
+              <strong>광고 효율 상세 보기 →</strong>
+            </div>
+          </article>
+        </section>
+
+        <section class="card" style="margin-top: 20px;">
+          <div class="chart-title"><h2>Forecast 요약</h2><small>3Q / 4Q 기대성과</small></div>
+          <div class="grid cards-4" style="margin-top: 16px;">
+            <article class="card">
+              <span class="label">3분기 매출</span>
+              <p id="q3Revenue" class="value">$0</p>
+            </article>
+            <article class="card">
+              <span class="label">4분기 매출</span>
+              <p id="q4Revenue" class="value">$0</p>
+            </article>
+            <article class="card">
+              <span class="label">3분기 순이익</span>
+              <p id="q3Profit" class="value">$0</p>
+            </article>
+            <article class="card">
+              <span class="label">4분기 순이익</span>
+              <p id="q4Profit" class="value">$0</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="grid cards-4" style="margin-top: 20px;">
+          <article class="card linked" data-nav="nav-product" data-href="products.html">
+            <div class="chart-title"><h2>상품별 매출</h2></div>
+            <p class="page-note">상품 선택, 날짜별 매출, 마진 구조까지 상세 페이지에서 확인하세요.</p>
+          </article>
+          <article class="card linked" data-nav="nav-inventory" data-href="inventory.html">
+            <div class="chart-title"><h2>재고관리</h2></div>
+            <p class="page-note">재고 리스크와 안전 재고 현황을 확인하세요.</p>
+          </article>
+          <article class="card linked" data-nav="nav-affiliate" data-href="affiliate.html">
+            <div class="chart-title"><h2>어필리에이터 관리</h2></div>
+            <p class="page-note">파트너 수수료와 캠페인 성과를 확인하세요.</p>
+          </article>
+          <article class="card linked" data-nav="nav-ads" data-href="ads.html">
+            <div class="chart-title"><h2>광고관리</h2></div>
+            <p class="page-note">비용 구조와 광고 집행 현황을 확인하세요.</p>
+          </article>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <script src="assets/nav.js?v=campaign-audit-20260727"></script>
+  <script src="assets/data-store.js?v=data-sync-20260724"></script>
+  <script src="assets/forecast-data.js?v=data-sync-20260724"></script>
+  <script src="assets/cost-items-data.js?v=data-sync-20260724"></script>
+  <script src="assets/shop-analytics-data.js?v=20260724"></script>
+  <script src="assets/campaign-daily-data.js?v=20260727-2"></script>
+  <script type="text/plain" id="legacy-month-filter-code">
+    let monthlyData = loadData(DATA_KEYS.monthly, defaultMonthlyData).filter(hasActualData);
+    let forecastData = loadData(DATA_KEYS.forecast, defaultForecastData);
+    let startMonth = MONTH_CALENDAR[0];
+    let endMonth = MONTH_CALENDAR[MONTH_CALENDAR.length - 1];
+
+    let revenueAdChart, profitChart, summaryTrendChart, forecastChart;
+
+    function filteredMonthlyData() {
+      return filterByMonthRange(monthlyData, startMonth, endMonth);
+    }
+
+    function percentChange(current, previous) {
+      return previous ? ((current - previous) / Math.abs(previous)) * 100 : null;
+    }
+
+    function signedPercent(value) {
+      if (value === null || !Number.isFinite(value)) return '비교 불가';
+      return `${value >= 0 ? '+' : ''}${value.toFixed(1)}%`;
+    }
+
+    function buildAutoInsight() {
+      const filtered = filteredMonthlyData();
+      const revenue = filtered.reduce((sum, item) => sum + item.revenue, 0);
+      const adSpend = filtered.reduce((sum, item) => sum + item.adSpend, 0);
+      const totalCost = filtered.reduce((sum, item) => sum + item.totalCost, 0);
+      const profit = revenue - totalCost;
+      const costMultiple = revenue ? totalCost / revenue : 0;
+      const campaignRows = campaignOverviewMonthly.filter(item => item.month >= startMonth && item.month <= endMonth);
+      const campaignCost = campaignRows.reduce((sum, item) => sum + item.cost, 0);
+      const campaignRevenue = campaignRows.reduce((sum, item) => sum + item.grossRevenue, 0);
+      const campaignRoi = campaignCost ? campaignRevenue / campaignCost : 0;
+      const latest = filtered[filtered.length - 1];
+      const previous = filtered[filtered.length - 2];
+      const latestProfit = latest ? latest.revenue - latest.totalCost : 0;
+      const revenueGrowth = latest && previous ? percentChange(latest.revenue, previous.revenue) : null;
+      const adGrowth = latest && previous ? percentChange(latest.adSpend, previous.adSpend) : null;
+
+      const headline = profit < 0
+        ? '비용 절감과 광고 효율 개선이 가장 시급합니다.'
+        : '현재 선택 기간은 흑자 구조를 유지하고 있습니다.';
+      const change = latest && previous
+        ? `${latest.month} 매출 ${signedPercent(revenueGrowth)} · 광고비 ${signedPercent(adGrowth)} · 월 손익 ${formatCurrency(latestProfit)}`
+        : '비교할 월이 2개 이상일 때 최근 월 증감률을 자동으로 표시합니다.';
+      let action = '매출·비용 데이터가 추가되면 가장 시급한 행동을 자동으로 제안합니다.';
+      if (campaignCost && campaignRoi < 1) {
+        action = `광고비 $1당 $${campaignRoi.toFixed(2)} 회수 중입니다. ROI 1.0x 미만 캠페인을 줄이고 고효율 캠페인으로 예산을 옮기세요.`;
+      } else if (profit < 0) {
+        action = '총비용 기준 적자가 이어지고 있습니다. 광고비뿐 아니라 원가·수수료·물류비를 함께 낮추는 시나리오를 확인하세요.';
+      } else if (campaignCost) {
+        action = `Campaign ROI ${campaignRoi.toFixed(2)}x를 유지하면서 이익 기여가 높은 캠페인에 예산을 집중하세요.`;
+      }
+
+      return { headline, profit, costMultiple, campaignRoi, change, action, status: profit >= 0 ? 'good' : campaignRoi >= 0.8 ? 'warn' : 'bad' };
+    }
+
+    function renderAutoInsight() {
+      const insight = buildAutoInsight();
+      document.getElementById('autoInsightHeadline').textContent = insight.headline;
+      document.getElementById('autoInsightProfit').textContent = formatCurrency(insight.profit);
+      document.getElementById('autoInsightProfit').className = insight.profit >= 0 ? 'positive' : 'negative';
+      document.getElementById('autoInsightCostRatio').textContent = `${insight.costMultiple.toFixed(2)}x`;
+      document.getElementById('autoInsightRoi').textContent = `${insight.campaignRoi.toFixed(2)}x`;
+      document.getElementById('autoInsightChange').textContent = insight.change;
+      document.getElementById('autoInsightAction').textContent = insight.action;
+      document.getElementById('autoInsightStatus').className = `badge ${insight.status}`;
+    }
+
+    function renderKPIs() {
+      const filtered = filteredMonthlyData();
+      const revenue = filtered.reduce((sum, item) => sum + item.revenue, 0);
+      const adSpend = filtered.reduce((sum, item) => sum + item.adSpend, 0);
+      const totalCost = filtered.reduce((sum, item) => sum + item.totalCost, 0);
+      document.getElementById('kpiRevenue').textContent = formatCurrency(revenue);
+      document.getElementById('kpiAdSpend').textContent = formatCurrency(adSpend);
+      document.getElementById('kpiTotalCost').textContent = formatCurrency(totalCost);
+      document.getElementById('kpiBreakEven').textContent = forecastData.q4.profit > 0 ? 'Q4' : '추가 분석 필요';
+      document.getElementById('q3Revenue').textContent = formatCurrency(forecastData.q3.revenue);
+      document.getElementById('q4Revenue').textContent = formatCurrency(forecastData.q4.revenue);
+      document.getElementById('q3Profit').textContent = formatCurrency(forecastData.q3.profit);
+      document.getElementById('q4Profit').textContent = formatCurrency(forecastData.q4.profit);
+      renderAutoInsight();
+    }
+
+    function createCharts() {
+      const filtered = filteredMonthlyData();
+      revenueAdChart = new Chart(document.getElementById('revenueAdChart'), {
+        type: 'bar',
+        data: {
+          labels: filtered.map(item => item.month),
+          datasets: [
+            { label: '매출', data: filtered.map(item => item.revenue), backgroundColor: '#2563eb' },
+            { label: '광고비', data: filtered.map(item => item.adSpend), backgroundColor: '#f59e0b' }
+          ]
+        },
+        options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: true, ticks: { callback: v => '$' + v / 1000 + 'k' } } } }
+      });
+
+      profitChart = new Chart(document.getElementById('profitChart'), {
+        type: 'line',
+        data: {
+          labels: filtered.map(item => item.month),
+          datasets: [{ label: '순이익', data: filtered.map(item => item.revenue - item.totalCost), borderColor: '#14b8a6', backgroundColor: 'rgba(20,184,166,0.15)', fill: true, tension: 0, pointRadius: 5 }]
+        },
+        options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: true, ticks: { callback: v => '$' + v / 1000 + 'k' } } } }
+      });
+
+      summaryTrendChart = new Chart(document.getElementById('summaryTrendChart'), {
+        data: {
+          labels: filtered.map(item => item.month),
+          datasets: [
+            { type: 'bar', label: '매출', data: filtered.map(item => item.revenue), backgroundColor: '#2563eb' },
+            { type: 'bar', label: '총비용', data: filtered.map(item => item.totalCost), backgroundColor: '#f59e0b' },
+            { type: 'line', label: '순이익(적자)', data: filtered.map(item => item.revenue - item.totalCost), borderColor: '#14b8a6', backgroundColor: '#14b8a6', tension: 0, pointRadius: 4, pointBackgroundColor: filtered.map(item => item.revenue - item.totalCost < 0 ? '#dc2626' : '#16a34a') }
+          ]
+        },
+        options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: true, ticks: { callback: v => '$' + v / 1000 + 'k' } } } }
+      });
+
+      forecastChart = new Chart(document.getElementById('forecastChart'), {
+        type: 'bar',
+        data: {
+          labels: ['3분기', '4분기'],
+          datasets: [
+            { label: '매출', data: [forecastData.q3.revenue, forecastData.q4.revenue], backgroundColor: '#2563eb' },
+            { label: '광고비', data: [forecastData.q3.adSpend, forecastData.q4.adSpend], backgroundColor: '#f59e0b' },
+            { label: '순이익', data: [forecastData.q3.profit, forecastData.q4.profit], backgroundColor: '#14b8a6' }
+          ]
+        },
+        options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: true, ticks: { callback: v => '$' + v / 1000 + 'k' } } } }
+      });
+    }
+
+    function refreshAll() {
+      monthlyData = loadData(DATA_KEYS.monthly, defaultMonthlyData).filter(hasActualData);
+      forecastData = loadData(DATA_KEYS.forecast, defaultForecastData);
+      renderKPIs();
+
+      const filtered = filteredMonthlyData();
+      revenueAdChart.data.labels = filtered.map(item => item.month);
+      revenueAdChart.data.datasets[0].data = filtered.map(item => item.revenue);
+      revenueAdChart.data.datasets[1].data = filtered.map(item => item.adSpend);
+      revenueAdChart.update();
+
+      profitChart.data.labels = filtered.map(item => item.month);
+      profitChart.data.datasets[0].data = filtered.map(item => item.revenue - item.totalCost);
+      profitChart.update();
+
+      summaryTrendChart.data.labels = filtered.map(item => item.month);
+      summaryTrendChart.data.datasets[0].data = filtered.map(item => item.revenue);
+      summaryTrendChart.data.datasets[1].data = filtered.map(item => item.totalCost);
+      summaryTrendChart.data.datasets[2].data = filtered.map(item => item.revenue - item.totalCost);
+      summaryTrendChart.data.datasets[2].pointBackgroundColor = filtered.map(item => item.revenue - item.totalCost < 0 ? '#dc2626' : '#16a34a');
+      summaryTrendChart.update();
+
+      forecastChart.data.datasets[0].data = [forecastData.q3.revenue, forecastData.q4.revenue];
+      forecastChart.data.datasets[1].data = [forecastData.q3.adSpend, forecastData.q4.adSpend];
+      forecastChart.data.datasets[2].data = [forecastData.q3.profit, forecastData.q4.profit];
+      forecastChart.update();
+    }
+
+    function initMonthRangeInputs() {
+      const startInput = document.getElementById('startMonthInput');
+      const endInput = document.getElementById('endMonthInput');
+      startInput.min = MONTH_CALENDAR[0]; startInput.max = MONTH_CALENDAR[MONTH_CALENDAR.length - 1]; startInput.value = startMonth;
+      endInput.min = MONTH_CALENDAR[0]; endInput.max = MONTH_CALENDAR[MONTH_CALENDAR.length - 1]; endInput.value = endMonth;
+
+      startInput.addEventListener('change', () => {
+        startMonth = startInput.value;
+        if (startMonth > endMonth) { endMonth = startMonth; endInput.value = endMonth; }
+        refreshAll();
+      });
+      endInput.addEventListener('change', () => {
+        endMonth = endInput.value;
+        if (endMonth < startMonth) { startMonth = endMonth; startInput.value = startMonth; }
+        refreshAll();
+      });
+      document.getElementById('resetMonthRangeBtn').addEventListener('click', () => {
+        startMonth = MONTH_CALENDAR[0];
+        endMonth = MONTH_CALENDAR[MONTH_CALENDAR.length - 1];
+        startInput.value = startMonth;
+        endInput.value = endMonth;
+        refreshAll();
+      });
+    }
+
+    renderKPIs();
+    createCharts();
+    initMonthRangeInputs();
+    onDataChange([DATA_KEYS.monthly, DATA_KEYS.forecast], refreshAll);
+  </script>
+  <script src="assets/total-revenue-dashboard.js?v=20260727-2"></script>
+</body>
+</html>

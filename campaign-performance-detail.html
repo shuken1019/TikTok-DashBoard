@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TikTok Shop US - Campaign 성과 상세</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="assets/styles.css?v=campaign-detail-20260727-2" />
+</head>
+<body>
+  <section class="layout">
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-brand">
+            <div class="logo">TT</div>
+            <div><strong>Admin 계정</strong><p>관리자 전용 대시보드</p></div>
+          </div>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="guide.html" id="nav-guide">틱톡샵 가이드</a>
+          <a href="tiktok_shop_dashboard.html" id="nav-total">전체 매출</a>
+          <a href="data-center.html" id="nav-data-center">데이터센터</a>
+          <a href="products.html" id="nav-product">상품별매출</a>
+          <a href="product-leaderboard.html" id="nav-product-leaderboard">상품 리더보드</a>
+          <a href="inventory.html" id="nav-inventory">재고관리</a>
+          <a href="affiliate.html" id="nav-affiliate">어필리에이터 관리</a>
+          <a href="live.html" id="nav-live">라이브</a>
+          <a href="campaigns.html" id="nav-campaigns">캠페인</a>
+          <a href="ads.html" id="nav-ads">광고관리</a>
+          <a href="admin.html" id="nav-admin">Admin</a>
+        </nav>
+        <div class="sidebar-footer">
+          <strong>데이터 기준</strong>
+          <p>Campaign Overview · 2026-07-27</p>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <div class="top-bar">
+          <div class="brand">
+            <div class="logo">TT</div>
+            <div>
+              <h1>Campaign 성과 상세</h1>
+              <p>공식 Cost·Gross revenue·SKU 주문·ROI를 날짜별로 검증합니다.</p>
+            </div>
+          </div>
+          <div class="meta"><strong>Source of truth</strong><p>TikTok Campaign Overview</p></div>
+        </div>
+
+        <p class="page-note"><a href="tiktok_shop_dashboard.html">← Campaign 대시보드로 돌아가기</a></p>
+
+        <section class="card">
+          <div class="control-row" style="margin-top:0">
+            <label>시작일<input type="date" id="detailStartDate"></label>
+            <label>종료일<input type="date" id="detailEndDate"></label>
+            <div class="quick-range">
+              <button type="button" id="detailLast7Days">최근 7일</button>
+              <button type="button" id="detailAllDates">전체 기간</button>
+            </div>
+            <span class="page-note" id="detailRangeNote" style="margin-top:0"></span>
+          </div>
+        </section>
+
+        <section class="grid cards-4" style="margin-top:20px">
+          <article class="card kpi"><span class="label">Gross revenue</span><span class="value" id="detailRevenue">$0.00</span><span class="desc">Campaign 귀속 매출</span></article>
+          <article class="card kpi"><span class="label">Cost</span><span class="value" id="detailCost">$0.00</span><span class="desc">Campaign 광고비</span></article>
+          <article class="card kpi"><span class="label">SKU 주문</span><span class="value" id="detailOrders">0건</span><span class="desc" id="detailCpa">Cost per order $0.00</span></article>
+          <article class="card kpi"><span class="label">Campaign ROI</span><span class="value" id="detailRoi">0.00x</span><span class="desc">Gross revenue ÷ Cost</span></article>
+        </section>
+
+        <section class="grid cards-2" style="margin-top:20px">
+          <article class="card chart-card expandable-chart" id="overview" tabindex="0" role="button" aria-label="Gross revenue와 Cost 그래프 크게 보기">
+            <div class="chart-title"><div><h2>Gross revenue vs Cost</h2><small>같은 Campaign Overview 원본 기준 · 클릭하면 크게 보기</small></div></div>
+            <canvas id="detailRevenueCostChart"></canvas>
+          </article>
+          <article class="card chart-card expandable-chart" id="roi" tabindex="0" role="button" aria-label="Campaign ROI 그래프 크게 보기">
+            <div class="chart-title"><div><h2>Campaign ROI 추이</h2><small>일별 또는 월별 Gross revenue ÷ Cost · 클릭하면 크게 보기</small></div></div>
+            <canvas id="detailRoiChart"></canvas>
+          </article>
+        </section>
+
+        <section class="card" style="margin-top:20px">
+          <div class="chart-title">
+            <div><h2>날짜별 원본 상세</h2><small>선택 기간의 Campaign Overview 데이터</small></div>
+            <span class="badge warn">광고 매출 격차는 순이익이 아님</span>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="table" id="campaignDetailTable">
+              <thead><tr><th>날짜</th><th>Cost (공식 총계 기준)</th><th>Gross revenue</th><th>SKU 주문</th><th>Cost per order</th><th>ROI</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p class="page-note">※ 원가·플랫폼 수수료·어필리에이터 수수료·물류비가 포함되지 않아 이 화면만으로 순이익이나 흑자/적자를 판단하지 않습니다.</p>
+        </section>
+      </main>
+    </div>
+  </section>
+
+  <dialog class="chart-modal" id="chartModal" aria-labelledby="chartModalTitle">
+    <div class="chart-modal-header">
+      <div>
+        <span class="eyebrow">EXPANDED CHART</span>
+        <h2 id="chartModalTitle">그래프 크게 보기</h2>
+        <p id="chartModalSubtitle">Campaign Overview 기준</p>
+      </div>
+      <button type="button" class="chart-modal-close" id="chartModalClose" aria-label="모달 닫기">×</button>
+    </div>
+    <div class="chart-modal-body"><canvas id="chartModalCanvas"></canvas></div>
+  </dialog>
+
+  <script src="assets/nav.js?v=campaign-audit-20260727"></script>
+  <script src="assets/campaign-daily-data.js?v=20260727-2"></script>
+  <script src="assets/campaign-performance-detail.js?v=20260727-2"></script>
+</body>
+</html>

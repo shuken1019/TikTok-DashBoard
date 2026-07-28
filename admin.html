@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TikTok Shop US 대시보드 - Admin</title>
+  <link rel="stylesheet" href="assets/styles.css?v=top-refresh-20260726" />
+  <style>
+    .admin-table input[type="text"],
+    .admin-table input[type="number"],
+    .admin-table input[type="date"] { width: 100%; border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; font-size: 13px; }
+    .admin-table td { vertical-align: top; }
+    .row-actions { display: flex; gap: 8px; white-space: nowrap; }
+    .row-actions button { border: none; border-radius: 10px; padding: 6px 12px; cursor: pointer; font-weight: 700; font-size: 13px; }
+    .row-actions button[data-action="edit"], .row-actions button[data-action="save"] { background: var(--primary); color: white; }
+    .row-actions button[data-action="delete"], .row-actions button[data-action="cancel"] { background: #f1f5f9; color: #334155; }
+    .add-form { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
+    .add-form label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--muted); }
+    .add-form input[type="text"],
+    .add-form input[type="number"],
+    .add-form input[type="date"] { border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px; font-size: 13px; }
+    .add-form .checkbox-field { flex-direction: row; align-items: center; gap: 8px; }
+    .admin-tab { border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: 12px; padding: 10px 16px; cursor: pointer; font-weight: 700; font-size: 13px; }
+    .admin-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+    .admin-tab-row { display: flex; flex-wrap: wrap; gap: 10px; }
+    @media (max-width: 1150px) { .add-form { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  </style>
+</head>
+<body>
+  <section class="layout">
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-brand">
+            <div class="logo">TT</div>
+            <div>
+              <strong>Admin 계정</strong>
+              <p>관리자 전용 대시보드</p>
+            </div>
+          </div>
+          <button type="button" class="menu-button sidebar-toggle" onclick="toggleSidebar()" aria-label="사이드바 토글">
+            <span style="font-size: 22px;">☰</span>
+          </button>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="guide.html" id="nav-guide">틱톡샵 가이드</a>
+          <a href="tiktok_shop_dashboard.html" id="nav-total">전체 매출</a>
+          <a href="data-center.html" id="nav-data-center">데이터센터</a>
+          <a href="products.html" id="nav-product">상품별매출</a>
+          <a href="product-leaderboard.html" id="nav-product-leaderboard">상품 리더보드</a>
+          <a href="inventory.html" id="nav-inventory">재고관리</a>
+          <a href="affiliate.html" id="nav-affiliate">어필리에이터 관리</a>
+          <a href="ads.html" id="nav-ads">광고관리</a>
+          <a href="admin.html" id="nav-admin">Admin</a>
+        </nav>
+        <div class="sidebar-footer">
+          <strong>데이터 기준</strong>
+          <p>Shop 7/26 · Campaign 7/27 · Affiliate Core 7/25 · 상세 7/24</p>
+        </div>
+      </aside>
+
+      <div class="main-content">
+        <div class="top-bar">
+          <button type="button" class="menu-button sidebar-toggle" onclick="toggleSidebar()" aria-label="사이드바 열기/닫기">☰</button>
+          <div class="brand">
+            <div class="logo">TT</div>
+            <div>
+              <h1>Admin</h1>
+              <p>대시보드에 표시되는 모든 데이터를 여기서 추가/수정/삭제합니다. 저장하면 각 페이지에 바로 반영됩니다.</p>
+            </div>
+          </div>
+        </div>
+
+        <section class="card">
+          <div class="admin-tab-row">
+            <button type="button" class="admin-tab active" data-tab="inventory" onclick="showTab('inventory')">재고관리</button>
+            <button type="button" class="admin-tab" data-tab="monthly" onclick="showTab('monthly')">월별 매출·광고비</button>
+            <button type="button" class="admin-tab" data-tab="cost" onclick="showTab('cost')">비용구조</button>
+            <button type="button" class="admin-tab" data-tab="productSales" onclick="showTab('productSales')">상품별 매출</button>
+            <button type="button" class="admin-tab" data-tab="productCosts" onclick="showTab('productCosts')">제품 비용 &amp; 마진</button>
+            <button type="button" class="admin-tab" data-tab="affiliatePlan" onclick="showTab('affiliatePlan')">어필리에이터 계획</button>
+            <button type="button" class="admin-tab" data-tab="dataSources" onclick="showTab('dataSources')">데이터 소스 현황</button>
+          </div>
+        </section>
+
+        <section class="card admin-section" id="section-inventory" style="margin-top: 20px;"></section>
+        <section class="card admin-section" id="section-monthly" style="margin-top: 20px; display: none;"></section>
+
+        <section class="card admin-section" id="section-cost" style="margin-top: 20px; display: none;"></section>
+        <section class="card admin-section" id="section-productSales" style="margin-top: 20px; display: none;"></section>
+        <section class="card admin-section" id="section-productCosts" style="margin-top: 20px; display: none;"></section>
+        <section class="card admin-section" id="section-affiliatePlan" style="margin-top: 20px; display: none;">
+          <div id="section-affiliatePlan-months"></div>
+          <hr style="margin: 28px 0; border: none; border-top: 1px solid var(--border);">
+          <div id="section-affiliatePlan-products"></div>
+        </section>
+        <section class="card admin-section data-source-card" id="section-dataSources" style="margin-top: 20px; display: none;">
+          <div class="chart-title">
+            <div><span class="eyebrow">SOURCE REGISTRY</span><h2>데이터 소스 현황</h2><small>원본마다 기간과 모수가 다르므로 합산 전 반드시 확인</small></div>
+            <span class="badge warn">다음 점검 · 7월 마감 후</span>
+          </div>
+          <div class="table-scroll">
+            <table class="table data-source-table">
+              <thead><tr><th>소스</th><th>보유 기간 / 기준일</th><th>규모</th><th>갱신 방식</th><th>연결 페이지</th><th>상태</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Shop Analytics</strong><small>일별 판매 원본</small></td><td>2025.11.01–2026.07.26</td><td>268일 · GMV $32,621.48</td><td><span class="source-mode auto">Embedded</span></td><td>전체 매출 · 데이터센터 · 상품</td><td><span class="badge warn">7/26 비용 일부 미집계</span></td></tr>
+                <tr><td><strong>Campaign overview</strong><small>일별 Cost·주문·Gross revenue·ROI</small></td><td>2025.07.03–2026.07.27</td><td>390일 · Cost $100,480.97 · ROI 0.55x</td><td><span class="source-mode manual">XLSX + 공식 UI</span></td><td>광고관리 · 전체 매출 · 상세</td><td><span class="badge warn">Cost $0.88 차이</span></td></tr>
+                <tr><td><strong>Monthly Finance 모델</strong><small>월별 GMV·광고비·배부 비용 가정</small></td><td>2025.11–2026.07</td><td>관리자 계획값</td><td><span class="source-mode manual">Embedded</span></td><td>손익 · Forecast 참고</td><td><span class="badge bad">대표보고 비사용</span></td></tr>
+                <tr><td><strong>Affiliate Videos 2–4월</strong><small>영상 단위 export</small></td><td>2026.02.01–04.30</td><td>182개 영상</td><td><span class="source-mode manual">PDF 수동</span></td><td>어필리에이터</td><td><span class="badge good">완료</span></td></tr>
+                <tr><td><strong>Affiliate Videos 5–7월</strong><small>영상 단위 export</small></td><td>2026.05.01–07.23</td><td>722개 영상</td><td><span class="source-mode manual">PDF 수동</span></td><td>어필리에이터</td><td><span class="badge warn">부분월</span></td></tr>
+                <tr><td><strong>Affiliate Core Metrics</strong><small>영상·LIVE·쇼케이스 귀속</small></td><td>2026.07.01–07.25</td><td>GMV $7,007.76 · 수수료 $2,282.78</td><td><span class="source-mode manual">XLSX</span></td><td>어필리에이터</td><td><span class="badge good">검증 완료</span></td></tr>
+                <tr><td><strong>Affiliate 상세 목록</strong><small>Creator·Video·LIVE·Product</small></td><td>2026.07.01–07.24</td><td>Creator 6,272 · Video 1,510 · LIVE 108 · Product 42</td><td><span class="source-mode manual">XLSX</span></td><td>어필리에이터 · 라이브</td><td><span class="badge warn">Core보다 1일 지연</span></td></tr>
+                <tr><td><strong>Sample Performance</strong><small>샘플 발송/콘텐츠 ROI</small></td><td>45일 ROI snapshot</td><td>2,099건 발송</td><td><span class="source-mode manual">PDF 수동</span></td><td>어필리에이터 · 비용</td><td><span class="badge warn">스냅샷</span></td></tr>
+                <tr><td><strong>운영 마스터</strong><small>재고·원가·광고비</small></td><td>관리자 입력 기준</td><td>SKU 단위</td><td><span class="source-mode manual">수동 입력</span></td><td>재고 · 광고 · 손익</td><td><span class="badge warn">최신일 없음</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <script src="assets/nav.js?v=dashboard-20260724"></script>
+  <script src="assets/data-store.js?v=data-sync-20260724"></script>
+  <script src="assets/inventory-data.js"></script>
+  <script src="assets/monthly-data.js?v=data-sync-20260727"></script>
+  <script src="assets/cost-items-data.js?v=data-sync-20260724"></script>
+  <script src="assets/quarterly-forecast.js?v=data-sync-20260727"></script>
+  <script src="assets/product-sales-data.js"></script>
+  <script src="assets/product-costs-data.js"></script>
+  <script src="assets/affiliate-plan-data.js"></script>
+  <script>
+    function showTab(tabName) {
+      document.querySelectorAll('.admin-section').forEach(sec => { sec.style.display = 'none'; });
+      document.querySelectorAll('.admin-tab').forEach(btn => btn.classList.remove('active'));
+      document.getElementById('section-' + tabName).style.display = 'block';
+      document.querySelector(`.admin-tab[data-tab="${tabName}"]`).classList.add('active');
+    }
+
+    const hashTab = window.location.hash.replace('#', '');
+    if (hashTab && document.querySelector(`.admin-tab[data-tab="${hashTab}"]`)) {
+      showTab(hashTab);
+    }
+
+    function buildEditableSection(containerId, options) {
+      const { key, defaultData, columns, title, subtitle, searchable = false, sortKey = null, onChange = null } = options;
+      const container = document.getElementById(containerId);
+      let data = loadData(key, defaultData);
+      let editingIndex = null;
+      let searchTerm = '';
+
+      function sortData() {
+        if (sortKey) data.sort((a, b) => sortKey(a) - sortKey(b));
+      }
+      sortData();
+
+      function persist() { saveData(key, data); if (onChange) onChange(data); }
+
+      function fieldInputHtml(col, value, prefix) {
+        const id = `${containerId}-${prefix}-${col.field}`;
+        if (col.type === 'checkbox') {
+          return `<input type="checkbox" id="${id}" ${value ? 'checked' : ''}>`;
+        }
+        const isNumeric = col.type === 'number' || col.type === 'currency';
+        const inputType = isNumeric ? 'number' : col.type;
+        const step = col.step ? ` step="${col.step}"` : (col.type === 'currency' ? ' step="0.01"' : '');
+        const min = isNumeric ? ' min="0"' : '';
+        const val = isNumeric ? (value || 0) : escapeHtml(value || '');
+        return `<input type="${inputType}" id="${id}" value="${val}"${step}${min}>`;
+      }
+
+      function readFieldValue(col, prefix) {
+        const el = document.getElementById(`${containerId}-${prefix}-${col.field}`);
+        if (col.type === 'checkbox') return el.checked;
+        if (col.type === 'number' || col.type === 'currency') return Number(el.value) || 0;
+        return el.value.trim();
+      }
+
+      function renderViewRow(item, index) {
+        const cells = columns.map(col => {
+          const v = item[col.field];
+          if (col.type === 'checkbox') return `<td>${v ? '예' : '-'}</td>`;
+          if (col.type === 'currency') return `<td>${formatMoney(v || 0)}</td>`;
+          return `<td>${col.type === 'number' ? (v || 0) : escapeHtml(v || '')}</td>`;
+        }).join('');
+        return `<tr>${cells}<td class="row-actions">
+          <button type="button" data-action="edit" data-index="${index}">수정</button>
+          <button type="button" data-action="delete" data-index="${index}">삭제</button>
+        </td></tr>`;
+      }
+
+      function renderEditRow(item, index) {
+        const cells = columns.map(col => `<td>${fieldInputHtml(col, item[col.field], 'edit' + index)}</td>`).join('');
+        return `<tr>${cells}<td class="row-actions">
+          <button type="button" data-action="save" data-index="${index}">저장</button>
+          <button type="button" data-action="cancel">취소</button>
+        </td></tr>`;
+      }
+
+      function matchesSearch(item) {
+        if (!searchable || !searchTerm) return true;
+        return columns.some(col => col.type !== 'checkbox' && String(item[col.field] || '').toLowerCase().includes(searchTerm));
+      }
+
+      function render() {
+        const tbody = container.querySelector('tbody');
+        tbody.innerHTML = data
+          .map((item, index) => ({ item, index }))
+          .filter(({ item }) => matchesSearch(item))
+          .map(({ item, index }) => (editingIndex === index ? renderEditRow(item, index) : renderViewRow(item, index)))
+          .join('');
+        const countEl = container.querySelector('.section-count');
+        if (countEl) countEl.textContent = `${data.length}개 항목`;
+      }
+
+      container.addEventListener('click', event => {
+        const btn = event.target.closest('button[data-action]');
+        if (!btn) return;
+        const action = btn.dataset.action;
+        const index = btn.dataset.index !== undefined ? Number(btn.dataset.index) : null;
+        if (action === 'edit') { editingIndex = index; render(); }
+        else if (action === 'cancel') { editingIndex = null; render(); }
+        else if (action === 'delete') {
+          if (!confirm('이 항목을 삭제할까요?')) return;
+          data.splice(index, 1);
+          if (editingIndex === index) editingIndex = null;
+          persist(); render();
+        } else if (action === 'save') {
+          const updated = {};
+          columns.forEach(col => { updated[col.field] = readFieldValue(col, 'edit' + index); });
+          data[index] = updated;
+          editingIndex = null;
+          sortData();
+          persist(); render();
+        }
+      });
+
+      const formFieldsHtml = columns.map(col => {
+        if (col.type === 'checkbox') {
+          return `<label class="checkbox-field">${fieldInputHtml(col, false, 'new')} ${col.label}</label>`;
+        }
+        const isNumeric = col.type === 'number' || col.type === 'currency';
+        return `<label>${col.label}${fieldInputHtml(col, isNumeric ? 0 : '', 'new')}</label>`;
+      }).join('');
+
+      const theadHtml = `<tr>${columns.map(c => `<th>${c.label}</th>`).join('')}<th>작업</th></tr>`;
+      const searchHtml = searchable
+        ? `<div class="control-row"><label>검색<input type="text" class="section-search" placeholder="검색어 입력"></label></div>`
+        : '';
+
+      container.innerHTML = `
+        <div class="chart-title"><div><h2>${title}</h2><small class="section-count">${data.length}개 항목</small></div></div>
+        ${subtitle ? `<p class="page-note">${subtitle}</p>` : ''}
+        <div class="add-form">${formFieldsHtml}</div>
+        <div class="control-row">
+          <button type="button" class="add-item-btn">+ 추가</button>
+          <button type="button" class="reset-item-btn" style="background: var(--danger);">기본값으로 초기화</button>
+        </div>
+        ${searchHtml}
+        <table class="table admin-table" style="margin-top: 16px;"><thead>${theadHtml}</thead><tbody></tbody></table>
+      `;
+
+      container.querySelector('.add-item-btn').addEventListener('click', () => {
+        const newItem = {};
+        columns.forEach(col => { newItem[col.field] = readFieldValue(col, 'new'); });
+        data.push(newItem);
+        sortData();
+        persist();
+        columns.forEach(col => {
+          const el = document.getElementById(`${containerId}-new-${col.field}`);
+          if (col.type === 'checkbox') el.checked = false; else el.value = '';
+        });
+        render();
+      });
+
+      container.querySelector('.reset-item-btn').addEventListener('click', () => {
+        if (!confirm('이 항목의 모든 변경사항을 기본값으로 되돌릴까요?')) return;
+        resetData(key);
+        data = loadData(key, defaultData);
+        sortData();
+        editingIndex = null;
+        render();
+        if (onChange) onChange(data);
+      });
+
+      if (searchable) {
+        container.querySelector('.section-search').addEventListener('input', event => {
+          searchTerm = event.target.value.trim().toLowerCase();
+          render();
+        });
+      }
+
+      render();
+    }
+
+    function renderMonthlyForecastSummary() {
+      const container = document.getElementById('section-monthly');
+      let block = document.getElementById('monthlyForecastBlock');
+      if (!block) {
+        block = document.createElement('div');
+        block.id = 'monthlyForecastBlock';
+        block.innerHTML = `
+          <hr style="margin: 28px 0; border: none; border-top: 1px solid var(--border);">
+          <div class="chart-title"><div><h2>Forecast (3Q / 4Q · 자동 계산)</h2><small>위 목표매출·예산에서 자동으로 계산됩니다 — 여기서 직접 수정할 수 없음</small></div></div>
+          <table class="table admin-table" style="margin-top: 16px;">
+            <thead><tr><th>분기</th><th>매출</th><th>광고비</th><th>순이익</th></tr></thead>
+            <tbody id="monthlyForecastTableBody"></tbody>
+          </table>
+        `;
+        container.appendChild(block);
+      }
+      const monthlyData = loadData(DATA_KEYS.monthly, defaultMonthlyData);
+      const costItems = loadData(DATA_KEYS.costItems, defaultCostItems);
+      const forecast = computeQuarterlyForecast(monthlyData, costItems);
+      saveData(DATA_KEYS.forecast, {
+        q3: { revenue: forecast.q3.revenue, adSpend: forecast.q3.adSpend, profit: forecast.q3.profit },
+        q4: { revenue: forecast.q4.revenue, adSpend: forecast.q4.adSpend, profit: forecast.q4.profit }
+      });
+      const quarterLabel = (label, q) => `${label}${q.months.length ? ` (${q.months[0]}${q.months.length > 1 ? '~' + q.months[q.months.length - 1] : ''})` : ''}`;
+      const row = (label, q) => `<tr><td>${label}</td><td>${formatMoney(q.revenue)}</td><td>${formatMoney(q.adSpend)}</td><td>${formatMoney(q.profit)}</td></tr>`;
+      document.getElementById('monthlyForecastTableBody').innerHTML =
+        row(quarterLabel('3분기', forecast.q3), forecast.q3) + row(quarterLabel('4분기', forecast.q4), forecast.q4);
+    }
+
+    buildEditableSection('section-inventory', {
+      key: DATA_KEYS.inventory,
+      defaultData: defaultInventoryData,
+      title: '재고관리',
+      subtitle: 'TikTok Shop Seller Center "Manage products" 기준 SKU 데이터',
+      searchable: true,
+      columns: [
+        { field: 'name', label: '상품명', type: 'text' },
+        { field: 'id', label: 'ID', type: 'text' },
+        { field: 'sku', label: 'SKU', type: 'text' },
+        { field: 'stock', label: '재고', type: 'number' },
+        { field: 'price', label: '가격', type: 'text' },
+        { field: 'views', label: '조회수', type: 'number' },
+        { field: 'sold', label: '판매수량', type: 'number' },
+        { field: 'sales', label: '판매액', type: 'currency' },
+        { field: 'atRisk', label: '소진임박', type: 'checkbox' }
+      ]
+    });
+
+    buildEditableSection('section-monthly', {
+      key: DATA_KEYS.monthly,
+      defaultData: defaultMonthlyData,
+      title: '월별 매출(GMV)·광고비 (실적 + 목표)',
+      subtitle: '매출은 Shop Analytics GMV 기준입니다 (전체 매출 대시보드가 쓰는 Campaign Overview "Gross revenue"와는 다른 값). 실적+계획 상세, 손익, 손익분기점, 매출 vs 광고비 상세, Forecast 페이스 페이지에 반영됩니다. 이미 지난 달은 매출·광고비·총비용을, 아직 오지 않은 달은 목표매출·예산을 입력하세요 (목표 달의 총비용·순이익은 비용구조 비율로 자동 계산되어 여기 총비용 값은 쓰이지 않습니다). 월을 선택하면 날짜순으로 자동 정렬됩니다. 아래 Forecast(3Q/4Q)도 이 표에서 자동으로 계산됩니다.',
+      sortKey: item => monthSortValue(item.month),
+      onChange: renderMonthlyForecastSummary,
+      columns: [
+        { field: 'month', label: '월', type: 'month' },
+        { field: 'revenue', label: '매출(GMV)', type: 'currency' },
+        { field: 'adSpend', label: '광고비', type: 'currency' },
+        { field: 'totalCost', label: '총비용', type: 'currency' },
+        { field: 'targetRevenue', label: '목표매출(GMV)', type: 'currency' },
+        { field: 'targetAdSpend', label: '예산', type: 'currency' }
+      ]
+    });
+    renderMonthlyForecastSummary();
+
+    buildEditableSection('section-cost', {
+      key: DATA_KEYS.costItems,
+      defaultData: defaultCostItems,
+      title: '비용구조',
+      subtitle: '광고관리 페이지의 비용구조 도넛차트에 반영됩니다. 값을 바꾸면 월별 매출·광고비 탭의 Forecast(3Q/4Q)도 함께 다시 계산됩니다.',
+      onChange: renderMonthlyForecastSummary,
+      columns: [
+        { field: 'label', label: '항목명', type: 'text' },
+        { field: 'value', label: '금액', type: 'currency' }
+      ]
+    });
+
+    buildEditableSection('section-productSales', {
+      key: DATA_KEYS.productSales,
+      defaultData: defaultProductSalesData,
+      title: '상품별 매출',
+      subtitle: '상품별매출 페이지의 날짜별 매출 차트/테이블에 반영됩니다.',
+      searchable: true,
+      columns: [
+        { field: 'date', label: '날짜', type: 'date' },
+        { field: 'product', label: '상품', type: 'text' },
+        { field: 'sales', label: '매출', type: 'currency' }
+      ]
+    });
+
+    buildEditableSection('section-productCosts', {
+      key: DATA_KEYS.productCosts,
+      defaultData: defaultProductCosts,
+      title: '제품 비용 & 마진',
+      subtitle: '상품별매출 페이지의 제품 비용 & 마진 테이블에 반영됩니다.',
+      searchable: true,
+      columns: [
+        { field: 'name', label: 'SKU / 제품', type: 'text' },
+        { field: 'price', label: '판매가', type: 'currency' },
+        { field: 'cost', label: '원가', type: 'currency' },
+        { field: 'commission', label: '수수료', type: 'currency' },
+        { field: 'logistics', label: '물류비', type: 'currency' },
+        { field: 'totalCost', label: '총비용', type: 'currency' },
+        { field: 'margin', label: '마진 %', type: 'number' }
+      ]
+    });
+
+    buildEditableSection('section-affiliatePlan-months', {
+      key: DATA_KEYS.affiliatePlan,
+      defaultData: defaultAffiliatePlanMonths,
+      title: '월별 목표 계획 (2026.08~12)',
+      subtitle: '매출 목표를 바꾸면 크리에이터 매출목표·필요 Active·필요 샘플·예상 영상·수수료·샘플비가 (제품별 샘플 배분 비율을 적용해) 어필리에이터 성장 센터 페이지에서 자동으로 다시 계산됩니다. 월을 선택하면 날짜순으로 자동 정렬됩니다.',
+      sortKey: item => monthSortValue(item.month),
+      columns: [
+        { field: 'month', label: '월', type: 'month' },
+        { field: 'revenueGoal', label: '매출 목표', type: 'currency' },
+        { field: 'adBudget', label: '광고 예산', type: 'currency' },
+        { field: 'estimated', label: '추정치', type: 'checkbox' }
+      ]
+    });
+
+    buildEditableSection('section-affiliatePlan-products', {
+      key: DATA_KEYS.affiliatePlanProducts,
+      defaultData: defaultAffiliatePlanProducts,
+      title: '제품별 샘플 배분',
+      subtitle: '어필리에이터 성장 센터의 "제품별 샘플 발송 계획" 표에 반영됩니다. share는 전체 매출목표 대비 비중(0~1)입니다.',
+      columns: [
+        { field: 'product', label: '제품/번들', type: 'text' },
+        { field: 'detail', label: '상세', type: 'text' },
+        { field: 'share', label: '매출 비중(0~1)', type: 'number', step: '0.01' },
+        { field: 'unitPrice', label: '판매가', type: 'currency' },
+        { field: 'each', label: '각각 표시', type: 'checkbox' }
+      ]
+    });
+  </script>
+</body>
+</html>

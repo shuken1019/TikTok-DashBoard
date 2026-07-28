@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TikTok Shop US 대시보드 - 2025.11~2026.12 매출·광고비·손익 전망</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="assets/styles.css?v=profit-status-guide-20260726" />
+</head>
+<body>
+  <section class="layout">
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-brand">
+            <div class="logo">TT</div>
+            <div>
+              <strong>Admin 계정</strong>
+              <p>관리자 전용 대시보드</p>
+            </div>
+          </div>
+          <button type="button" class="menu-button sidebar-toggle" onclick="toggleSidebar()" aria-label="사이드바 토글">
+            <span style="font-size: 22px;">☰</span>
+          </button>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="guide.html" id="nav-guide">틱톡샵 가이드</a>
+          <a href="tiktok_shop_dashboard.html" id="nav-total">전체 매출</a>
+          <a href="data-center.html" id="nav-data-center">데이터센터</a>
+          <a href="products.html" id="nav-product">상품별매출</a>
+          <a href="product-leaderboard.html" id="nav-product-leaderboard">상품 리더보드</a>
+          <a href="inventory.html" id="nav-inventory">재고관리</a>
+          <a href="affiliate.html" id="nav-affiliate">어필리에이터 관리</a>
+          <a href="ads.html" id="nav-ads">광고관리</a>
+          <a href="admin.html" id="nav-admin">Admin</a>
+        </nav>
+        <div class="sidebar-footer">
+          <strong>데이터 기준</strong>
+          <p>Shop 7/26 · Campaign 7/27 · Affiliate Core 7/25 · 상세 7/24</p>
+        </div>
+      </aside>
+
+      <div class="main-content">
+        <div class="top-bar">
+          <button type="button" class="menu-button sidebar-toggle" onclick="toggleSidebar()" aria-label="사이드바 열기/닫기">☰</button>
+          <div class="brand">
+            <div class="logo">TT</div>
+            <div>
+              <h1>2025.11~2026.12 매출(GMV)·광고비·손익 전망</h1>
+              <p>2025.11~2026.07 실제 실적과 2026.08~12 목표 플랜을 연결해 적자·흑자와 Forecast를 한눈에 확인합니다. ※ 매출은 Shop Analytics <strong>GMV</strong> 기준이며, 전체 매출 페이지의 Campaign Overview "Gross revenue"와는 다른 값입니다.</p>
+            </div>
+          </div>
+        </div>
+
+        <p class="page-note"><a href="tiktok_shop_dashboard.html">← 전체 매출로 돌아가기</a></p>
+
+        <section class="grid cards-4">
+          <article class="card kpi">
+            <span class="label">누적 손익 (11월~7월 실적)</span>
+            <span class="value" id="kpiCumLoss">$0</span>
+            <span class="desc" id="kpiProfitMonths">9개월 중 흑자 0개월</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">3분기 모델 손익 (2026.08~10)</span>
+            <span class="value" id="kpiQ3Trend">$0</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">4분기 모델 손익 (2026.11~12)</span>
+            <span class="value" id="kpiQ4Trend">$0</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">흑자 전환 시점</span>
+            <span class="value" id="kpiBreakevenLabel">12월까지도 없음</span>
+            <span class="desc">목표 플랜(2026.08~12) 기준</span>
+          </article>
+        </section>
+
+        <section class="grid cards-2" style="margin-top: 20px;">
+          <article class="card kpi">
+            <span class="label">실적 누적 매출(GMV) (11월~7월)</span>
+            <span class="value" id="kpiActualRevenueSum">$0</span>
+            <span class="desc">실제 발생한 매출(GMV) 합계</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">목표 누적 매출(GMV) (2026.08~12)</span>
+            <span class="value" id="kpiTargetRevenueSum">$0</span>
+            <span class="desc">목표 플랜상 매출(GMV) 합계</span>
+          </article>
+        </section>
+
+        <section class="card chart-card" style="margin-top: 20px;">
+          <div class="chart-title"><div><h2>매출(GMV) vs 총비용 vs 순이익 (실적 + Forecast)</h2><small>실선 = 2025.11~2026.07 실제 · 점선 = 2026.08~12 목표 플랜</small></div></div>
+          <div class="outlook-chart-guide" aria-label="그래프 색상과 선 설명">
+            <div class="outlook-guide-colors">
+              <span><i class="blue"></i><strong>매출(GMV)</strong></span>
+              <span><i class="orange"></i><strong>총비용</strong></span>
+              <span><i class="red"></i><strong>순손실 · 적자</strong><small>순이익이 0원 미만</small></span>
+              <span><i class="green"></i><strong>순이익 · 흑자</strong><small>순이익이 0원 이상</small></span>
+            </div>
+            <div class="outlook-guide-lines">
+              <span><i class="solid"></i>실제 실적</span>
+              <span><i class="dashed"></i>목표 플랜</span>
+            </div>
+          </div>
+          <div class="outlook-profit-status">
+            <strong class="loss" id="outlookActualStatus">● 현재 실적: 계산 중</strong>
+            <strong class="profit" id="outlookProfitTransition">● 목표 플랜: 흑자 전환 계산 중</strong>
+          </div>
+          <canvas id="outlookChart"></canvas>
+        </section>
+
+        <section class="card" style="margin-top: 20px;">
+          <div class="chart-title"><div><h2>이 목표대로 되면?</h2><small>8~12월 월별 목표 매출·광고 예산 기준 해석</small></div></div>
+          <p class="page-note" id="outlookText"></p>
+        </section>
+
+        <section class="card chart-card" style="margin-top: 20px;">
+          <div class="chart-title"><div><h2>월별 매출(GMV): 실적 vs 목표 (막대그래프)</h2><small>파란 막대 = 실제 매출·GMV(11월~7월) · 주황 막대 = 목표 매출·GMV(2026.08~12)</small></div></div>
+          <canvas id="revenueCompareChart"></canvas>
+        </section>
+
+        <section class="card" style="margin-top: 20px;">
+          <div class="chart-title">
+            <div><h2>월별 / 분기별 상세</h2><small>매출(GMV)·목표매출(GMV)·광고비·예산·총비용·순이익·상태</small></div>
+            <a href="admin.html#monthly">실적·목표 수정하기 →</a>
+          </div>
+          <table class="table" id="outlookTable">
+            <thead><tr><th>구분</th><th>매출(GMV, 실적)</th><th>목표매출(GMV)</th><th>광고비</th><th>예산</th><th>총비용</th><th>순이익(적자)</th><th>상태</th></tr></thead>
+            <tbody></tbody>
+          </table>
+          <p class="page-note" style="font-size: 12px;" id="outlookFootnote"></p>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <script src="assets/nav.js?v=dashboard-20260724"></script>
+  <script src="assets/data-store.js?v=data-sync-20260727"></script>
+  <script src="assets/monthly-data.js?v=data-sync-20260727"></script>
+  <script src="assets/cost-items-data.js?v=data-sync-20260724"></script>
+  <script>
+    const FORECAST_DASH = [6, 4];
+
+    let monthlyData = loadData(DATA_KEYS.monthly, defaultMonthlyData);
+    let costItems = loadData(DATA_KEYS.costItems, defaultCostItems);
+    let outlookChart;
+    let revenueCompareChart;
+
+    function computeOutlook() {
+      const actualRows = monthlyData.filter(hasActualData);
+      const totalRevenue = actualRows.reduce((s, m) => s + m.revenue, 0);
+      const costItemsTotal = costItems.reduce((s, c) => s + c.value, 0);
+      const nonAdRatio = totalRevenue ? costItemsTotal / totalRevenue : 0;
+
+      const rows = monthlyData.map(m => {
+        const isActual = hasActualData(m);
+        const hasTarget = m.targetRevenue > 0 || m.targetAdSpend > 0;
+        if (isActual) {
+          return {
+            label: m.month, revenue: m.revenue, targetRevenue: hasTarget ? m.targetRevenue : null,
+            adSpend: m.adSpend, targetAdSpend: hasTarget ? m.targetAdSpend : null,
+            totalCost: m.totalCost, profit: m.revenue - m.totalCost, actual: true
+          };
+        }
+        const nonAd = m.targetRevenue * nonAdRatio;
+        const totalCost = m.targetAdSpend + nonAd;
+        return {
+          label: m.month, revenue: null, targetRevenue: m.targetRevenue,
+          adSpend: null, targetAdSpend: m.targetAdSpend,
+          totalCost, profit: m.targetRevenue - totalCost, actual: false
+        };
+      });
+
+      const cumulativeLoss = actualRows.reduce((s, m) => s + (m.revenue - m.totalCost), 0);
+      const profitMonths = actualRows.filter(m => m.revenue - m.totalCost >= 0).length;
+      const targetRows = rows.filter(r => !r.actual);
+      const breakevenRow = targetRows.find(r => r.profit >= 0);
+      const q3Profit = targetRows.slice(0, 3).reduce((s, r) => s + r.profit, 0);
+      const q4Profit = targetRows.slice(3, 5).reduce((s, r) => s + r.profit, 0);
+      const targetRevenueSum = targetRows.reduce((s, r) => s + r.targetRevenue, 0);
+
+      return {
+        rows, cumulativeLoss, profitMonths, q3Profit, q4Profit, breakevenRow, nonAdRatio,
+        actualRevenueSum: totalRevenue, targetRevenueSum, actualMonthCount: actualRows.length
+      };
+    }
+
+    function renderAll() {
+      const o = computeOutlook();
+
+      document.getElementById('kpiCumLoss').textContent = formatCurrency(o.cumulativeLoss);
+      document.getElementById('kpiCumLoss').style.color = o.cumulativeLoss < 0 ? '#dc2626' : '#16a34a';
+      document.getElementById('kpiProfitMonths').textContent = `${o.actualMonthCount}개월 중 흑자 ${o.profitMonths}개월`;
+      document.getElementById('kpiQ3Trend').textContent = formatCurrency(o.q3Profit);
+      document.getElementById('kpiQ3Trend').style.color = o.q3Profit < 0 ? '#dc2626' : '#16a34a';
+      document.getElementById('kpiQ4Trend').textContent = formatCurrency(o.q4Profit);
+      document.getElementById('kpiQ4Trend').style.color = o.q4Profit < 0 ? '#dc2626' : '#16a34a';
+      document.getElementById('kpiBreakevenLabel').textContent = o.breakevenRow ? o.breakevenRow.label : '12월까지도 없음';
+      document.getElementById('kpiActualRevenueSum').textContent = formatCurrency(o.actualRevenueSum);
+      document.getElementById('kpiTargetRevenueSum').textContent = formatCurrency(o.targetRevenueSum);
+      document.getElementById('outlookActualStatus').textContent = o.profitMonths === 0
+        ? `● 현재 실적: ${o.actualMonthCount}개월 연속 적자`
+        : `● 현재 실적: ${o.actualMonthCount}개월 중 ${o.profitMonths}개월 흑자`;
+      document.getElementById('outlookProfitTransition').textContent = o.breakevenRow
+        ? `● 목표 플랜: ${o.breakevenRow.label}부터 월 흑자`
+        : '● 목표 플랜: 12월까지 월 흑자 없음';
+
+      document.getElementById('outlookText').innerHTML = `지금까지 <strong>${o.profitMonths === 0 ? `${o.actualMonthCount}개월 연속 적자` : `${o.actualMonthCount}개월 중 ${o.profitMonths}개월 흑자`}</strong>이며 누적 손익은 ${formatCurrency(o.cumulativeLoss)}입니다.
+        2026.08~12 목표 플랜(매출을 8월 $27,000에서 12월 $150,000까지 끌어올리는 계획)을 그대로 달성한다고 가정하면,
+        ${o.breakevenRow ? `<strong>${o.breakevenRow.label}</strong>에 처음으로 월 단위 흑자로 전환됩니다.` : ' 12월까지도 흑자 전환이 어렵습니다.'}
+        모델 순이익은 예산과 현재 비광고비 배부율을 적용한 계산값입니다. 매출 목표 자체보다 매출 대비 광고 예산 비중과 실제 원가·수수료를 함께 관리해야 합니다.`;
+
+      const body = document.querySelector('#outlookTable tbody');
+      body.innerHTML = o.rows.map(r => `<tr style="${r.actual ? '' : 'opacity:0.85'}"><td>${r.label}${r.actual ? '' : ' (목표)'}</td><td>${r.revenue != null ? formatCurrency(r.revenue) : '–'}</td><td>${r.targetRevenue != null ? formatCurrency(r.targetRevenue) : '–'}</td><td>${r.adSpend != null ? formatCurrency(r.adSpend) : '–'}</td><td>${r.targetAdSpend != null ? formatCurrency(r.targetAdSpend) : '–'}</td><td>${formatCurrency(r.totalCost)}</td><td>${formatCurrency(r.profit)}</td><td>${r.profit < 0 ? '<span class="badge bad">적자</span>' : '<span class="badge good">흑자</span>'}</td></tr>`).join('');
+
+      document.getElementById('outlookFootnote').textContent = `※ 이 페이지의 매출은 Shop Analytics GMV 기준입니다 (전체 매출 페이지가 쓰는 Campaign Overview의 "Gross revenue"와는 다른 값이며, 두 값이 상당히 다를 수 있습니다). 2026.08~12 매출·광고 예산은 제공된 MIZON 분석리포트의 목표 플랜을 사용했습니다. 총비용은 광고 예산 + 비광고비 비율(${(o.nonAdRatio * 100).toFixed(1)}%, 실제 비용 항목 데이터 기준)을 적용한 모델값입니다. 3분기 모델 손익 ${formatCurrency(o.q3Profit)} / 4분기 모델 손익 ${formatCurrency(o.q4Profit)}. 12월 매출 $150,000·광고비 $90,000은 리포트에서 원본 이상치를 대체한 검토값이므로 최종 목표 확정 전 재확인이 필요합니다.`;
+
+      const forecastStartIndex = o.rows.findIndex(r => !r.actual);
+      const dashSegment = ctx => (forecastStartIndex !== -1 && ctx.p1DataIndex >= forecastStartIndex ? FORECAST_DASH : undefined);
+
+      if (outlookChart) outlookChart.destroy();
+      outlookChart = new Chart(document.getElementById('outlookChart'), {
+        type: 'line',
+        data: {
+          labels: o.rows.map(r => r.label),
+          datasets: [
+            { label: '매출(GMV)', data: o.rows.map(r => r.actual ? r.revenue : r.targetRevenue), borderColor: '#2563eb', backgroundColor: '#2563eb', segment: { borderDash: dashSegment }, tension: 0, pointRadius: 3 },
+            { label: '총비용', data: o.rows.map(r => r.totalCost), borderColor: '#f59e0b', backgroundColor: '#f59e0b', segment: { borderDash: dashSegment }, tension: 0, pointRadius: 3 },
+            {
+              label: '순이익',
+              data: o.rows.map(r => r.profit),
+              borderColor: '#b91c1c',
+              backgroundColor: 'transparent',
+              segment: {
+                borderDash: dashSegment,
+                borderColor: ctx => ctx.p1.parsed.y < 0 ? '#b91c1c' : '#047857'
+              },
+              fill: false,
+              tension: 0,
+              borderWidth: 5,
+              pointRadius: 6,
+              pointHoverRadius: 8,
+              pointBorderWidth: 2,
+              pointBorderColor: '#ffffff',
+              pointBackgroundColor: o.rows.map(r => r.profit < 0 ? '#b91c1c' : '#047857')
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: {
+              ticks: { callback: v => '$' + Math.round(v / 1000) + 'k' },
+              grid: {
+                color: ctx => ctx.tick.value === 0 ? '#475569' : 'rgba(148,163,184,0.28)',
+                lineWidth: ctx => ctx.tick.value === 0 ? 3 : 1
+              }
+            }
+          },
+        },
+      });
+
+      if (revenueCompareChart) revenueCompareChart.destroy();
+      revenueCompareChart = new Chart(document.getElementById('revenueCompareChart'), {
+        type: 'bar',
+        data: {
+          labels: o.rows.map(r => r.label),
+          datasets: [
+            { label: '실적 매출(GMV)', data: o.rows.map(r => r.revenue), backgroundColor: '#2563eb', borderRadius: 4 },
+            { label: '목표 매출(GMV)', data: o.rows.map(r => r.targetRevenue), backgroundColor: '#f59e0b', borderRadius: 4 },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: true, position: 'top' } },
+          scales: {
+            y: { ticks: { callback: v => '$' + Math.round(v / 1000) + 'k' } },
+          },
+        },
+      });
+    }
+
+    function reloadAndRender() {
+      monthlyData = loadData(DATA_KEYS.monthly, defaultMonthlyData);
+      costItems = loadData(DATA_KEYS.costItems, defaultCostItems);
+      renderAll();
+    }
+
+    renderAll();
+    onDataChange([DATA_KEYS.monthly, DATA_KEYS.costItems], reloadAndRender);
+    onPageRestore(reloadAndRender);
+  </script>
+</body>
+</html>

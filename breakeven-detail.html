@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TikTok Shop US 대시보드 - 손익분기점 분석</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="assets/styles.css?v=top-refresh-20260726" />
+</head>
+<body>
+  <section class="layout">
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-brand">
+            <div class="logo">TT</div>
+            <div>
+              <strong>Admin 계정</strong>
+              <p>관리자 전용 대시보드</p>
+            </div>
+          </div>
+          <button type="button" class="menu-button sidebar-toggle" onclick="toggleSidebar()" aria-label="사이드바 토글">
+            <span style="font-size: 22px;">☰</span>
+          </button>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="guide.html" id="nav-guide">틱톡샵 가이드</a>
+          <a href="tiktok_shop_dashboard.html" id="nav-total">전체 매출</a>
+          <a href="data-center.html" id="nav-data-center">데이터센터</a>
+          <a href="products.html" id="nav-product">상품별매출</a>
+          <a href="product-leaderboard.html" id="nav-product-leaderboard">상품 리더보드</a>
+          <a href="inventory.html" id="nav-inventory">재고관리</a>
+          <a href="affiliate.html" id="nav-affiliate">어필리에이터 관리</a>
+          <a href="ads.html" id="nav-ads">광고관리</a>
+          <a href="admin.html" id="nav-admin">Admin</a>
+        </nav>
+        <div class="sidebar-footer">
+          <strong>데이터 기준</strong>
+          <p>Shop 7/26 · Campaign 7/27 · Affiliate Core 7/25 · 상세 7/24</p>
+        </div>
+      </aside>
+
+      <div class="main-content">
+        <div class="top-bar">
+          <button type="button" class="menu-button sidebar-toggle" onclick="toggleSidebar()" aria-label="사이드바 열기/닫기">☰</button>
+          <div class="brand">
+            <div class="logo">TT</div>
+            <div>
+              <h1>손익분기점 분석</h1>
+              <p>지금까지 적자인지 확인하고, 월 적자를 피하려면 얼마나 팔아야 하는지 계산합니다.</p>
+            </div>
+          </div>
+        </div>
+
+        <p class="page-note"><a href="tiktok_shop_dashboard.html">← 전체 매출로 돌아가기</a></p>
+
+        <section class="card breakeven-hero">
+          <div class="breakeven-hero-copy">
+            <span class="breakeven-status loss" id="heroStatus">아직 손익분기 전</span>
+            <p class="breakeven-eyebrow">지금까지 실제 손익</p>
+            <h2 id="heroHeadline">매출보다 비용이 더 큽니다.</h2>
+            <p class="breakeven-plain-definition">
+              <strong>손익분기점</strong>은 매출과 총비용이 같아져 순이익이 정확히 $0이 되는 지점입니다.
+              이 지점을 넘으면 흑자, 넘지 못하면 적자입니다.
+            </p>
+          </div>
+          <div class="breakeven-actual-grid">
+            <article><span>누적 매출</span><strong id="heroRevenue">$0</strong><small>11월~7월 월별 재무 데이터</small></article>
+            <article><span>누적 총비용</span><strong id="heroCost">$0</strong><small>원가·시딩·수수료·물류·광고 등</small></article>
+            <article class="loss"><span>현재 누적 손익</span><strong id="heroGap">$0</strong><small id="heroGapDesc">비용이 매출보다 큼</small></article>
+          </div>
+        </section>
+
+        <section class="card breakeven-guide">
+          <div class="chart-title"><div><h2>이 페이지는 이렇게 읽으면 됩니다</h2><small>실제 결과와 가정 계산기를 구분했습니다</small></div></div>
+          <div class="breakeven-formula-grid">
+            <article><b>1</b><div><strong>현재 결과 확인</strong><p>누적 매출 − 누적 총비용으로 지금 흑자인지 적자인지 봅니다.</p></div></article>
+            <article><b>2</b><div><strong>1개 팔 때 남는 돈 계산</strong><p>판매가 − 제품 원가 − 개당 부대비용입니다.</p></div></article>
+            <article><b>3</b><div><strong>필요 판매량 계산</strong><p>월 광고비 ÷ 1개 팔 때 남는 돈이 월 손익분기 판매량입니다.</p></div></article>
+          </div>
+        </section>
+
+        <section class="card breakeven-simulator">
+          <div class="chart-title"><div><h2>월 손익분기 What-if 계산기</h2><small>아래 숫자를 바꾸면 “월 적자를 피하려면 필요한 판매량”이 다시 계산됩니다</small></div><span class="breakeven-badge">가정 시뮬레이션</span></div>
+          <div class="control-row" style="margin-top: 0; flex-wrap: wrap;">
+            <label>평균 판매가 ($/개)<input type="number" step="0.01" id="priceInput"></label>
+            <label>제품 원가 ($/개)<input type="number" step="0.01" id="productCostInput"></label>
+            <label>부대비용 ($/개, 시딩·수수료·물류·기타)<input type="number" step="0.01" id="overheadInput"></label>
+            <label>월 고정 광고비 ($)<input type="number" step="1" id="fixedCostInput"></label>
+            <button type="button" id="resetDefaultsBtn">현재 기본값으로 재설정</button>
+          </div>
+          <div class="breakeven-model-warning">
+            <strong>⚠ 대표 보고 전 확인 필요</strong>
+            <p>월별 재무 매출 <b id="financeRevenue">$0</b>과 상품 판매수 집계의 GMV <b id="itemGmv">$0</b>가 <b id="sourceGap">$0</b> 차이 납니다. 따라서 아래 “개수 기준” 결과는 잠정 시뮬레이션이며, 위 누적 손익만 현재 재무 데이터 기준입니다.</p>
+          </div>
+        </section>
+
+        <section class="grid cards-4" style="margin-top: 20px;">
+          <article class="card kpi">
+            <span class="label">1개 팔 때 광고비 회수에 남는 돈 <span class="term-help" tabindex="0" data-tooltip="판매가에서 제품 원가와 개당 부대비용을 뺀 금액입니다.">?</span></span>
+            <span class="value" id="kpiMargin">$0</span>
+            <span class="desc" id="kpiMarginPct">판매가의 0%</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">월 적자를 피하려면 필요한 판매량 <span class="term-help" tabindex="0" data-tooltip="매출과 비용이 같아지는 최소 월 판매량입니다.">?</span></span>
+            <span class="value" id="kpiBeUnits">-</span>
+            <span class="desc" id="kpiBeUnitsDesc"></span>
+          </article>
+          <article class="card kpi">
+            <span class="label">월 적자를 피하려면 필요한 매출</span>
+            <span class="value" id="kpiBeRevenue">-</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">상품 데이터 기준 월평균 판매량</span>
+            <span class="value" id="kpiAvgUnits">0개</span>
+            <span class="desc" id="kpiUnitGap"></span>
+          </article>
+        </section>
+
+        <section class="card chart-card" style="margin-top: 20px;">
+          <div class="chart-title"><div><h2>판매량이 늘면 언제 흑자가 되는가</h2><small><b class="blue-text">파란 매출선</b>이 <b class="red-text">빨간 비용선</b>을 넘어서는 지점부터 흑자입니다</small></div></div>
+          <div class="breakeven-chart-shell"><canvas id="breakevenChart"></canvas></div>
+          <div class="breakeven-result-callout" id="breakevenText"></div>
+        </section>
+
+        <section class="grid cards-2" style="margin-top: 20px;">
+          <article class="card chart-card">
+            <div class="chart-title"><div><h2>지금까지 실제 매출과 비용</h2><small>파란 매출선이 빨간 비용선을 넘지 못하면 아직 누적 적자입니다</small></div></div>
+            <canvas id="cumulativeChart"></canvas>
+          </article>
+          <article class="card chart-card">
+            <div class="chart-title"><div><h2>어디에 비용이 쓰였나</h2><small>11월~7월 비용 항목별 합계</small></div></div>
+            <canvas id="costMixChart"></canvas>
+          </article>
+        </section>
+
+        <section class="card breakeven-action-card" style="margin-top: 20px;">
+          <h2>경영 판단 요약</h2>
+          <div id="cumulativeText"></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <script src="assets/nav.js?v=dashboard-20260724"></script>
+  <script src="assets/data-store.js?v=data-sync-20260724"></script>
+  <script src="assets/monthly-data.js?v=data-sync-20260724"></script>
+  <script src="assets/cost-items-data.js?v=data-sync-20260724"></script>
+  <script src="assets/month-calendar.js"></script>
+  <script src="assets/shop-analytics-data.js"></script>
+  <script>
+    const STEPS = 12;
+    let monthlyData = loadData(DATA_KEYS.monthly, defaultMonthlyData).filter(hasActualData);
+    let costItems = loadData(DATA_KEYS.costItems, defaultCostItems);
+    let breakevenChart, cumulativeChart, costMixChart;
+
+    function round2(n) { return Math.round(n * 100) / 100; }
+
+    function computeDefaults() {
+      const units = overallAnalytics.itemsSold || 1;
+      const avgPrice = round2(overallAnalytics.gmv / units);
+      const productCostTotal = (costItems.find(c => c.label === '제품 원가') || {}).value || 0;
+      const overheadTotal = costItems.filter(c => c.label !== '제품 원가').reduce((s, c) => s + c.value, 0);
+      const avgProductCost = round2(productCostTotal / units);
+      const avgOverhead = round2(overheadTotal / units);
+      const avgMonthlyAdSpend = monthlyData.length ? Math.round(monthlyData.reduce((s, m) => s + m.adSpend, 0) / monthlyData.length) : 0;
+      const avgMonthlyUnits = monthlyData.length ? Math.round(units / monthlyData.length) : 0;
+      return { avgPrice, avgProductCost, avgOverhead, avgMonthlyAdSpend, avgMonthlyUnits, totalUnits: units };
+    }
+
+    const defaults = computeDefaults();
+
+    function resetToDefaults() {
+      document.getElementById('priceInput').value = defaults.avgPrice;
+      document.getElementById('productCostInput').value = defaults.avgProductCost;
+      document.getElementById('overheadInput').value = defaults.avgOverhead;
+      document.getElementById('fixedCostInput').value = defaults.avgMonthlyAdSpend;
+      renderAll();
+    }
+
+    function currentInputs() {
+      return {
+        price: Number(document.getElementById('priceInput').value) || 0,
+        productCost: Number(document.getElementById('productCostInput').value) || 0,
+        overhead: Number(document.getElementById('overheadInput').value) || 0,
+        fixedCost: Number(document.getElementById('fixedCostInput').value) || 0,
+      };
+    }
+
+    function renderBreakevenSection() {
+      const { price, productCost, overhead, fixedCost } = currentInputs();
+      const variableCostPerUnit = productCost + overhead;
+      const contributionMargin = price - variableCostPerUnit;
+      const contributionMarginPct = price ? (contributionMargin / price) * 100 : 0;
+      const breakevenUnits = contributionMargin > 0 ? fixedCost / contributionMargin : null;
+      const breakevenRevenue = breakevenUnits ? breakevenUnits * price : null;
+      const unitGapPct = breakevenUnits && defaults.avgMonthlyUnits ? ((breakevenUnits - defaults.avgMonthlyUnits) / defaults.avgMonthlyUnits) * 100 : null;
+      const unitGap = breakevenUnits ? Math.max(0, Math.ceil(breakevenUnits) - defaults.avgMonthlyUnits) : null;
+      const requiredMultiple = breakevenUnits && defaults.avgMonthlyUnits ? breakevenUnits / defaults.avgMonthlyUnits : null;
+
+      document.getElementById('kpiMargin').textContent = formatCurrency(contributionMargin);
+      document.getElementById('kpiMarginPct').textContent = `판매가의 ${contributionMarginPct.toFixed(1)}%`;
+      document.getElementById('kpiBeUnits').textContent = breakevenUnits ? Math.ceil(breakevenUnits).toLocaleString('en-US') + '개' : '계산 불가';
+      document.getElementById('kpiBeUnitsDesc').textContent = contributionMargin <= 0 ? '판매가가 원가+부대비용보다 낮습니다' : '이 판매량부터 월 손익이 $0 이상';
+      document.getElementById('kpiBeRevenue').textContent = breakevenRevenue ? formatCurrency(breakevenRevenue) : '-';
+      document.getElementById('kpiAvgUnits').textContent = defaults.avgMonthlyUnits.toLocaleString('en-US') + '개';
+      document.getElementById('kpiUnitGap').textContent = unitGap != null ? `잠정 기준 ${unitGap.toLocaleString('en-US')}개 부족` : '';
+
+      const maxUnits = breakevenUnits ? Math.ceil(breakevenUnits * 2.2) : Math.max(defaults.avgMonthlyUnits * 3, 100);
+      const step = Math.max(1, Math.round(maxUnits / STEPS));
+      const unitPoints = Array.from({ length: STEPS + 1 }, (_, i) => i * step);
+
+      if (breakevenChart) breakevenChart.destroy();
+      breakevenChart = new Chart(document.getElementById('breakevenChart'), {
+        type: 'line',
+        data: {
+          labels: unitPoints,
+          datasets: [
+            { label: '매출', data: unitPoints.map(u => u * price), borderColor: '#2563eb', backgroundColor: '#2563eb', pointRadius: 0, tension: 0 },
+            { label: '총비용 (고정비+변동비)', data: unitPoints.map(u => fixedCost + u * variableCostPerUnit), borderColor: '#dc2626', backgroundColor: '#dc2626', pointRadius: 0, tension: 0 },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { position: 'top' }, tooltip: { callbacks: { title: items => `판매량 ${items[0].label}개` } } },
+          scales: {
+            x: { title: { display: true, text: '월 판매량 (개)' } },
+            y: { title: { display: true, text: '$' }, ticks: { callback: v => '$' + Math.round(v / 1000) + 'k' } },
+          },
+        },
+      });
+
+      document.getElementById('breakevenText').innerHTML = breakevenUnits
+        ? `<strong>잠정 계산 결과: 월 ${Math.ceil(breakevenUnits).toLocaleString('en-US')}개가 필요합니다.</strong>
+           <span>상품 데이터 월평균 ${defaults.avgMonthlyUnits.toLocaleString('en-US')}개보다 ${unitGap.toLocaleString('en-US')}개 많고, 현재의 약 ${requiredMultiple.toFixed(1)}배입니다. 판매가 ${formatCurrency(price)} · 개당 원가와 부대비용 ${formatCurrency(variableCostPerUnit)} · 월 광고비 ${formatCurrency(fixedCost)} 가정입니다.</span>`
+        : '<strong>계산할 수 없습니다.</strong><span>판매가가 제품 원가와 부대비용의 합보다 커야 합니다.</span>';
+    }
+
+    function renderCumulativeAndMix() {
+      let cumRev = 0, cumCost = 0;
+      const cumRevSeries = [], cumCostSeries = [];
+      monthlyData.forEach(m => {
+        cumRev += m.revenue; cumCost += m.totalCost;
+        cumRevSeries.push(round2(cumRev)); cumCostSeries.push(round2(cumCost));
+      });
+
+      if (cumulativeChart) cumulativeChart.destroy();
+      cumulativeChart = new Chart(document.getElementById('cumulativeChart'), {
+        type: 'line',
+        data: {
+          labels: monthlyData.map(m => m.month),
+          datasets: [
+            { label: '누적 매출', data: cumRevSeries, borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.12)', fill: true, tension: 0, pointRadius: 3 },
+            { label: '누적 총비용', data: cumCostSeries, borderColor: '#dc2626', backgroundColor: 'rgba(220,38,38,0.08)', fill: true, tension: 0, pointRadius: 3 },
+          ],
+        },
+        options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { y: { ticks: { callback: v => '$' + Math.round(v / 1000) + 'k' } } } },
+      });
+
+      const totalAdSpend = monthlyData.reduce((s, m) => s + m.adSpend, 0);
+      const labels = [...costItems.map(c => c.label), '광고비 (실제, 11월~7월 합계)'];
+      const values = [...costItems.map(c => c.value), totalAdSpend];
+
+      if (costMixChart) costMixChart.destroy();
+      costMixChart = new Chart(document.getElementById('costMixChart'), {
+        type: 'doughnut',
+        data: { labels, datasets: [{ data: values, backgroundColor: ['#8b5cf6', '#f59e0b', '#64748b', '#0ea5e9', '#a3a3a3', '#dc2626'] }] },
+        options: { responsive: true, plugins: { legend: { position: 'bottom' } } },
+      });
+
+      const cumRevTotal = monthlyData.reduce((s, m) => s + m.revenue, 0);
+      const cumCostTotal = monthlyData.reduce((s, m) => s + m.totalCost, 0);
+      const gapNow = cumRevTotal - cumCostTotal;
+      const sourceGap = Math.abs(cumRevTotal - overallAnalytics.gmv);
+      const isLoss = gapNow < 0;
+      document.getElementById('heroStatus').textContent = isLoss ? '아직 손익분기 전 · 누적 적자' : '손익분기 통과 · 누적 흑자';
+      document.getElementById('heroStatus').className = `breakeven-status ${isLoss ? 'loss' : 'profit'}`;
+      document.getElementById('heroHeadline').textContent = isLoss
+        ? `매출보다 비용이 ${formatCurrency(Math.abs(gapNow))} 더 큽니다.`
+        : `매출이 비용보다 ${formatCurrency(gapNow)} 더 큽니다.`;
+      document.getElementById('heroRevenue').textContent = formatCurrency(cumRevTotal);
+      document.getElementById('heroCost').textContent = formatCurrency(cumCostTotal);
+      document.getElementById('heroGap').textContent = `${isLoss ? '-' : '+'}${formatCurrency(Math.abs(gapNow))}`;
+      document.getElementById('heroGapDesc').textContent = isLoss ? '비용이 매출보다 큼' : '매출이 비용보다 큼';
+      document.querySelector('.breakeven-actual-grid article:last-child').className = isLoss ? 'loss' : 'profit';
+      document.getElementById('financeRevenue').textContent = formatCurrency(cumRevTotal);
+      document.getElementById('itemGmv').textContent = formatCurrency(overallAnalytics.gmv);
+      document.getElementById('sourceGap').textContent = formatCurrency(sourceGap);
+      document.getElementById('cumulativeText').innerHTML = `
+        <div class="breakeven-action-status ${isLoss ? 'loss' : 'profit'}">
+          <strong>${isLoss ? '현재 결론: 누적 적자' : '현재 결론: 누적 흑자'}</strong>
+          <span>${isLoss ? `${formatCurrency(Math.abs(gapNow))}의 누적 격차를 줄여야 합니다.` : `${formatCurrency(gapNow)}의 누적 흑자입니다.`}</span>
+        </div>
+        <ul>
+          <li><b>확정적으로 읽을 수 있는 값:</b> 월별 재무 데이터의 누적 매출 ${formatCurrency(cumRevTotal)}, 누적 총비용 ${formatCurrency(cumCostTotal)}.</li>
+          <li><b>잠정으로만 읽을 값:</b> 상품 판매수 기반 월 필요 판매량. 매출 원천 간 ${formatCurrency(sourceGap)} 차이가 있어 원천 정합 후 확정해야 합니다.</li>
+          <li><b>개선 방향:</b> 판매가 인상, 제품 원가·시딩·수수료·물류비 절감, 광고비 효율 개선 중 어떤 조합으로 격차를 줄일지 What-if 계산기로 비교합니다.</li>
+        </ul>`;
+    }
+
+    function renderAll() {
+      renderBreakevenSection();
+      renderCumulativeAndMix();
+    }
+
+    document.getElementById('priceInput').addEventListener('input', renderBreakevenSection);
+    document.getElementById('productCostInput').addEventListener('input', renderBreakevenSection);
+    document.getElementById('overheadInput').addEventListener('input', renderBreakevenSection);
+    document.getElementById('fixedCostInput').addEventListener('input', renderBreakevenSection);
+    document.getElementById('resetDefaultsBtn').addEventListener('click', resetToDefaults);
+
+    resetToDefaults();
+  </script>
+</body>
+</html>
