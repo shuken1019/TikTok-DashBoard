@@ -77,6 +77,11 @@ function DataCenterPage() {
   const [endDate, setEndDate] = useState(SOURCE_END_DATE);
   const [rangeMode, setRangeMode] = useState('7');
 
+  useEffect(() => {
+    document.body.classList.add('data-center-page');
+    return () => document.body.classList.remove('data-center-page');
+  }, []);
+
   function handleStartChange(event) {
     const value = event.target.value;
     setStartDate(value);
@@ -265,7 +270,7 @@ function DataCenterPage() {
       <section className="card">
         <div className="data-filter-head">
           <div>
-            <span className="eyebrow">ANALYSIS RANGE</span>
+            <span className="filter-title">조회 기간</span>
             <div className="control-row" style={{ marginTop: 0 }}>
               <label>시작일<input type="date" value={startDate} min={firstDate} max={SOURCE_END_DATE} onChange={handleStartChange} /></label>
               <label>종료일<input type="date" value={endDate} min={firstDate} max={SOURCE_END_DATE} onChange={handleEndChange} /></label>
@@ -285,65 +290,65 @@ function DataCenterPage() {
       </section>
 
       <section className="grid data-health-grid">
-        <article className="card data-health-score">
-          <div className="data-score-ring"><strong>QA</strong><small>검증</small></div>
-          <div><span className="eyebrow">DATA HEALTH</span><h2>검증 완료 · 1개 주의</h2><p>7월 전체 31일과 8월 1–7일의 일별 합계가 각 원본 총계와 일치합니다.</p></div>
+        <article className="card data-health-score data-health-simple">
+          <div className="data-health-status-icon">✓</div>
+          <div><h2>데이터 확인 완료</h2><p>7월 31일과 8월 1–7일 합계가 원본과 일치합니다.</p></div>
         </article>
         <article className="card data-health-summary">
-          <div><span className="health-icon good">✓</span><p><strong>7월 31일 완전 집계</strong><small>GMV $13,797.74</small></p></div>
-          <div><span className="health-icon warn">!</span><p><strong>8월 7일 비용 열 공란</strong><small>세금·배송비만 미집계</small></p></div>
-          <div><span className="health-icon neutral">280</span><p><strong>Shop 일별 행</strong><small>누적 GMV $42,438.52</small></p></div>
+          <div><span className="health-icon good">✓</span><p><strong>7월 집계 완료</strong><small>$13,797.74</small></p></div>
+          <div><span className="health-icon warn">!</span><p><strong>8/7 비용 미집계</strong><small>세금·배송비</small></p></div>
+          <div><span className="health-icon neutral">280</span><p><strong>280일</strong><small>누적 $42,438.52</small></p></div>
         </article>
       </section>
 
       <section className="grid cards-4" style={{ marginTop: 20 }}>
         <article className="card kpi">
-          <span className="label metric-term">누적 GMV <span className="term-help" tabIndex="0" role="button" aria-label="GMV 설명" data-tooltip="총 거래액이에요. 선택 기간에 판매된 상품 금액을 모두 더한 값입니다.">?</span></span>
+          <span className="label metric-term">GMV <span className="term-help" tabIndex="0" role="button" aria-label="GMV 설명" data-tooltip="선택 기간에 판매된 상품 금액의 합계입니다.">?</span></span>
           <span className="value">{formatMoney(stats.gmv)}</span>
           <span className="desc">세금 포함 {formatMoney(stats.gmvWithTax)}</span>
         </article>
         <article className="card kpi">
-          <span className="label">누적 주문 / 고객</span>
+          <span className="label">주문 / 고객</span>
           <span className="value">{stats.orders.toLocaleString('en-US')}건</span>
-          <span className="desc">고객 {stats.customers.toLocaleString('en-US')}명 · SKU 주문 {stats.skuOrders.toLocaleString('en-US')}건</span>
+          <span className="desc">고객 {stats.customers.toLocaleString('en-US')} · SKU 주문 {stats.skuOrders.toLocaleString('en-US')}</span>
         </article>
         <article className="card kpi">
-          <span className="label metric-term">평균 주문액(AOV) <span className="term-help" tabIndex="0" role="button" aria-label="AOV 설명" data-tooltip="주문 1건당 평균 결제 금액이에요. 총매출을 주문 수로 나눠 계산합니다.">?</span></span>
+          <span className="label metric-term">평균 주문액 <span className="term-help" tabIndex="0" role="button" aria-label="AOV 설명" data-tooltip="GMV를 주문 수로 나눈 금액입니다.">?</span></span>
           <span className="value">{formatMoney(stats.aov)}</span>
-          <span className="desc">판매 아이템 {stats.itemsSold.toLocaleString('en-US')}개</span>
+          <span className="desc">{stats.itemsSold.toLocaleString('en-US')}개 판매</span>
         </article>
         <article className="card kpi">
           <span className="label">취소·반품율</span>
           <span className="value">{stats.refundRate}%</span>
-          <span className="desc">환불액 {formatMoney(stats.itemsRefunded)}</span>
+          <span className="desc">환불 {formatMoney(stats.itemsRefunded)}</span>
         </article>
       </section>
 
       <section className="grid cards-4" style={{ marginTop: 20 }}>
         <article className="card kpi">
-          <span className="label metric-term">제품 클릭률(CTR) <span className="term-help" tabIndex="0" role="button" aria-label="CTR 설명" data-tooltip="상품이 화면에 보인 횟수 중 실제로 클릭된 비율이에요.">?</span></span>
+          <span className="label metric-term">상품 클릭률 <span className="term-help" tabIndex="0" role="button" aria-label="CTR 설명" data-tooltip="상품 노출이 클릭으로 이어진 비율입니다.">?</span></span>
           <span className="value">{stats.ctr}%</span>
-          <span className="desc">노출 {stats.productImpressions.toLocaleString('en-US')}회 · 클릭 {stats.productClicks.toLocaleString('en-US')}회</span>
+          <span className="desc">노출 {stats.productImpressions.toLocaleString('en-US')} · 클릭 {stats.productClicks.toLocaleString('en-US')}</span>
         </article>
         <article className="card kpi">
-          <span className="label">고유 노출 / 클릭</span>
+          <span className="label">고유 클릭</span>
           <span className="value">{stats.uniqueClicks.toLocaleString('en-US')}</span>
-          <span className="desc">고유 노출 {stats.uniqueProductImpressions.toLocaleString('en-US')}회</span>
+          <span className="desc">고유 노출 {stats.uniqueProductImpressions.toLocaleString('en-US')}</span>
         </article>
         <article className="card kpi">
-          <span className="label">배송비 합계</span>
+          <span className="label">배송비</span>
           <span className="value">{formatMoney(stats.shippingFees)}</span>
-          <span className="desc">세금 합계 {formatMoney(stats.tax)}</span>
+          <span className="desc">세금 {formatMoney(stats.tax)}</span>
         </article>
         <article className="card kpi">
-          <span className="label metric-term">채널 GMV 비중 <span className="term-help" tabIndex="0" role="button" aria-label="채널 GMV 설명" data-tooltip="전체 매출이 상품 카드·영상·라이브 중 어디에서 발생했는지 보여주는 비율이에요.">?</span></span>
+          <span className="label metric-term">매출 채널 <span className="term-help" tabIndex="0" role="button" aria-label="채널 GMV 설명" data-tooltip="상품 카드·영상·라이브별 GMV 비중입니다.">?</span></span>
           <span className="value">{pct(stats.productCardGmv)}% Card</span>
           <span className="desc">Video {pct(stats.videoGmv)}% · LIVE {pct(stats.liveGmv)}%</span>
         </article>
       </section>
 
       <section className="card" style={{ marginTop: 20 }}>
-        <div className="chart-title"><div><h2>📈 매출 급등 포인트</h2><small>선택 구간 내 일별 GMV 상위 스파이크</small></div></div>
+        <div className="chart-title"><div><h2>매출 상위일</h2><small>선택 기간의 일별 GMV 상위 5일</small></div></div>
         {filteredSpikeDays.length ? (
           <table className="table">
             <thead><tr><th>날짜</th><th><span className="metric-term">GMV <span className="term-help" tabIndex="0" role="button" aria-label="GMV 설명" data-tooltip="총 거래액이에요. 판매된 상품 금액을 모두 더한 값입니다.">?</span></span></th><th>주문수</th><th>고객수</th></tr></thead>

@@ -557,6 +557,30 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .data-health-summary strong, .data-health-summary small { display: block; }
 .data-health-summary strong { font-size: 13px; }
 .data-health-summary small { margin-top: 4px; color: var(--muted); font-size: 10px; }
+
+/* Data center: restrained, report-like visual hierarchy */
+.data-center-page .filter-title { display: block; margin: 0 0 7px; color: #64748b; font-size: 11px; font-weight: 700; }
+.data-center-page .data-filter-head .control-row { padding: 3px; border-radius: 12px; }
+.data-center-page .data-filter-head .control-row label { font-size: 12px; font-weight: 700; }
+.data-center-page .data-filter-head .control-row input,
+.data-center-page .data-filter-head .control-row button { min-height: 38px; padding: 8px 11px; font-size: 12px; }
+.data-center-page .quick-range button { min-height: 36px; padding: 7px 12px; font-size: 11px; font-weight: 700; }
+.data-center-page .export-button { min-height: 40px; padding: 8px 13px; font-size: 11px; }
+.data-center-page .data-range-label { font-size: 11px; font-weight: 600; }
+.data-center-page .data-health-grid { gap: 14px; }
+.data-center-page .data-health-simple { grid-template-columns: 38px 1fr; gap: 13px; padding: 18px 20px; border-color: #e2e8f0; background: #fff; }
+.data-health-status-icon { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #ecfdf5; color: #047857; font-size: 16px; font-weight: 800; }
+.data-center-page .data-health-score h2 { font-size: 16px; font-weight: 750; }
+.data-center-page .data-health-score p { margin-top: 5px; font-size: 11px; line-height: 1.5; }
+.data-center-page .data-health-summary > div { min-height: 104px; padding: 14px 9px; }
+.data-center-page .health-icon { width: 28px; height: 28px; margin-bottom: 8px; border-radius: 8px; font-size: 11px; }
+.data-center-page .data-health-summary strong { font-size: 11px; font-weight: 750; }
+.data-center-page .data-health-summary small { font-size: 10px; }
+.data-center-page .kpi { min-height: 126px; gap: 7px; padding: 19px 21px; }
+.data-center-page .kpi .label { font-size: 11px; font-weight: 700; letter-spacing: 0; }
+.data-center-page .kpi .value { font-size: 27px; font-weight: 750; letter-spacing: -.025em; }
+.data-center-page .kpi .desc { font-size: 11px; line-height: 1.4; }
+.data-center-page .term-help { width: 15px; height: 15px; font-size: 9px; }
 .data-source-table { min-width: 970px; }
 .data-source-table td { vertical-align: middle; }
 .data-source-table td > strong, .data-source-table td > small { display: block; }
