@@ -1128,3 +1128,320 @@ body.modal-open { overflow: hidden; }
   .detail-edit-bar { align-items: stretch; flex-direction: column; }
   .detail-edit-button { text-align: center; }
 }
++
+/* Corporate dashboard system — shared across every report page */
+.corporate-dashboard {
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --text: #172033;
+  --muted: #667085;
+  --border: #e4e7ec;
+  --primary: #2563eb;
+  --secondary: #0f766e;
+  --warning: #b45309;
+  --danger: #b42318;
+  --radius: 12px;
+  --shadow: 0 1px 2px rgba(16,24,40,.04);
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 14px;
+  letter-spacing: -.01em;
+}
+.corporate-dashboard .layout { max-width: 1540px; padding: 16px; }
+.corporate-dashboard .app-shell { gap: 14px; }
+.corporate-dashboard .main-content { gap: 14px; min-width: 0; }
+.corporate-dashboard .sidebar {
+  width: 216px;
+  padding: 16px 14px;
+  gap: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: none;
+}
+.corporate-dashboard .sidebar-header { padding: 0 2px 13px; border-bottom: 1px solid #eaecf0; }
+.corporate-dashboard .sidebar-brand { gap: 10px; }
+.corporate-dashboard .sidebar-brand .logo,
+.corporate-dashboard .top-bar .logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #1f3a5f;
+  background-image: none;
+  box-shadow: none;
+  font-size: 15px;
+  font-weight: 700;
+}
+.corporate-dashboard .sidebar-brand strong { font-size: 13px; font-weight: 700; }
+.corporate-dashboard .sidebar-brand p { margin-top: 2px; font-size: 10.5px; line-height: 1.35; }
+.corporate-dashboard .sidebar-nav { gap: 3px; }
+.corporate-dashboard .nav-group-label {
+  margin: 8px 8px 2px;
+  color: #98a2b3;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+.corporate-dashboard .sidebar-nav a {
+  min-height: 36px;
+  padding: 9px 11px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: #475467;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+.corporate-dashboard .sidebar-nav a:hover { border-color: #eaecf0; background: #f9fafb; color: #1d2939; }
+.corporate-dashboard .sidebar-nav a.active,
+.corporate-dashboard .sidebar-nav a.highlight {
+  border-color: #dbeafe;
+  background: #eff6ff;
+  color: #1d4ed8;
+  box-shadow: none;
+}
+.corporate-dashboard .sidebar-footer { margin-top: 8px; padding: 12px 8px 2px; border-top: 1px solid #eaecf0; }
+.corporate-dashboard .sidebar-status-label { color: #667085; font-size: 9px; letter-spacing: .03em; }
+.corporate-dashboard .sidebar-status-label i { width: 6px; height: 6px; }
+.corporate-dashboard .sidebar-footer strong { margin-top: 5px; font-size: 11px; line-height: 1.4; }
+.corporate-dashboard .sidebar-footer p,
+.corporate-dashboard .sidebar-footer a { font-size: 10px; line-height: 1.45; }
+.corporate-dashboard .top-bar {
+  min-height: 0;
+  padding: 15px 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  background-image: none;
+  box-shadow: none;
+}
+.corporate-dashboard .top-bar .brand { gap: 11px; min-width: 0; }
+.corporate-dashboard .top-bar .brand h1 { font-size: 19px; font-weight: 700; line-height: 1.25; letter-spacing: -.025em; }
+.corporate-dashboard .top-bar .brand p { margin-top: 3px; color: #667085; font-size: 11.5px; line-height: 1.45; }
+.corporate-dashboard .top-date-summary {
+  min-width: 148px;
+  padding: 9px 12px;
+  gap: 0;
+  border: 1px solid #e4e7ec;
+  border-radius: 8px;
+  background: #f9fafb;
+  box-shadow: none;
+}
+.corporate-dashboard .top-date-icon { display: none; }
+.corporate-dashboard .top-date-summary small { color: #98a2b3; font-size: 9px; font-weight: 700; letter-spacing: .02em; }
+.corporate-dashboard .top-date-summary strong { margin-top: 2px; color: #344054; font-size: 11.5px; font-weight: 650; }
+.corporate-dashboard .top-date-summary em { display: none; }
+.corporate-dashboard .page-context-bar {
+  min-height: 42px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: none;
+  backdrop-filter: none;
+  color: #667085;
+  font-size: 10.5px;
+}
+.corporate-dashboard .page-context-bar > div { min-width: auto; }
+.corporate-dashboard .page-context-bar strong { color: #344054; font-size: 10.5px; }
+.corporate-dashboard .page-context-bar p { font-size: 10.5px; }
+.corporate-dashboard .page-context-bar a { color: #475467; font-size: 10px; }
+.corporate-dashboard .context-dot { width: 6px; height: 6px; }
+.corporate-dashboard .grid { gap: 14px; }
+.corporate-dashboard .card,
+.corporate-dashboard .upload-card,
+.corporate-dashboard .campaign-detail-panel,
+.corporate-dashboard .guide-metric-card,
+.corporate-dashboard .finance-entry-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background-color: #fff;
+  background-image: none;
+  box-shadow: none;
+}
+.corporate-dashboard .card { padding: 17px; }
+.corporate-dashboard .card.linked { cursor: pointer; transition: border-color .15s ease, background-color .15s ease; }
+.corporate-dashboard .card.linked:hover { transform: none; border-color: #b8c4d6; background: #fcfcfd; box-shadow: none; }
+.corporate-dashboard .cards-4,
+.corporate-dashboard .cards-5 { gap: 12px; }
+.corporate-dashboard .kpi { min-height: 112px; gap: 7px; }
+.corporate-dashboard .kpi .label,
+.corporate-dashboard .label { color: #667085; font-size: 10.5px; font-weight: 600; }
+.corporate-dashboard .kpi .value,
+.corporate-dashboard .value { color: #101828; font-size: 25px; font-weight: 700; line-height: 1.08; letter-spacing: -.03em; }
+.corporate-dashboard .kpi .desc,
+.corporate-dashboard .desc { color: #667085; font-size: 10.5px; line-height: 1.45; }
+.corporate-dashboard .chart-card { min-height: 310px; }
+.corporate-dashboard .chart-title { gap: 10px; margin-bottom: 13px; }
+.corporate-dashboard .chart-title h2 { font-size: 16px; font-weight: 700; line-height: 1.35; letter-spacing: -.02em; }
+.corporate-dashboard .chart-title small { display: block; margin-top: 3px; color: #667085; font-size: 10.5px; line-height: 1.45; }
+.corporate-dashboard .chart-title p { color: #667085; font-size: 10.5px; line-height: 1.5; }
+.corporate-dashboard .eyebrow,
+.corporate-dashboard .guide-eyebrow { display: none !important; }
+.corporate-dashboard .badge,
+.corporate-dashboard .status,
+.corporate-dashboard [class*="status-"] {
+  border-radius: 6px;
+  box-shadow: none;
+  font-size: 9.5px;
+  font-weight: 650;
+  letter-spacing: 0;
+}
+.corporate-dashboard button,
+.corporate-dashboard input,
+.corporate-dashboard select,
+.corporate-dashboard .button,
+.corporate-dashboard .detail-edit-button {
+  min-height: 36px;
+  border-radius: 8px;
+  box-shadow: none;
+  font: inherit;
+  font-size: 11px;
+}
+.corporate-dashboard button { font-weight: 600; }
+.corporate-dashboard .filter-bar,
+.corporate-dashboard .date-filter,
+.corporate-dashboard .detail-edit-bar {
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: none;
+}
+.corporate-dashboard table.table { font-size: 11.5px; }
+.corporate-dashboard .table th,
+.corporate-dashboard .table td { padding: 10px 11px; border-bottom-color: #eaecf0; }
+.corporate-dashboard .table th { background: #f9fafb; color: #475467; font-size: 10px; font-weight: 650; letter-spacing: 0; }
+.corporate-dashboard .table td { color: #344054; }
+.corporate-dashboard .table tbody tr:hover { background: #fcfcfd; }
+.corporate-dashboard .table-scroll { border-radius: 8px; }
+.corporate-dashboard .ai-insight-card,
+.corporate-dashboard .executive-decision-card {
+  border-color: var(--border);
+  background: #fff;
+  background-image: none;
+  box-shadow: none;
+}
+.corporate-dashboard .ai-insight-card::before,
+.corporate-dashboard .ai-insight-card::after { display: none; }
+.corporate-dashboard .ai-insight-headline { font-size: 16px; line-height: 1.4; }
+.corporate-dashboard .ai-insight-copy,
+.corporate-dashboard .ai-insight-card li { color: #475467; font-size: 11px; line-height: 1.55; }
+.corporate-dashboard .ai-insight-metric,
+.corporate-dashboard .ai-insight-item { border-color: #eaecf0; border-radius: 8px; background: #f9fafb; box-shadow: none; }
+.corporate-dashboard .affiliate-kpi { border-top: 1px solid var(--border); color: var(--text); }
+.corporate-dashboard .affiliate-kpi::after { display: none; }
+.corporate-dashboard .affiliate-share-strip,
+.corporate-dashboard .affiliate-overview-funnel,
+.corporate-dashboard .affiliate-plan-range-card,
+.corporate-dashboard .live-filter-card,
+.corporate-dashboard .live-funnel-card,
+.corporate-dashboard .campaign-toolbar,
+.corporate-dashboard .campaign-calendar-card,
+.corporate-dashboard .campaign-performance-card,
+.corporate-dashboard .seven-vegan-profile,
+.corporate-dashboard .breakeven-hero,
+.corporate-dashboard .financial-ring-panel {
+  border-color: var(--border);
+  background: #fff;
+  background-image: none;
+  box-shadow: none;
+}
+.corporate-dashboard .affiliate-report-state {
+  padding: 7px 10px;
+  border-color: #d1fadf;
+  border-radius: 7px;
+  background: #ecfdf3;
+  color: #027a48;
+  font-size: 10px;
+  font-weight: 600;
+}
+.corporate-dashboard .static-bar-row i,
+.corporate-dashboard .static-gmv-stack i { background: #2563eb; background-image: none; }
+.corporate-dashboard .static-bar-row.highlight i,
+.corporate-dashboard .static-gmv-stack .highlight i { background: #0f766e; background-image: none; }
+.corporate-dashboard .finance-entry-section,
+.corporate-dashboard .guide-definition-hero { border-color: var(--border); background: #fff; background-image: none; }
+.corporate-dashboard .finance-entry-card { min-height: 146px; padding: 15px; gap: 7px; }
+.corporate-dashboard .finance-entry-card:hover { transform: none; border-color: #b8c4d6; box-shadow: none; }
+.corporate-dashboard .finance-entry-card.primary { border-color: #bfdbfe; background: #f8fbff; box-shadow: none; }
+.corporate-dashboard .finance-entry-card span { color: #667085; font-size: 9px; letter-spacing: .02em; }
+.corporate-dashboard .finance-entry-card strong { font-size: 14px; }
+.corporate-dashboard .finance-entry-card small,
+.corporate-dashboard .finance-entry-card b { font-size: 10px; }
+.corporate-dashboard .guide-definition-hero h2 { margin: 0 0 8px; font-size: 21px; }
+.corporate-dashboard .guide-metric-card { min-height: 126px; padding: 14px; box-shadow: none; }
+.corporate-dashboard .guide-metric-card span { font-size: 10.5px; }
+.corporate-dashboard .guide-metric-card strong { font-size: 14px; }
+.corporate-dashboard .guide-metric-card small,
+.corporate-dashboard .guide-source-list a { font-size: 10.5px; }
+.corporate-dashboard .guide-callout,
+.corporate-dashboard .guide-source-list { border-radius: 8px; box-shadow: none; font-size: 11px; }
+.corporate-dashboard .campaign-month,
+.corporate-dashboard .campaign-card,
+.corporate-dashboard .affiliate-section-nav a,
+.corporate-dashboard .affiliate-summary-card,
+.corporate-dashboard .live-summary-card,
+.corporate-dashboard .admin-panel,
+.corporate-dashboard .insight-box,
+.corporate-dashboard .note,
+.corporate-dashboard .callout { border-radius: 10px; box-shadow: none; }
+.corporate-dashboard .campaign-card:hover,
+.corporate-dashboard .affiliate-section-nav a:hover { transform: none; box-shadow: none; }
+.corporate-dashboard .meter span,
+.corporate-dashboard .sample-progress-track span { background-image: none; background-color: var(--primary); }
+.corporate-dashboard .back-to-top { width: 38px; height: 38px; border-radius: 9px; font-size: 16px; box-shadow: 0 2px 8px rgba(16,24,40,.12); }
+.corporate-dashboard .chart-modal { border-radius: 12px; box-shadow: 0 16px 48px rgba(16,24,40,.16); }
+.corporate-dashboard .chart-modal-header { padding: 16px 18px 12px; }
+.corporate-dashboard .chart-modal-header h2 { font-size: 17px; }
+.corporate-dashboard .chart-modal-body { padding: 14px 18px 18px; }
+@media (max-width: 1100px) {
+  .corporate-dashboard .layout { padding: 12px; }
+  .corporate-dashboard .sidebar { width: 196px; }
+  .corporate-dashboard .top-bar { align-items: flex-start; }
+  .corporate-dashboard .top-date-summary { min-width: 136px; }
+}
+@media (max-width: 760px) {
+  .corporate-dashboard { font-size: 13px; }
+  .corporate-dashboard .layout { padding: 8px; }
+  .corporate-dashboard .app-shell { gap: 8px; }
+  .corporate-dashboard .sidebar { width: 100%; padding: 11px; }
+  .corporate-dashboard .sidebar-header { padding-bottom: 10px; }
+  .corporate-dashboard .sidebar-nav { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 5px; }
+  .corporate-dashboard .nav-group-label { grid-column: 1/-1; margin: 6px 4px 0; }
+  .corporate-dashboard .sidebar-nav a { min-height: 34px; padding: 8px; text-align: center; font-size: 10.5px; }
+  .corporate-dashboard .sidebar-footer { display: none; }
+  .corporate-dashboard .top-bar { padding: 13px; gap: 10px; }
+  .corporate-dashboard .top-bar .brand h1 { font-size: 17px; }
+  .corporate-dashboard .top-bar .brand p { font-size: 10.5px; }
+  .corporate-dashboard .top-date-summary { width: auto; min-width: 0; padding: 7px 9px; }
+  .corporate-dashboard .page-context-bar { align-items: flex-start; flex-direction: column; gap: 4px; }
+  .corporate-dashboard .card { padding: 14px; }
+  .corporate-dashboard .kpi { min-height: 96px; }
+  .corporate-dashboard .kpi .value,
+  .corporate-dashboard .value { font-size: 22px; }
+  .corporate-dashboard .chart-card { min-height: 280px; }
+  .corporate-dashboard .chart-title h2 { font-size: 15px; }
+  .corporate-dashboard .table th,
+  .corporate-dashboard .table td { padding: 9px; }
+}
+@media (max-width: 760px) {
+  .corporate-dashboard .main-content,
+  .corporate-dashboard .grid,
+  .corporate-dashboard .card,
+  .corporate-dashboard .chart-card { width: 100%; max-width: 100%; min-width: 0; }
+  .corporate-dashboard .main-content,
+  .corporate-dashboard .chart-card { overflow: hidden; }
+  .corporate-dashboard .executive-kpis { grid-template-columns: minmax(0,1fr) !important; }
+  .corporate-dashboard .executive-filter-card .control-row { grid-template-columns: minmax(0,1fr); }
+  .corporate-dashboard .executive-filter-card .control-row label,
+  .corporate-dashboard .executive-filter-card .quick-range,
+  .corporate-dashboard .executive-filter-card .page-note { grid-column: 1; }
+  .corporate-dashboard .control-row input,
+  .corporate-dashboard .control-row select,
+  .corporate-dashboard input[type="date"],
+  .corporate-dashboard input[type="month"] { min-width: 0; max-width: 100%; }
+  .corporate-dashboard canvas { max-width: 100% !important; }
+}

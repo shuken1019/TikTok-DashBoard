@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TikTok Shop US 대시보드 - 상품별 매출</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <link rel="stylesheet" href="assets/styles.css?v=product-traffic-20260726" />
+  <link rel="stylesheet" href="assets/styles.css?v=corporate-20260808-2" />
 </head>
 <body>
   <section class="layout">
@@ -151,7 +151,7 @@
     </div>
   </section>
 
-  <script src="assets/nav.js?v=dashboard-20260724"></script>
+  <script src="assets/nav.js?v=corporate-20260808"></script>
   <script src="assets/data-store.js?v=data-sync-20260724"></script>
   <script src="assets/product-sales-data.js"></script>
   <script src="assets/product-costs-data.js"></script>
@@ -222,7 +222,7 @@
       const change = peak.month === latest.month
         ? ' 최신 기간이 현재 최고 매출 구간입니다.'
         : ` 최고점 이후 최신 GMV는 ${((latest.gmv / peak.gmv - 1) * 100).toFixed(1)}% 변했습니다.`;
-      document.getElementById('trafficInsight').innerHTML = `<strong>자동 분석</strong><p>${peak.month} GMV가 ${formatExactCurrency(peak.gmv)}로 최고점이며 당시 CTR은 ${peak.ctr.toFixed(2)}%입니다.${comparison}${change}</p>`;
+      document.getElementById('trafficInsight').innerHTML = `<strong>데이터 요약</strong><p>${peak.month} GMV가 ${formatExactCurrency(peak.gmv)}로 최고점이며 당시 CTR은 ${peak.ctr.toFixed(2)}%입니다.${comparison}${change}</p>`;
       document.getElementById('productTrafficTableBody').innerHTML = rows.map(row => `<tr>
         <td>${row.month}</td><td>${formatExactCurrency(row.gmv)}</td><td>${row.orders.toLocaleString('en-US')}</td>
         <td>${row.itemsSold.toLocaleString('en-US')}</td><td>${row.impressions.toLocaleString('en-US')}</td>

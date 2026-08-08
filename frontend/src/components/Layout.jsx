@@ -19,9 +19,13 @@ function Layout() {
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
+    document.body.classList.add('corporate-dashboard');
     const handleScroll = () => setShowBackToTop(window.scrollY > 500);
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.body.classList.remove('corporate-dashboard');
+    };
   }, []);
 
   return (

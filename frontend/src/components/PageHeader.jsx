@@ -37,11 +37,9 @@ function PageHeader({ title, subtitle, children }) {
           </div>
         </div>
         <div className="top-date-summary">
-          <span className="top-date-icon">▣</span>
           <div>
-            <small>TODAY</small>
+            <small>기준일</small>
             <strong>{todayLabel}</strong>
-            <em>오늘 기준으로 조회 기간을 설정합니다.</em>
           </div>
         </div>
         {children}

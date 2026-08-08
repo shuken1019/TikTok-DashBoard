@@ -37,13 +37,32 @@ function addTodaySummary() {
   const summary = document.createElement('div');
   summary.className = 'top-date-summary';
   summary.innerHTML = `
-    <span class="top-date-icon">▣</span>
-    <div><small>TODAY</small><strong>${dateText}</strong><em>오늘 기준으로 조회 기간을 설정합니다.</em></div>
+    <div><small>기준일</small><strong>${dateText}</strong></div>
   `;
   const brand = topBar.querySelector('.brand');
   if (brand) brand.insertAdjacentElement('afterend', summary);
   else topBar.appendChild(summary);
 }
+
+function applyCorporateChartDefaults() {
+  if (!window.Chart) return;
+  Chart.defaults.color = '#667085';
+  Chart.defaults.borderColor = '#eaecf0';
+  Chart.defaults.font.family = 'Inter, Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+  Chart.defaults.font.size = 11;
+  Chart.defaults.plugins.legend.labels.usePointStyle = true;
+  Chart.defaults.plugins.legend.labels.pointStyle = 'circle';
+  Chart.defaults.plugins.legend.labels.boxWidth = 8;
+  Chart.defaults.plugins.legend.labels.boxHeight = 8;
+  Chart.defaults.plugins.legend.labels.padding = 16;
+  Chart.defaults.plugins.tooltip.backgroundColor = '#101828';
+  Chart.defaults.plugins.tooltip.cornerRadius = 6;
+  Chart.defaults.plugins.tooltip.padding = 10;
+  Chart.defaults.plugins.tooltip.titleFont = { size: 11, weight: '600' };
+  Chart.defaults.plugins.tooltip.bodyFont = { size: 11 };
+}
+
+applyCorporateChartDefaults();
 
 function highlightSidebarCategory(navId) {
   clearSidebarHighlight();
@@ -215,6 +234,7 @@ function bindCardLinks() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  document.body.classList.add('corporate-dashboard');
   removeSidebarToggles();
   improveSidebar();
   markActiveNavLink();
