@@ -327,9 +327,9 @@
         data: {
           labels: visibleRows.map(r => r.label),
           datasets: [
-            { label: '매출', hidden: !outlookSeriesVisibility[0], data: visibleRows.map(r => r.actual ? r.revenue : r.targetRevenue), borderColor: '#2563eb', backgroundColor: '#2563eb', segment: { borderDash: dashSegment }, tension: 0, pointRadius: 3 },
-            { label: '광고비 / 마케팅 예산', hidden: !outlookSeriesVisibility[1], data: visibleRows.map(r => r.adSpend), borderColor: '#7c3aed', backgroundColor: '#7c3aed', segment: { borderDash: dashSegment }, tension: 0, pointRadius: 3 },
-            { label: '총비용', hidden: !outlookSeriesVisibility[2], data: visibleRows.map(r => r.totalCost), borderColor: '#f59e0b', backgroundColor: '#f59e0b', segment: { borderDash: dashSegment }, tension: 0, pointRadius: 3 },
+            { label: '매출', hidden: !outlookSeriesVisibility[0], data: visibleRows.map(r => r.actual ? r.revenue : r.targetRevenue), borderColor: '#2563eb', backgroundColor: '#2563eb', segment: { borderDash: dashSegment }, spanGaps: true, tension: 0, pointRadius: 3 },
+            { label: '광고비 / 마케팅 예산', hidden: !outlookSeriesVisibility[1], data: visibleRows.map(r => r.adSpend), borderColor: '#7c3aed', backgroundColor: '#7c3aed', segment: { borderDash: dashSegment }, spanGaps: true, tension: 0, pointRadius: 3 },
+            { label: '총비용', hidden: !outlookSeriesVisibility[2], data: visibleRows.map(r => r.totalCost), borderColor: '#f59e0b', backgroundColor: '#f59e0b', segment: { borderDash: dashSegment }, spanGaps: true, tension: 0, pointRadius: 3 },
             {
               label: '추정 순수익',
               hidden: !outlookSeriesVisibility[3],
@@ -340,6 +340,7 @@
                 borderDash: dashSegment,
                 borderColor: ctx => ctx.p1.parsed.y < 0 ? '#b91c1c' : '#047857'
               },
+              spanGaps: true,
               fill: false,
               tension: 0,
               borderWidth: 5,
