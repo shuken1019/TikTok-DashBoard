@@ -2,7 +2,7 @@
 let forecastData = loadData(DATA_KEYS.forecast, defaultForecastData);
 let startDate = '2026-07-01';
 let endDate = campaignDailyLastDate;
-let revenueAdChart, profitChart, summaryTrendChart, forecastChart;
+let revenueAdChart, profitChart, forecastChart;
 
 const campaignDailyMap = new Map(campaignOverviewDaily.map(item => [item.date, item]));
 const financialFirstDate = campaignDailyFirstDate;
@@ -103,14 +103,14 @@ function buildAutoInsight() {
   const adGrowth = previous ? percentChange(totals.cost, previous.cost) : null;
 
   const headline = campaignRoi < 1
-    ? '광고비 대비 캠페인 귀속 매출이 낮습니다.'
-    : '캠페인 귀속 매출이 광고비보다 높습니다.';
+    ? '광고비가 캠페인 매출보다 큽니다.'
+    : '캠페인 매출이 광고비보다 큽니다.';
   const change = previous
-    ? `직전 동일 기간 대비 Gross revenue ${signedPercent(revenueGrowth)} · Cost ${signedPercent(adGrowth)}`
-    : '이전 동일 길이의 비교 기간이 없어 증감률을 표시하지 않습니다.';
-  let action = '선택 기간을 바꾸면 같은 날짜 기준으로 우선 조치를 다시 계산합니다.';
+    ? `직전 기간 대비 매출 ${signedPercent(revenueGrowth)} · 광고비 ${signedPercent(adGrowth)}`
+    : '비교 가능한 이전 기간이 없습니다.';
+  let action = '날짜를 바꾸면 같은 기준으로 다시 계산합니다.';
   if (totals.cost && campaignRoi < 1) {
-    action = `광고비 $1당 캠페인 귀속 매출 $${campaignRoi.toFixed(2)}입니다. ROI 1.0x 미만 캠페인의 예산 조정이 우선입니다.`;
+    action = `ROI ${campaignRoi.toFixed(2)}x입니다. 1.0x 미만 캠페인의 예산을 먼저 점검하세요.`;
   }
   return { headline, revenueGap, costMultiple, campaignRoi, change, action, status: campaignRoi >= 1 ? 'good' : campaignRoi >= 0.8 ? 'warn' : 'bad' };
 }
@@ -136,17 +136,17 @@ function renderKPIs() {
   document.getElementById('kpiAdSpend').textContent = formatOfficialCurrency(totals.cost);
   document.getElementById('kpiTotalCost').textContent = `${totals.orders.toLocaleString('en-US')}건`;
   document.getElementById('kpiBreakEven').textContent = `${roi.toFixed(2)}x`;
-  document.getElementById('kpiRevenueDesc').textContent = `${startDate} ~ ${endDate} Campaign Gross revenue`;
-  document.getElementById('kpiAdSpendDesc').textContent = `${startDate} ~ ${endDate} Campaign Cost`;
-  document.getElementById('kpiTotalCostDesc').textContent = `Cost per order ${formatOfficialCurrency(cpa)}`;
+  document.getElementById('kpiRevenueDesc').textContent = '광고 귀속 매출';
+  document.getElementById('kpiAdSpendDesc').textContent = '광고 집행액';
+  document.getElementById('kpiTotalCostDesc').textContent = `주문당 ${formatOfficialCurrency(cpa)}`;
   document.getElementById('q3Revenue').textContent = formatCurrency(forecastData.q3.revenue);
   document.getElementById('q4Revenue').textContent = formatCurrency(forecastData.q4.revenue);
   document.getElementById('q3Profit').textContent = formatCurrency(forecastData.q3.profit);
   document.getElementById('q4Profit').textContent = formatCurrency(forecastData.q4.profit);
   const reconciliationNote = startDate <= '2026-07-27' && endDate >= '2026-07-27'
-    ? ' · Cost 일별 합계에 공식 총계 보정 +$0.88 포함'
+    ? ' · 광고비 공식 총계 보정 +$0.88 포함'
     : '';
-  document.getElementById('financialRangeLabel').textContent = `${startDate} ~ ${endDate} · ${selectedDays}일 · Campaign Overview 기준${reconciliationNote}`;
+  document.getElementById('financialRangeLabel').textContent = `${startDate} ~ ${endDate} · ${selectedDays}일${reconciliationNote}`;
   renderAutoInsight();
 }
 
@@ -164,8 +164,8 @@ function chartOptions() {
 
 function createCharts() {
   revenueAdChart = new Chart(document.getElementById('revenueAdChart'), { type: 'bar', data: { labels: [], datasets: [
-    { label: 'Gross revenue', data: [], backgroundColor: '#2563eb' },
-    { label: 'Cost', data: [], backgroundColor: '#f59e0b' },
+    { label: '캠페인 매출', data: [], backgroundColor: '#2563eb' },
+    { label: '광고비', data: [], backgroundColor: '#f59e0b' },
   ] }, options: chartOptions() });
   profitChart = new Chart(document.getElementById('profitChart'), { type: 'line', data: { labels: [], datasets: [
     { label: 'Campaign ROI', data: [], borderColor: '#7c3aed', backgroundColor: 'rgba(124,58,237,0.12)', fill: true, tension: 0, pointRadius: 4 },
@@ -177,10 +177,6 @@ function createCharts() {
     },
     scales: { y: { beginAtZero: true, ticks: { callback: value => `${Number(value).toFixed(2)}x` } } },
   } });
-  summaryTrendChart = new Chart(document.getElementById('summaryTrendChart'), { data: { labels: [], datasets: [
-    { type: 'bar', label: 'Gross revenue', data: [], backgroundColor: '#2563eb' },
-    { type: 'bar', label: 'Cost', data: [], backgroundColor: '#f59e0b' },
-  ] }, options: chartOptions() });
   forecastChart = new Chart(document.getElementById('forecastChart'), { type: 'bar', data: {
     labels: ['3분기', '4분기'],
     datasets: [
@@ -197,8 +193,8 @@ function refreshAll() {
   const chartRows = groupRowsForChart(selectedRows());
   const labels = chartRows.map(item => item.label);
   const granularity = chartRows.length === selectedRows().length ? '일별' : '월별';
-  document.getElementById('revenueAdRange').textContent = `${startDate} ~ ${endDate} · ${granularity} Campaign Overview 자동 집계`;
-  document.getElementById('profitRange').textContent = `${startDate} ~ ${endDate} · ${granularity} Gross revenue ÷ Cost`;
+  document.getElementById('revenueAdRange').textContent = `${startDate} ~ ${endDate} · ${granularity}`;
+  document.getElementById('profitRange').textContent = `${startDate} ~ ${endDate} · ${granularity}`;
   document.getElementById('campaignOverviewCard').dataset.href = `campaign-performance-detail.html?start=${startDate}&end=${endDate}`;
   document.getElementById('campaignRoiCard').dataset.href = `campaign-performance-detail.html?start=${startDate}&end=${endDate}`;
 
@@ -210,11 +206,6 @@ function refreshAll() {
   profitChart.data.labels = labels;
   profitChart.data.datasets[0].data = chartRows.map(item => item.cost ? item.grossRevenue / item.cost : 0);
   profitChart.update();
-
-  summaryTrendChart.data.labels = labels;
-  summaryTrendChart.data.datasets[0].data = chartRows.map(item => item.grossRevenue);
-  summaryTrendChart.data.datasets[1].data = chartRows.map(item => item.cost);
-  summaryTrendChart.update();
 
   forecastChart.data.datasets[0].data = [forecastData.q3.revenue, forecastData.q4.revenue];
   forecastChart.data.datasets[1].data = [forecastData.q3.adSpend, forecastData.q4.adSpend];
@@ -267,5 +258,12 @@ function initDateRangeInputs() {
 createCharts();
 initDateRangeInputs();
 refreshAll();
+document.getElementById('dashboardMore')?.addEventListener('toggle', event => {
+  if (!event.currentTarget.open) return;
+  requestAnimationFrame(() => {
+    profitChart.resize();
+    forecastChart.resize();
+  });
+});
 onDataChange([DATA_KEYS.forecast], refreshAll);
 onPageRestore(refreshAll);

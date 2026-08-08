@@ -64,7 +64,7 @@ const PAGE_NAV_MAP = {
 };
 
 const PAGE_CONTEXT = {
-  'tiktok_shop_dashboard.html': { tone: 'actual', label: 'Campaign 공식 실적', detail: 'Cost·Gross revenue·SKU 주문·ROI와 Q3/Q4 목표 계획' },
+  'tiktok_shop_dashboard.html': { tone: 'actual', label: '캠페인 실적', detail: '광고 데이터 7/27 기준' },
   'revenue-ads-detail.html': { tone: 'actual', label: '통합 실제 데이터', detail: 'Shop Analytics GMV + Campaign overview 광고비' },
   'profit-loss-detail.html': { tone: 'actual', label: '실적 + 배부 비용', detail: '실제 GMV·광고비에 비광고 비용을 매출 비중으로 배부' },
   'forecast-detail.html': { tone: 'plan', label: '계획 데이터', detail: '3Q·4Q Forecast · 실제 실적과 구분' },
@@ -117,11 +117,11 @@ function improveSidebar() {
   }
 
   const groups = [
-    ['nav-guide', 'LEARN'],
-    ['nav-total', 'PERFORMANCE'],
-    ['nav-product', 'COMMERCE'],
-    ['nav-affiliate', 'GROWTH'],
-    ['nav-admin', 'SYSTEM']
+    ['nav-guide', '도움말'],
+    ['nav-total', '개요'],
+    ['nav-product', '운영'],
+    ['nav-affiliate', '성장'],
+    ['nav-admin', '관리']
   ];
   groups.forEach(([id, label]) => {
     const target = document.getElementById(id);
@@ -132,15 +132,30 @@ function improveSidebar() {
     nav.insertBefore(groupLabel, target);
   });
 
-  if (affiliateLink) affiliateLink.textContent = '어필리에이터';
+  const conciseLabels = {
+    'nav-guide': '가이드',
+    'nav-total': '전체 현황',
+    'nav-data-center': '데이터 상태',
+    'nav-product': '상품',
+    'nav-product-leaderboard': '상품 순위',
+    'nav-inventory': '재고',
+    'nav-affiliate': '어필리에이터',
+    'nav-live': '라이브',
+    'nav-campaigns': '캠페인',
+    'nav-ads': '광고',
+    'nav-admin': '설정'
+  };
+  Object.entries(conciseLabels).forEach(([id, label]) => {
+    const link = document.getElementById(id);
+    if (link) link.textContent = label;
+  });
 
   const footer = document.querySelector('.sidebar-footer');
   if (footer) {
     footer.innerHTML = `
-      <span class="sidebar-status-label"><i></i> DATA STATUS</span>
-      <strong>Shop 7/26 · Campaign 7/27 · Affiliate Core 7/25 · 상세 7/24</strong>
-      <p>운영 가능 · 데이터센터 확인 필요 4건</p>
-      <a href="data-center.html">데이터 상태 보기 →</a>
+      <span class="sidebar-status-label"><i></i> 데이터 기준</span>
+      <strong>매출 8/7 · 광고 7/27</strong>
+      <a href="data-center.html">상세 확인 →</a>
     `;
   }
 }

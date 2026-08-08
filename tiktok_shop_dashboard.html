@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TikTok Shop US 대시보드 - 전체 매출</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <link rel="stylesheet" href="assets/styles.css?v=top-refresh-20260726" />
+  <link rel="stylesheet" href="assets/styles.css?v=executive-simple-20260808" />
 </head>
-<body>
+<body class="executive-dashboard">
   <section class="layout">
     <div class="app-shell">
       <aside class="sidebar" id="sidebar">
@@ -46,17 +46,17 @@
           <div class="brand">
             <div class="logo">TT</div>
             <div>
-              <h1>TikTok Shop US Campaign 대시보드</h1>
-              <p>Campaign Overview의 공식 Cost·Gross revenue·주문·ROI를 날짜별로 확인합니다.</p>
+              <h1>TikTok Shop 경영 대시보드</h1>
+              <p>매출·광고 효율·계획을 한눈에 확인합니다.</p>
             </div>
           </div>
           <div class="meta">
-            <strong>데이터 출처</strong>
-            <p>Campaign overview 원본 · 2026-07-27 공식 총계 보정</p>
+            <strong>데이터 기준</strong>
+            <p>매출 8/7 · 광고 7/27</p>
           </div>
         </div>
 
-        <section class="card">
+        <section class="card executive-filter-card">
           <div class="control-row" style="margin-top: 0;">
             <label>시작일<input type="date" id="startDateInput"></label>
             <label>종료일<input type="date" id="endDateInput"></label>
@@ -68,172 +68,108 @@
           </div>
         </section>
 
-        <section class="grid cards-4" style="margin-top: 20px;">
-          <article class="card kpi">
-            <span class="label">Campaign Gross revenue</span>
+        <section class="grid cards-4 executive-kpis">
+          <article class="card kpi executive-kpi">
+            <span class="label">캠페인 매출 <span class="term-help" tabindex="0" data-tooltip="광고에 귀속된 Gross revenue입니다. 쇼핑몰 전체 Total Revenue와는 다른 지표예요.">?</span></span>
             <span class="value" id="kpiRevenue">$0</span>
-            <span class="desc" id="kpiRevenueDesc">Campaign overview 귀속 매출</span>
+            <span class="desc" id="kpiRevenueDesc">선택 기간 귀속 매출</span>
           </article>
-          <article class="card kpi">
-            <span class="label">Campaign Cost</span>
+          <article class="card kpi executive-kpi">
+            <span class="label">광고비</span>
             <span class="value" id="kpiAdSpend">$0</span>
-            <span class="desc" id="kpiAdSpendDesc">Campaign overview 일별 합계</span>
+            <span class="desc" id="kpiAdSpendDesc">선택 기간 집행액</span>
           </article>
-          <article class="card kpi">
-            <span class="label">SKU 주문</span>
+          <article class="card kpi executive-kpi">
+            <span class="label">주문</span>
             <span class="value" id="kpiTotalCost">$0</span>
-            <span class="desc" id="kpiTotalCostDesc">Cost per order</span>
+            <span class="desc" id="kpiTotalCostDesc">주문당 광고비</span>
           </article>
-          <article class="card kpi">
-            <span class="label">Campaign ROI</span>
+          <article class="card kpi executive-kpi">
+            <span class="label">광고 ROI <span class="term-help" tabindex="0" data-tooltip="광고비 $1당 발생한 캠페인 귀속 매출입니다.">?</span></span>
             <span class="value" id="kpiBreakEven">0.00x</span>
-            <span class="desc">Gross revenue ÷ Cost</span>
+            <span class="desc">캠페인 매출 ÷ 광고비</span>
           </article>
         </section>
 
-        <section class="card finance-entry-section" style="margin-top: 20px;">
-          <div class="chart-title">
-            <div>
-              <span class="eyebrow">FINANCIAL DETAIL</span>
-              <h2>재무·손익 상세 분석</h2>
-              <small>실적, Forecast, 적자·흑자, 손익분기점을 각각 클릭해 확인하세요.</small>
-            </div>
-            <span class="finance-period-badge">2025.11 → 2027.12</span>
-          </div>
-          <div class="finance-entry-grid">
-            <a href="performance-outlook-detail.html" class="finance-entry-card primary">
-              <span>01 · 실적 + 계획</span>
-              <strong>2025.11~2027.12 매출·광고비·Forecast</strong>
-              <small>월별 매출·총비용·순이익과 적자→흑자 전환 전망</small>
-              <b>통합 전망 보기 →</b>
-            </a>
-            <a href="profit-loss-detail.html" class="finance-entry-card">
-              <span>02 · 손익</span>
-              <strong>월별 순이익 / 적자·흑자</strong>
-              <small>기간 선택, 마진율, 비용 구조와 월별 손익 상태</small>
-              <b>손익 상세 보기 →</b>
-            </a>
-            <a href="breakeven-detail.html" class="finance-entry-card">
-              <span>03 · 시뮬레이션</span>
-              <strong>손익분기점 분석</strong>
-              <small>판매가·원가·부대비용·광고비 기준 필요 판매량 계산</small>
-              <b>손익분기점 보기 →</b>
-            </a>
-            <a href="forecast-detail.html" class="finance-entry-card">
-              <span>04 · 계획</span>
-              <strong>3/4분기 Forecast 상세</strong>
-              <small>목표 매출·광고비·모델 순이익과 목표 대비 페이스</small>
-              <b>Forecast 보기 →</b>
-            </a>
-          </div>
-        </section>
-
-        <section class="grid cards-3" style="margin-top: 20px;">
-          <article class="card linked chart-card" id="campaignOverviewCard" data-href="revenue-ads-detail.html">
-            <div class="chart-title"><div><h2>Campaign Gross revenue vs Cost</h2><small id="revenueAdRange">선택 기간 · 공식 Campaign Overview 기준</small></div></div>
+        <section class="grid executive-main-grid">
+          <article class="card linked chart-card executive-hero-chart" id="campaignOverviewCard" data-href="revenue-ads-detail.html">
+            <div class="chart-title"><div><h2>캠페인 매출과 광고비</h2><small id="revenueAdRange">선택 기간 · Campaign Overview 기준</small></div><b class="detail-link">상세 →</b></div>
             <canvas id="revenueAdChart"></canvas>
           </article>
-          <article class="card linked chart-card" id="campaignRoiCard" data-href="revenue-ads-detail.html">
-            <div class="chart-title"><div><h2>Campaign ROI 추이</h2><small id="profitRange">Gross revenue ÷ Cost</small></div></div>
-            <canvas id="profitChart"></canvas>
-          </article>
-          <article class="card linked chart-card" data-href="forecast-detail.html">
-            <div class="chart-title"><div><h2>3/4분기 Forecast</h2><small>목표 매출·마케팅 예산·모델 순이익 · 클릭하면 상세 페이지</small></div></div>
-            <canvas id="forecastChart"></canvas>
-          </article>
-        </section>
-
-        <section class="grid cards-2" style="margin-top: 20px;">
-          <article class="card chart-card">
-            <div class="chart-title"><div><h2>Campaign 실적 요약</h2><small>공식 Gross revenue와 Cost만 비교합니다.</small></div></div>
-            <canvas id="summaryTrendChart"></canvas>
-          </article>
-          <article class="card ai-insight-card">
+          <article class="card ai-insight-card executive-decision-card">
             <div class="chart-title">
               <div>
-                <span class="eyebrow">AUTO INSIGHT</span>
-                <h2>AI 자동 경영 분석</h2>
-                <small>기간과 데이터가 바뀌면 즉시 다시 계산됩니다.</small>
+                <h2>핵심 판단</h2>
+                <small>선택 기간 자동 계산</small>
               </div>
-              <span id="autoInsightStatus" class="badge bad">규칙 기반 · 실시간</span>
+              <span id="autoInsightStatus" class="badge bad">자동 계산</span>
             </div>
             <p id="autoInsightHeadline" class="ai-insight-headline">선택 기간 데이터를 분석하고 있습니다.</p>
             <div class="ai-insight-metrics">
               <div>
-                <span>광고 매출 격차</span>
+                <span>매출−광고비</span>
                 <strong id="autoInsightProfit">$0</strong>
               </div>
               <div>
-                <span>Cost ÷ Gross revenue</span>
+                <span>광고비 ÷ 매출</span>
                 <strong id="autoInsightCostRatio">0.00x</strong>
               </div>
               <div>
-                <span class="metric-term">Campaign ROI <span class="term-help" tabindex="0" role="button" aria-label="Campaign ROI 설명" data-tooltip="광고비 $1당 얼마의 캠페인 매출이 발생했는지 보여줘요.">?</span></span>
+                <span class="metric-term">광고 ROI</span>
                 <strong id="autoInsightRoi">0.00x</strong>
               </div>
             </div>
             <div class="ai-insight-list">
               <div class="ai-insight-item">
-                <span>최근 변화</span>
+                <span>비교</span>
                 <p id="autoInsightChange">최근 월의 증감률을 계산하고 있습니다.</p>
               </div>
               <div class="ai-insight-item">
-                <span>우선 조치</span>
+                <span>조치</span>
                 <p id="autoInsightAction">우선순위가 높은 개선 항목을 찾고 있습니다.</p>
               </div>
             </div>
-            <div class="ai-insight-footer">
-              <span>광고 매출 격차는 순이익이 아닙니다 · 원가·수수료·물류비 제외</span>
-              <strong>광고 효율 상세 보기 →</strong>
-            </div>
+            <p class="executive-caveat">※ 매출−광고비는 순이익이 아닙니다.</p>
           </article>
         </section>
 
-        <section class="card" style="margin-top: 20px;">
-          <div class="chart-title"><h2>Forecast 요약</h2><small>3Q / 4Q 기대성과</small></div>
-          <div class="grid cards-4" style="margin-top: 16px;">
-            <article class="card">
-              <span class="label">3분기 매출</span>
-              <p id="q3Revenue" class="value">$0</p>
-            </article>
-            <article class="card">
-              <span class="label">4분기 매출</span>
-              <p id="q4Revenue" class="value">$0</p>
-            </article>
-            <article class="card">
-              <span class="label">3분기 순이익</span>
-              <p id="q3Profit" class="value">$0</p>
-            </article>
-            <article class="card">
-              <span class="label">4분기 순이익</span>
-              <p id="q4Profit" class="value">$0</p>
-            </article>
+        <section class="card executive-detail-links">
+          <div class="chart-title"><div><h2>상세 분석</h2><small>필요한 항목만 선택하세요.</small></div></div>
+          <div class="executive-link-grid">
+            <a href="performance-outlook-detail.html"><strong>실적·계획</strong><span>월별 추이와 Forecast</span><b>→</b></a>
+            <a href="profit-loss-detail.html"><strong>손익</strong><span>적자·흑자와 비용</span><b>→</b></a>
+            <a href="breakeven-detail.html"><strong>손익분기점</strong><span>필요 매출·판매량</span><b>→</b></a>
+            <a href="campaign-performance-detail.html"><strong>광고 상세</strong><span>일별 ROI와 주문</span><b>→</b></a>
           </div>
         </section>
 
-        <section class="grid cards-4" style="margin-top: 20px;">
-          <article class="card linked" data-nav="nav-product" data-href="products.html">
-            <div class="chart-title"><h2>상품별 매출</h2></div>
-            <p class="page-note">상품 선택, 날짜별 매출, 마진 구조까지 상세 페이지에서 확인하세요.</p>
-          </article>
-          <article class="card linked" data-nav="nav-inventory" data-href="inventory.html">
-            <div class="chart-title"><h2>재고관리</h2></div>
-            <p class="page-note">재고 리스크와 안전 재고 현황을 확인하세요.</p>
-          </article>
-          <article class="card linked" data-nav="nav-affiliate" data-href="affiliate.html">
-            <div class="chart-title"><h2>어필리에이터 관리</h2></div>
-            <p class="page-note">파트너 수수료와 캠페인 성과를 확인하세요.</p>
-          </article>
-          <article class="card linked" data-nav="nav-ads" data-href="ads.html">
-            <div class="chart-title"><h2>광고관리</h2></div>
-            <p class="page-note">비용 구조와 광고 집행 현황을 확인하세요.</p>
-          </article>
-        </section>
+        <details class="card dashboard-more" id="dashboardMore">
+          <summary>추가 지표와 계획 보기</summary>
+          <div class="grid cards-2 dashboard-more-grid">
+            <article class="card linked chart-card" id="campaignRoiCard" data-href="revenue-ads-detail.html">
+              <div class="chart-title"><div><h2>광고 ROI 추이</h2><small id="profitRange">캠페인 매출 ÷ 광고비</small></div></div>
+              <canvas id="profitChart"></canvas>
+            </article>
+            <article class="card linked chart-card" data-href="forecast-detail.html">
+              <div class="chart-title"><div><h2>분기 계획</h2><small>매출·광고비·순이익</small></div></div>
+              <canvas id="forecastChart"></canvas>
+            </article>
+          </div>
+          <div class="grid cards-4 forecast-mini-grid">
+            <article><span>3분기 매출</span><strong id="q3Revenue">$0</strong></article>
+            <article><span>4분기 매출</span><strong id="q4Revenue">$0</strong></article>
+            <article><span>3분기 순이익</span><strong id="q3Profit">$0</strong></article>
+            <article><span>4분기 순이익</span><strong id="q4Profit">$0</strong></article>
+          </div>
+          <nav class="executive-secondary-nav" aria-label="운영 상세">
+            <a href="products.html">상품</a><a href="inventory.html">재고</a><a href="affiliate.html">어필리에이터</a><a href="live.html">라이브</a><a href="campaigns.html">캠페인</a><a href="ads.html">광고</a>
+          </nav>
+        </details>
       </div>
     </div>
   </section>
 
-  <script src="assets/nav.js?v=campaign-audit-20260727"></script>
+  <script src="assets/nav.js?v=executive-simple-20260808"></script>
   <script src="assets/data-store.js?v=budget-plan-20260730"></script>
   <script src="assets/forecast-data.js?v=budget-plan-20260730"></script>
   <script src="assets/cost-items-data.js?v=data-sync-20260724"></script>
@@ -430,6 +366,6 @@
     initMonthRangeInputs();
     onDataChange([DATA_KEYS.monthly, DATA_KEYS.forecast], refreshAll);
   </script>
-  <script src="assets/total-revenue-dashboard.js?v=20260727-2"></script>
+  <script src="assets/total-revenue-dashboard.js?v=executive-simple-20260808"></script>
 </body>
 </html>
