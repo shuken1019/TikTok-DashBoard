@@ -81,7 +81,7 @@ function CampaignsPage() {
               <span>{item.start.slice(0, 7).replace('-', '.')}</span>
               <strong>{item.name}</strong>
               <small>{shortDate(item.start)} ~ {shortDate(item.end)}</small>
-              <b>{item.status === 'ongoing' ? '진행 중' : '예정'}</b>
+              <b>{item.status === 'ongoing' ? '진행 중' : item.status === 'completed' ? '종료' : '예정'}</b>
             </button>
           ))}
         </div>
@@ -93,15 +93,15 @@ function CampaignsPage() {
               <p>{selectedCampaign.description}</p>
             </div>
             <div><span>캠페인 기간</span><strong>{selectedCampaign.start} ~ {selectedCampaign.end}</strong></div>
-            <div><span>현재 상태</span><strong className={selectedCampaign.status}>{selectedCampaign.status === 'ongoing' ? '진행 중' : '예정'}</strong></div>
+            <div><span>현재 상태</span><strong className={selectedCampaign.status}>{selectedCampaign.status === 'ongoing' ? '진행 중' : selectedCampaign.status === 'completed' ? '종료' : '예정'}</strong></div>
           </div>
         )}
       </section>
 
       <section className="card campaign-performance-card">
         <div className="chart-title">
-          <div><span className="eyebrow">ONGOING · SUMMER SALE</span><h2>현재 캠페인 성과</h2><small>2026-07-22 ~ 2026-08-02 · {summerSalePerformance.asOf} 화면 기준</small></div>
-          <span className="badge good">진행률 {campaignProgress.toFixed(1)}%</span>
+          <div><span className="eyebrow">COMPLETED · SUMMER SALE</span><h2>최근 종료 캠페인 성과</h2><small>2026-07-22 ~ 2026-08-02 · 성과 수치는 {summerSalePerformance.asOf} 화면 기준</small></div>
+          <span className="badge warn">8/8 신규 행 없음</span>
         </div>
         <div className="campaign-progress"><span style={{ width: `${campaignProgress}%` }} /></div>
         <div className="grid campaign-core-metrics">
@@ -141,7 +141,7 @@ function CampaignsPage() {
       </section>
 
       <section className="card campaign-table-card">
-        <div className="chart-title"><div><h2>현재 등록된 캠페인</h2><small>캠페인 관리 화면에서 확인된 진행 중 항목</small></div><span className="badge good">{ongoing.length}개 진행 중</span></div>
+        <div className="chart-title"><div><h2>등록 캠페인 상태</h2><small>8/7 기준 일정 상태 · 8/8 Product campaign export는 데이터 행 0건</small></div><span className="badge warn">진행 {ongoing.length} · 종료 {registeredCampaigns.length - ongoing.length}</span></div>
         <div className="table-scroll">
           <table className="table">
             <thead><tr><th>캠페인</th><th>현황</th><th>작전 날짜</th><th>캠페인 유형</th><th>등록 정보</th></tr></thead>
@@ -149,7 +149,7 @@ function CampaignsPage() {
               {registeredCampaigns.map((item) => (
                 <tr key={item.id}>
                   <td><strong>{item.name}</strong></td>
-                  <td><span className="badge good">진행 중</span></td>
+                  <td><span className={`badge ${item.status === 'ongoing' ? 'good' : ''}`}>{item.status === 'ongoing' ? '진행 중' : '종료'}</span></td>
                   <td>{item.start}{item.end ? ` ~ ${item.end}` : '부터'}</td>
                   <td>{item.type}</td>
                   <td>{item.registration}{item.approved !== null ? ` · 승인 ${item.approved}` : ''}</td>

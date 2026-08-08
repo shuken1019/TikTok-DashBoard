@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TikTok Shop US 대시보드 - 2025.11~2026.12 매출·광고비·손익 전망</title>
+  <title>TikTok Shop US 대시보드 - 2025.11~2027.12 매출·광고비·손익 전망</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <link rel="stylesheet" href="assets/styles.css?v=profit-status-guide-20260726" />
 </head>
@@ -46,61 +46,107 @@
           <div class="brand">
             <div class="logo">TT</div>
             <div>
-              <h1>2025.11~2026.12 매출(GMV)·광고비·손익 전망</h1>
-              <p>2025.11~2026.07 실제 실적과 2026.08~12 목표 플랜을 연결해 적자·흑자와 Forecast를 한눈에 확인합니다. ※ 매출은 Shop Analytics <strong>GMV</strong> 기준이며, 전체 매출 페이지의 Campaign Overview "Gross revenue"와는 다른 값입니다.</p>
+              <h1>2025.11~2027.12 매출·광고비·손익 전망</h1>
+              <p>2025.11~2026.07은 월 마감 실적, 2026.08은 8/7까지 정산 <strong>Total Revenue</strong>, 이후는 예산·ROI 플랜입니다.</p>
             </div>
           </div>
         </div>
 
         <p class="page-note"><a href="tiktok_shop_dashboard.html">← 전체 매출로 돌아가기</a></p>
 
+        <section class="detail-edit-bar">
+          <span>2025.11~2026.07은 마감 실적이며, 2026.08 매출은 8/1~8/7(UTC-7) 부분 실적입니다. 8월 비용은 원본 데이터가 없어 손익 계산을 보류합니다.</span>
+          <a href="admin.html#monthly" class="detail-edit-button">월별 데이터 수정</a>
+        </section>
+
         <section class="grid cards-4">
           <article class="card kpi">
-            <span class="label">누적 손익 (11월~7월 실적)</span>
+            <span class="label">① 누적 Total Revenue</span>
+            <span class="value" id="kpiActualRevenueSum">$0</span>
+            <span class="desc">2025.11~2026.08.07 정산 매출</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">② 확인된 누적 광고비</span>
+            <span class="value" id="kpiActualAdSpendSum">$0</span>
+            <span class="desc">Campaign 실제 집행액</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">③ 확인된 누적 총비용</span>
+            <span class="value" id="kpiActualTotalCostSum">$0</span>
+            <span class="desc">광고비 + 기타 비용 배부</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">④ 확인 가능 기간 순수익</span>
             <span class="value" id="kpiCumLoss">$0</span>
             <span class="desc" id="kpiProfitMonths">9개월 중 흑자 0개월</span>
-          </article>
-          <article class="card kpi">
-            <span class="label">3분기 모델 손익 (2026.08~10)</span>
-            <span class="value" id="kpiQ3Trend">$0</span>
-          </article>
-          <article class="card kpi">
-            <span class="label">4분기 모델 손익 (2026.11~12)</span>
-            <span class="value" id="kpiQ4Trend">$0</span>
-          </article>
-          <article class="card kpi">
-            <span class="label">흑자 전환 시점</span>
-            <span class="value" id="kpiBreakevenLabel">12월까지도 없음</span>
-            <span class="desc">목표 플랜(2026.08~12) 기준</span>
           </article>
         </section>
 
         <section class="grid cards-2" style="margin-top: 20px;">
           <article class="card kpi">
-            <span class="label">실적 누적 매출(GMV) (11월~7월)</span>
-            <span class="value" id="kpiActualRevenueSum">$0</span>
-            <span class="desc">실제 발생한 매출(GMV) 합계</span>
+            <span class="label">⑤ 2026.08~2027.12 매출 목표</span>
+            <span class="value" id="kpiTargetRevenueSum">$0.00</span>
+            <span class="desc">17개월 목표 매출 합계</span>
           </article>
           <article class="card kpi">
-            <span class="label">목표 누적 매출(GMV) (2026.08~12)</span>
-            <span class="value" id="kpiTargetRevenueSum">$0</span>
-            <span class="desc">목표 플랜상 매출(GMV) 합계</span>
+            <span class="label">⑥ 2026.08~2027.12 마케팅 예산</span>
+            <span class="value" id="kpiTargetBudgetSum">$0.00</span>
+            <span class="desc">광고비 + 어필리에이터 수수료 기준</span>
+          </article>
+        </section>
+
+        <section class="grid cards-3" style="margin-top: 20px;">
+          <article class="card kpi">
+            <span class="label">2026 하반기 모델 순수익 (8~12월)</span>
+            <span class="value" id="kpiQ3Trend">$0</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">2027 연간 모델 순수익</span>
+            <span class="value" id="kpiQ4Trend">$0</span>
+          </article>
+          <article class="card kpi">
+            <span class="label">흑자 전환 시점</span>
+            <span class="value" id="kpiBreakevenLabel">계산 중</span>
+            <span class="desc">마케팅 예산 + 현재 비광고비 비율 기준</span>
           </article>
         </section>
 
         <section class="card chart-card" style="margin-top: 20px;">
-          <div class="chart-title"><div><h2>매출(GMV) vs 총비용 vs 순이익 (실적 + Forecast)</h2><small>실선 = 2025.11~2026.07 실제 · 점선 = 2026.08~12 목표 플랜</small></div></div>
+          <div class="chart-title"><div><h2>매출 vs 광고비 vs 총비용 vs 추정 순수익</h2><small>광고비와 광고비를 포함한 총비용을 별도 선으로 비교합니다.</small></div></div>
+          <div class="outlook-month-filter" aria-label="그래프 조회 기간">
+            <div>
+              <span>조회 기간</span>
+              <strong id="outlookSelectedPeriod">2025-11 ~ 2027-12</strong>
+            </div>
+            <label>시작월<input type="month" id="outlookStartMonth" min="2025-11" max="2027-12" value="2025-11" onchange="setOutlookMonthRange('start')"></label>
+            <span class="range-separator">→</span>
+            <label>종료월<input type="month" id="outlookEndMonth" min="2025-11" max="2027-12" value="2027-12" onchange="setOutlookMonthRange('end')"></label>
+            <div class="outlook-month-presets">
+              <button type="button" onclick="setOutlookMonthPreset('2025-11', '2027-12')">전체 기간</button>
+              <button type="button" onclick="setOutlookMonthPreset('2026-01', '2026-12')">2026년</button>
+              <button type="button" onclick="setOutlookMonthPreset('2027-01', '2027-12')">2027년</button>
+            </div>
+          </div>
           <div class="outlook-chart-guide" aria-label="그래프 색상과 선 설명">
             <div class="outlook-guide-colors">
-              <span><i class="blue"></i><strong>매출(GMV)</strong></span>
+              <span><i class="blue"></i><strong>매출</strong></span>
+              <span><i class="purple"></i><strong>광고비</strong></span>
               <span><i class="orange"></i><strong>총비용</strong></span>
-              <span><i class="red"></i><strong>순손실 · 적자</strong><small>순이익이 0원 미만</small></span>
-              <span><i class="green"></i><strong>순이익 · 흑자</strong><small>순이익이 0원 이상</small></span>
+              <span><i class="red"></i><strong>순손실 · 적자</strong><small>추정 순수익이 0 미만</small></span>
+              <span><i class="green"></i><strong>순수익 · 흑자</strong><small>추정 순수익이 0 이상</small></span>
             </div>
             <div class="outlook-guide-lines">
               <span><i class="solid"></i>실제 실적</span>
               <span><i class="dashed"></i>목표 플랜</span>
             </div>
+          </div>
+          <div class="outlook-series-toggles" aria-label="그래프 항목 표시 선택">
+            <span>그래프 항목</span>
+            <button type="button" class="active revenue" aria-pressed="true" onclick="toggleOutlookSeries(0, this)">● 매출</button>
+            <button type="button" class="active ad" aria-pressed="true" onclick="toggleOutlookSeries(1, this)">● 광고비·마케팅 예산</button>
+            <button type="button" class="active cost" aria-pressed="true" onclick="toggleOutlookSeries(2, this)">● 총비용</button>
+            <button type="button" class="active profit" aria-pressed="true" onclick="toggleOutlookSeries(3, this)">● 추정 순수익</button>
+            <button type="button" class="show-all" onclick="showAllOutlookSeries()">전체 보기</button>
           </div>
           <div class="outlook-profit-status">
             <strong class="loss" id="outlookActualStatus">● 현재 실적: 계산 중</strong>
@@ -110,22 +156,22 @@
         </section>
 
         <section class="card" style="margin-top: 20px;">
-          <div class="chart-title"><div><h2>이 목표대로 되면?</h2><small>8~12월 월별 목표 매출·광고 예산 기준 해석</small></div></div>
+          <div class="chart-title"><div><h2>이 목표대로 되면?</h2><small>2026.08~2027.12 월별 목표 매출·마케팅 예산 기준</small></div></div>
           <p class="page-note" id="outlookText"></p>
         </section>
 
         <section class="card chart-card" style="margin-top: 20px;">
-          <div class="chart-title"><div><h2>월별 매출(GMV): 실적 vs 목표 (막대그래프)</h2><small>파란 막대 = 실제 매출·GMV(11월~7월) · 주황 막대 = 목표 매출·GMV(2026.08~12)</small></div></div>
+          <div class="chart-title"><div><h2>월별 매출: 실적 vs 목표 (막대그래프)</h2><small>파란 막대 = 실제 매출 · 주황 막대 = 목표 매출(2026.08~2027.12)</small></div></div>
           <canvas id="revenueCompareChart"></canvas>
         </section>
 
         <section class="card" style="margin-top: 20px;">
           <div class="chart-title">
-            <div><h2>월별 / 분기별 상세</h2><small>매출(GMV)·목표매출(GMV)·광고비·예산·총비용·순이익·상태</small></div>
+            <div><h2>월별 / 분기별 상세</h2><small>실적과 목표·예산을 분리해 비교합니다.</small></div>
             <a href="admin.html#monthly">실적·목표 수정하기 →</a>
           </div>
           <table class="table" id="outlookTable">
-            <thead><tr><th>구분</th><th>매출(GMV, 실적)</th><th>목표매출(GMV)</th><th>광고비</th><th>예산</th><th>총비용</th><th>순이익(적자)</th><th>상태</th></tr></thead>
+            <thead><tr><th>구분</th><th>데이터</th><th>매출 실적</th><th>매출 목표</th><th>광고비 실적</th><th>마케팅 예산</th><th>원본 마케팅 ROI</th><th>예산 차감 후</th><th>마케팅 예산 포함 총비용</th><th>추정 순수익</th><th>상태</th></tr></thead>
             <tbody></tbody>
           </table>
           <p class="page-note" style="font-size: 12px;" id="outlookFootnote"></p>
@@ -135,8 +181,8 @@
   </section>
 
   <script src="assets/nav.js?v=dashboard-20260724"></script>
-  <script src="assets/data-store.js?v=data-sync-20260727"></script>
-  <script src="assets/monthly-data.js?v=data-sync-20260727"></script>
+  <script src="assets/data-store.js?v=verified-20260808"></script>
+  <script src="assets/monthly-data.js?v=verified-20260808"></script>
   <script src="assets/cost-items-data.js?v=data-sync-20260724"></script>
   <script>
     const FORECAST_DASH = [6, 4];
@@ -145,6 +191,33 @@
     let costItems = loadData(DATA_KEYS.costItems, defaultCostItems);
     let outlookChart;
     let revenueCompareChart;
+    let outlookStartMonth = '2025-11';
+    let outlookEndMonth = '2027-12';
+    const outlookSeriesVisibility = [true, true, true, true];
+
+    function normalizedOutlookMonth(label) {
+      return String(label || '').replace('.', '-');
+    }
+
+    function setOutlookMonthRange(changed) {
+      const startInput = document.getElementById('outlookStartMonth');
+      const endInput = document.getElementById('outlookEndMonth');
+      if (startInput.value > endInput.value) {
+        if (changed === 'start') endInput.value = startInput.value;
+        else startInput.value = endInput.value;
+      }
+      outlookStartMonth = startInput.value;
+      outlookEndMonth = endInput.value;
+      renderAll();
+    }
+
+    function setOutlookMonthPreset(start, end) {
+      document.getElementById('outlookStartMonth').value = start;
+      document.getElementById('outlookEndMonth').value = end;
+      outlookStartMonth = start;
+      outlookEndMonth = end;
+      renderAll();
+    }
 
     function computeOutlook() {
       const actualRows = monthlyData.filter(hasActualData);
@@ -155,80 +228,112 @@
       const rows = monthlyData.map(m => {
         const isActual = hasActualData(m);
         const hasTarget = m.targetRevenue > 0 || m.targetAdSpend > 0;
+        const targetRevenue = Number(m.targetRevenue) || 0;
+        const targetAdSpend = Number(m.targetAdSpend) || 0;
+        const targetTotalCost = hasTarget ? targetAdSpend + targetRevenue * nonAdRatio : null;
+        const targetProfit = hasTarget ? targetRevenue - targetTotalCost : null;
         if (isActual) {
+          const adSpendKnown = hasMetricData(m, 'adSpend') && m.costStatus !== 'missing';
+          const totalCostKnown = hasCompleteCostData(m);
           return {
-            label: m.month, revenue: m.revenue, targetRevenue: hasTarget ? m.targetRevenue : null,
-            adSpend: m.adSpend, targetAdSpend: hasTarget ? m.targetAdSpend : null,
-            totalCost: m.totalCost, profit: m.revenue - m.totalCost, actual: true
+            label: m.month, revenue: Number(m.revenue) || 0, targetRevenue: hasTarget ? targetRevenue : null,
+            adSpend: adSpendKnown ? Number(m.adSpend) : null, targetAdSpend: hasTarget ? targetAdSpend : null,
+            afterAdProfit: adSpendKnown ? Number(m.revenue) - Number(m.adSpend) : null,
+            totalCost: totalCostKnown ? Number(m.totalCost) : null,
+            profit: totalCostKnown ? Number(m.revenue) - Number(m.totalCost) : null,
+            targetTotalCost, targetProfit, actual: true, costComplete: totalCostKnown,
+            actualThrough: m.actualThrough || null
           };
         }
-        const nonAd = m.targetRevenue * nonAdRatio;
-        const totalCost = m.targetAdSpend + nonAd;
         return {
-          label: m.month, revenue: null, targetRevenue: m.targetRevenue,
-          adSpend: null, targetAdSpend: m.targetAdSpend,
-          totalCost, profit: m.targetRevenue - totalCost, actual: false
+          label: m.month, revenue: null, targetRevenue,
+          adSpend: targetAdSpend, targetAdSpend,
+          afterAdProfit: targetRevenue - targetAdSpend,
+          totalCost: targetTotalCost, profit: targetProfit,
+          targetTotalCost, targetProfit, actual: false, costComplete: true
         };
       });
 
-      const cumulativeLoss = actualRows.reduce((s, m) => s + (m.revenue - m.totalCost), 0);
-      const profitMonths = actualRows.filter(m => m.revenue - m.totalCost >= 0).length;
-      const targetRows = rows.filter(r => !r.actual);
-      const breakevenRow = targetRows.find(r => r.profit >= 0);
-      const q3Profit = targetRows.slice(0, 3).reduce((s, r) => s + r.profit, 0);
-      const q4Profit = targetRows.slice(3, 5).reduce((s, r) => s + r.profit, 0);
+      const completeActualRows = rows.filter(r => r.actual && r.costComplete);
+      const incompleteActualRows = rows.filter(r => r.actual && !r.costComplete);
+      const cumulativeLoss = completeActualRows.reduce((s, r) => s + r.profit, 0);
+      const profitMonths = completeActualRows.filter(r => r.profit >= 0).length;
+      const targetRows = rows.filter(r => Number(r.targetRevenue) > 0 || Number(r.targetAdSpend) > 0);
+      const breakevenRow = targetRows.find(r => r.targetProfit >= 0);
+      const q3Profit = targetRows.filter(r => r.label.startsWith('2026-')).reduce((s, r) => s + r.targetProfit, 0);
+      const q4Profit = targetRows.filter(r => r.label.startsWith('2027-')).reduce((s, r) => s + r.targetProfit, 0);
       const targetRevenueSum = targetRows.reduce((s, r) => s + r.targetRevenue, 0);
+      const targetBudgetSum = targetRows.reduce((s, r) => s + r.targetAdSpend, 0);
+      const actualAdSpendSum = completeActualRows.reduce((s, r) => s + r.adSpend, 0);
+      const actualTotalCostSum = completeActualRows.reduce((s, r) => s + r.totalCost, 0);
 
       return {
         rows, cumulativeLoss, profitMonths, q3Profit, q4Profit, breakevenRow, nonAdRatio,
-        actualRevenueSum: totalRevenue, targetRevenueSum, actualMonthCount: actualRows.length
+        actualRevenueSum: totalRevenue, actualAdSpendSum, actualTotalCostSum,
+        targetRevenueSum, targetBudgetSum, actualMonthCount: actualRows.length,
+        completeActualMonthCount: completeActualRows.length,
+        incompleteActualMonthCount: incompleteActualRows.length
       };
     }
 
     function renderAll() {
       const o = computeOutlook();
+      const visibleRows = o.rows.filter(r => {
+        const month = normalizedOutlookMonth(r.label);
+        return month >= outlookStartMonth && month <= outlookEndMonth;
+      });
+      document.getElementById('outlookSelectedPeriod').textContent = `${outlookStartMonth} ~ ${outlookEndMonth} · ${visibleRows.length}개월`;
 
-      document.getElementById('kpiCumLoss').textContent = formatCurrency(o.cumulativeLoss);
+      document.getElementById('kpiCumLoss').textContent = formatMoney(o.cumulativeLoss);
       document.getElementById('kpiCumLoss').style.color = o.cumulativeLoss < 0 ? '#dc2626' : '#16a34a';
-      document.getElementById('kpiProfitMonths').textContent = `${o.actualMonthCount}개월 중 흑자 ${o.profitMonths}개월`;
+      document.getElementById('kpiProfitMonths').textContent = `${o.completeActualMonthCount}개월 비용 확인 · 흑자 ${o.profitMonths}개월 · 8월 비용 미수집`;
       document.getElementById('kpiQ3Trend').textContent = formatCurrency(o.q3Profit);
       document.getElementById('kpiQ3Trend').style.color = o.q3Profit < 0 ? '#dc2626' : '#16a34a';
       document.getElementById('kpiQ4Trend').textContent = formatCurrency(o.q4Profit);
       document.getElementById('kpiQ4Trend').style.color = o.q4Profit < 0 ? '#dc2626' : '#16a34a';
-      document.getElementById('kpiBreakevenLabel').textContent = o.breakevenRow ? o.breakevenRow.label : '12월까지도 없음';
-      document.getElementById('kpiActualRevenueSum').textContent = formatCurrency(o.actualRevenueSum);
-      document.getElementById('kpiTargetRevenueSum').textContent = formatCurrency(o.targetRevenueSum);
+      document.getElementById('kpiBreakevenLabel').textContent = o.breakevenRow ? o.breakevenRow.label : '계획 기간 내 없음';
+      document.getElementById('kpiActualRevenueSum').textContent = formatMoney(o.actualRevenueSum);
+      document.getElementById('kpiActualAdSpendSum').textContent = formatMoney(o.actualAdSpendSum);
+      document.getElementById('kpiActualTotalCostSum').textContent = formatMoney(o.actualTotalCostSum);
+      document.getElementById('kpiTargetRevenueSum').textContent = formatMoney(o.targetRevenueSum);
+      document.getElementById('kpiTargetBudgetSum').textContent = formatMoney(o.targetBudgetSum);
       document.getElementById('outlookActualStatus').textContent = o.profitMonths === 0
-        ? `● 현재 실적: ${o.actualMonthCount}개월 연속 적자`
-        : `● 현재 실적: ${o.actualMonthCount}개월 중 ${o.profitMonths}개월 흑자`;
+        ? `● 비용 확인 ${o.completeActualMonthCount}개월 연속 적자 · 8월 손익 보류`
+        : `● 비용 확인 ${o.completeActualMonthCount}개월 중 ${o.profitMonths}개월 흑자 · 8월 손익 보류`;
       document.getElementById('outlookProfitTransition').textContent = o.breakevenRow
         ? `● 목표 플랜: ${o.breakevenRow.label}부터 월 흑자`
-        : '● 목표 플랜: 12월까지 월 흑자 없음';
+        : '● 목표 플랜: 계획 기간 내 월 흑자 없음';
 
-      document.getElementById('outlookText').innerHTML = `지금까지 <strong>${o.profitMonths === 0 ? `${o.actualMonthCount}개월 연속 적자` : `${o.actualMonthCount}개월 중 ${o.profitMonths}개월 흑자`}</strong>이며 누적 손익은 ${formatCurrency(o.cumulativeLoss)}입니다.
-        2026.08~12 목표 플랜(매출을 8월 $27,000에서 12월 $150,000까지 끌어올리는 계획)을 그대로 달성한다고 가정하면,
-        ${o.breakevenRow ? `<strong>${o.breakevenRow.label}</strong>에 처음으로 월 단위 흑자로 전환됩니다.` : ' 12월까지도 흑자 전환이 어렵습니다.'}
-        모델 순이익은 예산과 현재 비광고비 배부율을 적용한 계산값입니다. 매출 목표 자체보다 매출 대비 광고 예산 비중과 실제 원가·수수료를 함께 관리해야 합니다.`;
+      document.getElementById('outlookText').innerHTML = `비용이 확인된 기간은 <strong>${o.profitMonths === 0 ? `${o.completeActualMonthCount}개월 연속 적자` : `${o.completeActualMonthCount}개월 중 ${o.profitMonths}개월 흑자`}</strong>이며 누적 손익은 ${formatCurrency(o.cumulativeLoss)}입니다. 2026년 8월은 8/7까지 Total Revenue ${formatCurrency(13052.48)}만 확인되어 광고비·총비용·손익 계산에서 제외했습니다.
+        새 17개월 플랜(2026년 8월 $20,000에서 2027년 12월 $200,000까지 성장)을 그대로 달성한다고 가정하면,
+        ${o.breakevenRow ? `<strong>${o.breakevenRow.label}</strong>에 처음으로 월 단위 모델 흑자로 전환됩니다.` : ' 계획 기간 안에도 모델 흑자 전환이 어렵습니다.'}
+        원본 ROI는 매출 ÷ 마케팅 예산이며, 여기의 모델 순이익은 마케팅 예산에 현재 비광고비 배부율까지 더한 별도 관리 지표입니다.`;
 
       const body = document.querySelector('#outlookTable tbody');
-      body.innerHTML = o.rows.map(r => `<tr style="${r.actual ? '' : 'opacity:0.85'}"><td>${r.label}${r.actual ? '' : ' (목표)'}</td><td>${r.revenue != null ? formatCurrency(r.revenue) : '–'}</td><td>${r.targetRevenue != null ? formatCurrency(r.targetRevenue) : '–'}</td><td>${r.adSpend != null ? formatCurrency(r.adSpend) : '–'}</td><td>${r.targetAdSpend != null ? formatCurrency(r.targetAdSpend) : '–'}</td><td>${formatCurrency(r.totalCost)}</td><td>${formatCurrency(r.profit)}</td><td>${r.profit < 0 ? '<span class="badge bad">적자</span>' : '<span class="badge good">흑자</span>'}</td></tr>`).join('');
+      body.innerHTML = visibleRows.map(r => {
+        const revenue = r.actual ? r.revenue : r.targetRevenue;
+        const costPending = r.actual && !r.costComplete;
+        return `<tr style="${r.actual ? '' : 'opacity:0.85'}"><td>${r.label}${r.actualThrough ? `<small style="display:block">~${r.actualThrough}</small>` : ''}</td><td><span class="badge ${costPending ? 'warn' : r.actual ? 'good' : 'warn'}">${costPending ? '부분 실적' : r.actual ? '실적' : '목표'}</span></td><td>${r.actual ? formatMoney(revenue) : '—'}</td><td>${r.actual ? formatMoney(r.targetRevenue) : formatMoney(revenue)}</td><td>${r.actual ? (r.adSpend === null ? '미수집' : formatMoney(r.adSpend)) : '—'}</td><td>${r.actual ? formatMoney(r.targetAdSpend) : formatMoney(r.targetAdSpend)}</td><td>${r.targetAdSpend ? `${(r.targetRevenue / r.targetAdSpend).toFixed(2)}x` : '—'}</td><td>${r.afterAdProfit === null ? '계산 보류' : formatMoney(r.afterAdProfit)}</td><td>${r.totalCost === null ? '미수집' : formatMoney(r.totalCost)}</td><td>${r.profit === null ? '<strong>계산 보류</strong>' : `<strong style="color:${r.profit < 0 ? '#b91c1c' : '#047857'}">${formatMoney(r.profit)}</strong>`}</td><td>${r.profit === null ? '<span class="badge warn">비용 필요</span>' : r.profit < 0 ? '<span class="badge bad">적자</span>' : '<span class="badge good">흑자</span>'}</td></tr>`;
+      }).join('');
 
-      document.getElementById('outlookFootnote').textContent = `※ 이 페이지의 매출은 Shop Analytics GMV 기준입니다 (전체 매출 페이지가 쓰는 Campaign Overview의 "Gross revenue"와는 다른 값이며, 두 값이 상당히 다를 수 있습니다). 2026.08~12 매출·광고 예산은 제공된 MIZON 분석리포트의 목표 플랜을 사용했습니다. 총비용은 광고 예산 + 비광고비 비율(${(o.nonAdRatio * 100).toFixed(1)}%, 실제 비용 항목 데이터 기준)을 적용한 모델값입니다. 3분기 모델 손익 ${formatCurrency(o.q3Profit)} / 4분기 모델 손익 ${formatCurrency(o.q4Profit)}. 12월 매출 $150,000·광고비 $90,000은 리포트에서 원본 이상치를 대체한 검토값이므로 최종 목표 확정 전 재확인이 필요합니다.`;
+      document.getElementById('outlookFootnote').textContent = `※ 실적 매출은 정산 Total Revenue입니다. 2026.08은 8/1~8/7(UTC-7) $13,052.48이며, 제공된 8/8 Campaign·Product campaign 파일은 데이터 행이 없어 광고비·총비용·손익을 계산하지 않았습니다. 계획은 TikTok_Shop_예산_ROI_플랜_2026-08_2027-12.xlsx의 17개월 원본값이며 목표 매출 ${formatCurrency(o.targetRevenueSum)}, 마케팅 예산 ${formatCurrency(o.targetBudgetSum)}입니다. 원본 ROI = 매출 ÷ 마케팅 예산(광고비+어필리에이터 수수료)이며 제품 원가·플랫폼 수수료는 포함하지 않습니다.`;
 
-      const forecastStartIndex = o.rows.findIndex(r => !r.actual);
+      const forecastStartIndex = visibleRows.findIndex(r => !r.actual);
       const dashSegment = ctx => (forecastStartIndex !== -1 && ctx.p1DataIndex >= forecastStartIndex ? FORECAST_DASH : undefined);
 
       if (outlookChart) outlookChart.destroy();
       outlookChart = new Chart(document.getElementById('outlookChart'), {
         type: 'line',
         data: {
-          labels: o.rows.map(r => r.label),
+          labels: visibleRows.map(r => r.label),
           datasets: [
-            { label: '매출(GMV)', data: o.rows.map(r => r.actual ? r.revenue : r.targetRevenue), borderColor: '#2563eb', backgroundColor: '#2563eb', segment: { borderDash: dashSegment }, tension: 0, pointRadius: 3 },
-            { label: '총비용', data: o.rows.map(r => r.totalCost), borderColor: '#f59e0b', backgroundColor: '#f59e0b', segment: { borderDash: dashSegment }, tension: 0, pointRadius: 3 },
+            { label: '매출', hidden: !outlookSeriesVisibility[0], data: visibleRows.map(r => r.actual ? r.revenue : r.targetRevenue), borderColor: '#2563eb', backgroundColor: '#2563eb', segment: { borderDash: dashSegment }, tension: 0, pointRadius: 3 },
+            { label: '광고비 / 마케팅 예산', hidden: !outlookSeriesVisibility[1], data: visibleRows.map(r => r.adSpend), borderColor: '#7c3aed', backgroundColor: '#7c3aed', segment: { borderDash: dashSegment }, tension: 0, pointRadius: 3 },
+            { label: '총비용', hidden: !outlookSeriesVisibility[2], data: visibleRows.map(r => r.totalCost), borderColor: '#f59e0b', backgroundColor: '#f59e0b', segment: { borderDash: dashSegment }, tension: 0, pointRadius: 3 },
             {
-              label: '순이익',
-              data: o.rows.map(r => r.profit),
+              label: '추정 순수익',
+              hidden: !outlookSeriesVisibility[3],
+              data: visibleRows.map(r => r.profit),
               borderColor: '#b91c1c',
               backgroundColor: 'transparent',
               segment: {
@@ -242,7 +347,7 @@
               pointHoverRadius: 8,
               pointBorderWidth: 2,
               pointBorderColor: '#ffffff',
-              pointBackgroundColor: o.rows.map(r => r.profit < 0 ? '#b91c1c' : '#047857')
+              pointBackgroundColor: visibleRows.map(r => r.profit < 0 ? '#b91c1c' : '#047857')
             },
           ],
         },
@@ -265,10 +370,10 @@
       revenueCompareChart = new Chart(document.getElementById('revenueCompareChart'), {
         type: 'bar',
         data: {
-          labels: o.rows.map(r => r.label),
+          labels: visibleRows.map(r => r.label),
           datasets: [
-            { label: '실적 매출(GMV)', data: o.rows.map(r => r.revenue), backgroundColor: '#2563eb', borderRadius: 4 },
-            { label: '목표 매출(GMV)', data: o.rows.map(r => r.targetRevenue), backgroundColor: '#f59e0b', borderRadius: 4 },
+            { label: '실적 매출', data: visibleRows.map(r => r.revenue), backgroundColor: '#2563eb', borderRadius: 4 },
+            { label: '목표 매출', data: visibleRows.map(r => r.targetRevenue), backgroundColor: '#f59e0b', borderRadius: 4 },
           ],
         },
         options: {
@@ -285,6 +390,29 @@
       monthlyData = loadData(DATA_KEYS.monthly, defaultMonthlyData);
       costItems = loadData(DATA_KEYS.costItems, defaultCostItems);
       renderAll();
+    }
+
+    function toggleOutlookSeries(datasetIndex, button) {
+      if (!outlookChart) return;
+      const visible = outlookChart.isDatasetVisible(datasetIndex);
+      outlookSeriesVisibility[datasetIndex] = !visible;
+      outlookChart.setDatasetVisibility(datasetIndex, !visible);
+      button.classList.toggle('active', !visible);
+      button.setAttribute('aria-pressed', String(!visible));
+      outlookChart.update();
+    }
+
+    function showAllOutlookSeries() {
+      if (!outlookChart) return;
+      outlookChart.data.datasets.forEach((_, index) => {
+        outlookSeriesVisibility[index] = true;
+        outlookChart.setDatasetVisibility(index, true);
+      });
+      document.querySelectorAll('.outlook-series-toggles button:not(.show-all)').forEach(button => {
+        button.classList.add('active');
+        button.setAttribute('aria-pressed', 'true');
+      });
+      outlookChart.update();
     }
 
     renderAll();

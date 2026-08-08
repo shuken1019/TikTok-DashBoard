@@ -8,6 +8,9 @@ import { overallAnalytics } from '../data/shopAnalytics';
 Chart.register(...registerables);
 
 const STEPS = 12;
+const hasCompleteCostData = (item) => item?.costStatus !== 'missing'
+  && item?.adSpend !== null && item?.adSpend !== undefined
+  && item?.totalCost !== null && item?.totalCost !== undefined;
 
 function round2(n) {
   return Math.round(n * 100) / 100;
@@ -33,7 +36,8 @@ function BreakevenDetailPage() {
 
   useEffect(() => {
     Promise.all([getData('monthly'), getData('costItems')]).then(([monthly, cost]) => {
-      setMonthlyData(monthly);
+      setMonthlyData(monthly.filter((item) => hasCompleteCostData(item)
+        && (Number(item.revenue || 0) !== 0 || Number(item.adSpend || 0) !== 0 || Number(item.totalCost || 0) !== 0)));
       setCostItems(cost);
       setLoading(false);
     });

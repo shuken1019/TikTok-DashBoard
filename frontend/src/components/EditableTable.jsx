@@ -4,7 +4,7 @@ import { getData, resetData, saveData } from '../api';
 function emptyRow(columns) {
   const row = {};
   columns.forEach((col) => {
-    row[col.field] = col.type === 'checkbox' ? false : col.type === 'number' ? 0 : '';
+    row[col.field] = col.type === 'checkbox' ? false : col.type === 'number' ? (col.optional ? null : 0) : '';
   });
   return row;
 }
@@ -18,8 +18,10 @@ function FieldInput({ col, value, onChange }) {
       type={col.type}
       step={col.step}
       min={col.type === 'number' ? 0 : undefined}
-      value={value}
-      onChange={(event) => onChange(col.type === 'number' ? Number(event.target.value) : event.target.value)}
+      value={value ?? ''}
+      onChange={(event) => onChange(col.type === 'number'
+        ? (col.optional && event.target.value === '' ? null : Number(event.target.value))
+        : event.target.value)}
     />
   );
 }
@@ -135,6 +137,8 @@ function EditableTable({ resource, columns, title, subtitle, searchable = false 
                       <FieldInput col={col} value={editRow[col.field]} onChange={(value) => setEditRow({ ...editRow, [col.field]: value })} />
                     ) : col.type === 'checkbox' ? (
                       item[col.field] ? '예' : '-'
+                    ) : col.optional && (item[col.field] === null || item[col.field] === undefined || item[col.field] === '') ? (
+                      <span className="badge warn">미수집</span>
                     ) : (
                       String(item[col.field])
                     )}

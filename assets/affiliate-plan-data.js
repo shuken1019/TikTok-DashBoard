@@ -1,16 +1,28 @@
-// 2026.08~12 어필리에이터 실행계획 (MIZON 5개 제품 기준, Village/PETINUBE 제외).
+// 2026.08~2027.12 어필리에이터 실행계획.
 // revenueGoal·adBudget·estimated만 입력값입니다. 나머지(creatorRevenueGoal,
 // activeCreatorsNeeded, funnelSamplesNeeded, productSamplePackages, expectedVideos,
 // expectedCommission, sampleCost)는 deriveAffiliatePlanMonth()가 revenueGoal +
-// defaultAffiliatePlanProducts로부터 매번 다시 계산합니다 — 원본 5개월 리포트 값과
+// defaultAffiliatePlanProducts로부터 매번 다시 계산합니다.
 // 소수점 6자리까지 일치하는 것으로 검증된 비율입니다. Admin에서 매출 목표를 바꾸면
 // 이 값들도 자동으로 함께 바뀝니다.
 const defaultAffiliatePlanMonths = [
-  { month: '2026-08', revenueGoal: 27000, adBudget: 40000, estimated: false },
-  { month: '2026-09', revenueGoal: 47000, adBudget: 48000, estimated: false },
-  { month: '2026-10', revenueGoal: 67000, adBudget: 53333, estimated: false },
-  { month: '2026-11', revenueGoal: 100000, adBudget: 60000, estimated: false },
-  { month: '2026-12', revenueGoal: 150000, adBudget: 90000, estimated: true }
+  { month: '2026-08', revenueGoal: 20000, adBudget: 33333, estimated: false },
+  { month: '2026-09', revenueGoal: 25000, adBudget: 40000, estimated: false },
+  { month: '2026-10', revenueGoal: 30000, adBudget: 40000, estimated: false },
+  { month: '2026-11', revenueGoal: 50000, adBudget: 58800, estimated: false },
+  { month: '2026-12', revenueGoal: 50000, adBudget: 47600, estimated: false },
+  { month: '2027-01', revenueGoal: 55000, adBudget: 47800, estimated: false },
+  { month: '2027-02', revenueGoal: 60000, adBudget: 48000, estimated: false },
+  { month: '2027-03', revenueGoal: 70000, adBudget: 51850, estimated: false },
+  { month: '2027-04', revenueGoal: 90000, adBudget: 60000, estimated: false },
+  { month: '2027-05', revenueGoal: 100000, adBudget: 62500, estimated: false },
+  { month: '2027-06', revenueGoal: 115000, adBudget: 67650, estimated: false },
+  { month: '2027-07', revenueGoal: 125000, adBudget: 69450, estimated: false },
+  { month: '2027-08', revenueGoal: 150000, adBudget: 78950, estimated: false },
+  { month: '2027-09', revenueGoal: 160000, adBudget: 80000, estimated: false },
+  { month: '2027-10', revenueGoal: 175000, adBudget: 83350, estimated: false },
+  { month: '2027-11', revenueGoal: 190000, adBudget: 86350, estimated: false },
+  { month: '2027-12', revenueGoal: 200000, adBudget: 86950, estimated: false }
 ];
 
 // 제품별 샘플 발송 계획 배분 (전체 매출목표 대비 비중, 판매가). productSamplePackages·
@@ -22,9 +34,9 @@ const defaultAffiliatePlanProducts = [
   { product: 'BB Cream', detail: '단품 · 21/23/25/27/30호', share: 0.20, unitPrice: 14.99, each: false }
 ];
 
-// 원본 MIZON 리포트 5개월 실적값을 역산해 검증한 고정 비율. 크리에이터 채널 85%,
+// 기존 운영 모델에서 검증한 고정 비율. 크리에이터 채널 85%,
 // 수수료 25%, 콘텐츠 전환율 1332/2099(63.5%), 샘플 수요배수 1.714x, 샘플 COGS 30%는
-// 페이지 각주에 이미 명시된 가정값이고, active/funnel 비율은 원본 5개월 데이터에서
+// 페이지 각주에 이미 명시된 가정값이고, active/funnel 비율은 기존 계획 데이터에서
 // revenueGoal 대비 상수 비율로 역산했습니다.
 const AFFILIATE_PLAN_RATIOS = {
   creatorRevenueShare: 0.85,

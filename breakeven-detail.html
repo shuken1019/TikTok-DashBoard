@@ -143,14 +143,14 @@
   </section>
 
   <script src="assets/nav.js?v=dashboard-20260724"></script>
-  <script src="assets/data-store.js?v=data-sync-20260724"></script>
-  <script src="assets/monthly-data.js?v=data-sync-20260724"></script>
+  <script src="assets/data-store.js?v=verified-20260808"></script>
+  <script src="assets/monthly-data.js?v=verified-20260808"></script>
   <script src="assets/cost-items-data.js?v=data-sync-20260724"></script>
   <script src="assets/month-calendar.js"></script>
   <script src="assets/shop-analytics-data.js"></script>
   <script>
     const STEPS = 12;
-    let monthlyData = loadData(DATA_KEYS.monthly, defaultMonthlyData).filter(hasActualData);
+    let monthlyData = loadData(DATA_KEYS.monthly, defaultMonthlyData).filter(item => hasActualData(item) && hasCompleteCostData(item));
     let costItems = loadData(DATA_KEYS.costItems, defaultCostItems);
     let breakevenChart, cumulativeChart, costMixChart;
 

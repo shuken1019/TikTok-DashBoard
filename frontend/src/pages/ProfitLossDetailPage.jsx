@@ -1,13 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Chart, registerables } from 'chart.js';
+import { Link } from 'react-router-dom';
 import PageHeader from '../components/PageHeader';
 import { getData } from '../api';
-import { formatCurrency } from '../format';
+import { formatCurrency, formatMoney } from '../format';
 import { MONTH_CALENDAR, filterByMonthRange } from '../monthCalendar';
 
 Chart.register(...registerables);
 
 const COST_COLORS = ['#2563eb', '#f59e0b', '#0f9f95', '#7c3aed', '#475569'];
+const hasCompleteCostData = (item) => item?.costStatus !== 'missing' && item?.adSpend !== null && item?.adSpend !== undefined && item?.totalCost !== null && item?.totalCost !== undefined;
 
 const costBreakdownLabels = {
   id: 'costBreakdownLabels',
@@ -52,13 +54,14 @@ function ProfitLossDetailPage() {
   const [monthlyData, setMonthlyData] = useState([]);
   const [costItems, setCostItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [financialModalOpen, setFinancialModalOpen] = useState(false);
   const [startMonth, setStartMonth] = useState(MONTH_CALENDAR[0]);
   const [endMonth, setEndMonth] = useState(MONTH_CALENDAR[MONTH_CALENDAR.length - 1]);
   const chartInstances = useRef({});
 
   useEffect(() => {
     Promise.all([getData('monthly'), getData('costItems')]).then(([monthly, cost]) => {
-      setMonthlyData(monthly);
+      setMonthlyData(monthly.filter((item) => Number(item.revenue || 0) !== 0 || Number(item.adSpend || 0) !== 0 || Number(item.totalCost || 0) !== 0));
       setCostItems(cost);
       setLoading(false);
     });
@@ -83,12 +86,16 @@ function ProfitLossDetailPage() {
 
   const stats = useMemo(() => {
     const revenue = filteredMonthlyData.reduce((sum, item) => sum + item.revenue, 0);
-    const totalCost = filteredMonthlyData.reduce((sum, item) => sum + item.totalCost, 0);
-    const profit = revenue - totalCost;
-    const marginPct = revenue ? (profit / revenue) * 100 : 0;
-    const profitMonths = filteredMonthlyData.filter((item) => item.revenue - item.totalCost >= 0).length;
-    const lossMonths = filteredMonthlyData.length - profitMonths;
-    return { revenue, totalCost, profit, marginPct, profitMonths, lossMonths };
+    const completeRows = filteredMonthlyData.filter(hasCompleteCostData);
+    const incompleteRows = filteredMonthlyData.filter((item) => !hasCompleteCostData(item));
+    const completeRevenue = completeRows.reduce((sum, item) => sum + item.revenue, 0);
+    const totalCost = completeRows.reduce((sum, item) => sum + item.totalCost, 0);
+    const adSpend = completeRows.reduce((sum, item) => sum + Number(item.adSpend), 0);
+    const verifiedProfit = completeRevenue - totalCost;
+    const marginPct = completeRevenue ? (verifiedProfit / completeRevenue) * 100 : 0;
+    const profitMonths = completeRows.filter((item) => item.revenue - item.totalCost >= 0).length;
+    const lossMonths = completeRows.length - profitMonths;
+    return { revenue, adSpend, totalCost, profit: incompleteRows.length ? null : verifiedProfit, verifiedProfit, marginPct, profitMonths, lossMonths, incompleteRows, completeRows };
   }, [filteredMonthlyData]);
 
   const costTotal = useMemo(() => costItems.reduce((sum, item) => sum + item.value, 0), [costItems]);
@@ -96,6 +103,22 @@ function ProfitLossDetailPage() {
     () => costItems.reduce((sum, item) => sum + Number((costTotal ? item.value / costTotal * 100 : 0).toFixed(1)), 0),
     [costItems, costTotal]
   );
+  const financialSummary = useMemo(() => {
+    const allRevenue = monthlyData.reduce((sum, item) => sum + item.revenue, 0);
+    const allocationRatio = allRevenue ? stats.revenue / allRevenue : 0;
+    const seedingBase = Number(costItems.find((item) => String(item.label).includes('시딩'))?.value || 0);
+    const allocatedItems = costItems.map((item) => ({ ...item, allocatedValue: Number(item.value || 0) * allocationRatio }));
+    const seeding = seedingBase * allocationRatio;
+    const marketing = stats.adSpend + seeding;
+    const costSegments = [{ label: '광고비', value: stats.adSpend }, ...allocatedItems.map((item) => ({ label: item.label, value: item.allocatedValue }))];
+    return {
+      ...stats,
+      seeding,
+      marketing,
+      costSegments,
+      margin: stats.profit !== null && stats.revenue ? stats.profit / stats.revenue * 100 : null,
+    };
+  }, [monthlyData, costItems, stats]);
 
   useEffect(() => {
     if (loading) return;
@@ -113,8 +136,8 @@ function ProfitLossDetailPage() {
         labels: filteredMonthlyData.map((item) => item.month),
         datasets: [{
           label: '순이익',
-          data: filteredMonthlyData.map((item) => item.revenue - item.totalCost),
-          backgroundColor: filteredMonthlyData.map((item) => (item.revenue - item.totalCost < 0 ? '#dc2626' : '#14b8a6')),
+          data: filteredMonthlyData.map((item) => (hasCompleteCostData(item) ? item.revenue - item.totalCost : null)),
+          backgroundColor: filteredMonthlyData.map((item) => (!hasCompleteCostData(item) ? '#f59e0b' : item.revenue - item.totalCost < 0 ? '#dc2626' : '#14b8a6')),
         }],
       },
       options: {
@@ -130,7 +153,7 @@ function ProfitLossDetailPage() {
         labels: filteredMonthlyData.map((item) => item.month),
         datasets: [{
           label: '마진율 (%)',
-          data: filteredMonthlyData.map((item) => (item.revenue ? Math.round(((item.revenue - item.totalCost) / item.revenue) * 1000) / 10 : 0)),
+          data: filteredMonthlyData.map((item) => (hasCompleteCostData(item) && item.revenue ? Math.round(((item.revenue - item.totalCost) / item.revenue) * 1000) / 10 : null)),
           borderColor: '#2563eb',
           backgroundColor: 'rgba(37, 99, 235, 0.15)',
           fill: true,
@@ -145,50 +168,82 @@ function ProfitLossDetailPage() {
       },
     });
 
-    renderChart('costBreakdownChart', {
+    const ringOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '72%',
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: (context) => ` ${context.label}: ${formatMoney(context.raw)}` } },
+      },
+    };
+
+    renderChart('revenueRingChart', {
+      type: 'doughnut',
+      data: { labels: ['전체 매출'], datasets: [{ data: [Math.max(Math.abs(financialSummary.revenue), 0.01)], backgroundColor: ['#2563eb'], borderWidth: 0 }] },
+      options: ringOptions,
+    });
+
+    renderChart('costOverviewChart', {
       type: 'doughnut',
       data: {
-        labels: costItems.map((item) => item.label),
+        labels: financialSummary.costSegments.map((item) => item.label),
         datasets: [{
-          data: costItems.map((item) => item.value),
-          backgroundColor: COST_COLORS,
-          borderColor: '#ffffff',
-          borderWidth: 4,
-          hoverOffset: 8,
+          data: financialSummary.costSegments.map((item) => item.value),
+          backgroundColor: ['#7c3aed', '#2563eb', '#f59e0b', '#0f9f95', '#8b5cf6', '#475569'],
+          borderColor: '#fff',
+          borderWidth: 3,
         }],
       },
-      plugins: [costBreakdownLabels],
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        cutout: '58%',
-        layout: { padding: 8 },
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              label(context) {
-                const total = context.dataset.data.reduce((sum, value) => sum + Number(value || 0), 0);
-                const value = Number(context.raw || 0);
-                return ` ${context.label}: ${formatCurrency(value)} (${total ? (value / total * 100).toFixed(1) : '0.0'}%)`;
-              },
-            },
-          },
-        },
+      options: ringOptions,
+    });
+
+    renderChart('marketingRingChart', {
+      type: 'doughnut',
+      data: {
+        labels: ['광고비', '시딩비'],
+        datasets: [{ data: [financialSummary.adSpend, financialSummary.seeding], backgroundColor: ['#7c3aed', '#f59e0b'], borderColor: '#fff', borderWidth: 3 }],
       },
+      options: ringOptions,
+    });
+
+    renderChart('operatingProfitRingChart', {
+      type: 'doughnut',
+      data: {
+        labels: [financialSummary.profit === null ? '계산 보류' : financialSummary.profit < 0 ? '영업손실' : '영업이익'],
+        datasets: [{ data: [financialSummary.profit === null ? 1 : Math.max(Math.abs(financialSummary.profit), 0.01)], backgroundColor: [financialSummary.profit === null ? '#f59e0b' : financialSummary.profit < 0 ? '#dc2626' : '#16a34a'], borderWidth: 0 }],
+      },
+      options: ringOptions,
     });
 
     return () => {
       Object.values(chartInstances.current).forEach((instance) => instance?.destroy());
       chartInstances.current = {};
     };
-  }, [filteredMonthlyData, costItems, loading]);
+  }, [filteredMonthlyData, costItems, financialSummary, financialModalOpen, loading]);
+
+  useEffect(() => {
+    document.body.classList.toggle('modal-open', financialModalOpen);
+    const handleEscape = (event) => {
+      if (event.key === 'Escape') setFinancialModalOpen(false);
+    };
+    document.addEventListener('keydown', handleEscape);
+    return () => {
+      document.body.classList.remove('modal-open');
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [financialModalOpen]);
 
   if (loading) return null;
 
   return (
     <>
       <PageHeader title="월별 순이익 / 적자 상세" subtitle="비용 구조와 마진율을 함께 확인해 흑자·적자 원인을 분석합니다." />
+
+      <section className="detail-edit-bar">
+        <span>2026.08 매출은 8/1~8/7(UTC-7) $13,052.48이며 광고비·총비용은 미수집이라 손익 계산을 보류합니다.</span>
+        <Link to="/admin?tab=monthly" className="detail-edit-button">월별 데이터 수정</Link>
+      </section>
 
       <section className="card">
         <div className="control-row" style={{ marginTop: 0 }}>
@@ -208,20 +263,21 @@ function ProfitLossDetailPage() {
 
       <section className="grid cards-4" style={{ marginTop: 20 }}>
         <article className="card kpi">
-          <span className="label">누적 순이익</span>
-          <span className="value">{formatCurrency(stats.profit)}</span>
+          <span className="label">① 선택 기간 Total Revenue</span>
+          <span className="value">{formatMoney(stats.revenue)}</span>
         </article>
         <article className="card kpi">
-          <span className="label">평균 마진율</span>
-          <span className="value">{stats.marginPct.toFixed(1)}%</span>
+          <span className="label">② 확인된 선택 기간 광고비</span>
+          <span className="value">{formatMoney(stats.adSpend)}</span>
         </article>
         <article className="card kpi">
-          <span className="label">흑자 월수</span>
-          <span className="value">{stats.profitMonths}개월</span>
+          <span className="label">③ 확인된 광고비 포함 총비용</span>
+          <span className="value">{formatMoney(stats.totalCost)}</span>
         </article>
         <article className="card kpi">
-          <span className="label">적자 월수</span>
-          <span className="value">{stats.lossMonths}개월</span>
+          <span className="label">④ 추정 순수익</span>
+          <span className="value" style={{ color: stats.profit === null ? '#b45309' : stats.profit < 0 ? '#dc2626' : '#16a34a' }}>{stats.profit === null ? '계산 보류' : formatMoney(stats.profit)}</span>
+          <span className="desc">비용 확인 {stats.completeRows.length}개월: 흑자 {stats.profitMonths} · 적자 {stats.lossMonths} · 마진 {stats.marginPct.toFixed(1)}%{stats.incompleteRows.length ? ' · 8월 보류' : ''}</span>
         </article>
       </section>
 
@@ -236,67 +292,115 @@ function ProfitLossDetailPage() {
         </article>
       </section>
 
-      <section className="grid cards-2" style={{ marginTop: 20 }}>
-        <article className="card chart-card cost-breakdown-card">
-          <div className="chart-title">
-            <div><h2>비용 구조</h2><small>선택 월과 무관한 Admin 비용 스냅샷</small></div>
-            <span className="badge warn">실적 원장 미연동</span>
+      <section
+        className="card chart-card financial-overview-card"
+        style={{ marginTop: 20 }}
+        role="button"
+        tabIndex={0}
+        aria-label="비용 구조 상세 열기"
+        onClick={() => setFinancialModalOpen(true)}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter' || event.key === ' ') setFinancialModalOpen(true);
+        }}
+      >
+        <div className="chart-title">
+          <div><h2>전체 매출과 비용 구조</h2><small>원 안은 Total Revenue · 조각은 광고비·시딩비 등 총비용 구성</small></div>
+          <span className="detail-open-button">상세 보기 ↗</span>
+        </div>
+        <div className="cost-overview-layout">
+          <div className="cost-overview-donut">
+            <canvas id="costOverviewChart" />
+            <div className="cost-overview-center"><small>선택 기간 총매출</small><strong>{formatMoney(financialSummary.revenue)}</strong><span>Total Revenue</span></div>
           </div>
-          <div className="cost-chart-shell">
-            <canvas id="costBreakdownChart" />
-          </div>
-          <div className="cost-breakdown-legend">
-            {costItems.map((item, index) => (
-              <div className="cost-legend-item" key={item.label}>
-                <i style={{ background: COST_COLORS[index % COST_COLORS.length] }} />
-                <span>{item.label}</span>
-                <strong>{formatCurrency(item.value)}</strong>
-                <b>{costTotal ? (item.value / costTotal * 100).toFixed(1) : '0.0'}%</b>
-              </div>
-            ))}
-          </div>
-          <div className="cost-audit-strip">
-            <span className="badge good">계산 검산 완료</span>
-            <strong>{costItems.length}개 항목 합계 {formatCurrency(costTotal)} · 반올림 비중 합계 {roundedCostPercentTotal.toFixed(1)}%</strong>
-          </div>
-        </article>
-        <article className="card">
-          <div className="chart-title"><div><h2>비용 항목 상세</h2><small>총 {formatCurrency(costTotal)}</small></div></div>
-          <table className="table">
-            <thead><tr><th>항목</th><th>금액</th><th>비중</th></tr></thead>
-            <tbody>
-              {costItems.map((item) => (
-                <tr key={item.label}>
-                  <td>{item.label}</td>
-                  <td>{formatCurrency(item.value)}</td>
-                  <td>{costTotal ? ((item.value / costTotal) * 100).toFixed(1) : 0}%</td>
-                </tr>
+          <div>
+            <div className="cost-overview-legend">
+              {financialSummary.costSegments.map((item, index) => (
+                <span key={item.label}>
+                  <i style={{ background: ['#7c3aed', '#2563eb', '#f59e0b', '#0f9f95', '#8b5cf6', '#475569'][index] }} />
+                  <b>{item.label}</b>
+                  <strong>{formatMoney(item.value)}</strong>
+                  <em>{financialSummary.totalCost ? (item.value / financialSummary.totalCost * 100).toFixed(1) : '0.0'}%</em>
+                </span>
               ))}
-            </tbody>
-          </table>
-          <div className="cost-source-note">
-            <strong>데이터 확인 결과</strong>
-            <p>합계와 비중 계산은 정확합니다. 단, 현재 금액은 Admin에 저장된 계획·설정값이며 회계 원장이나 실제 정산서에서 자동 수집된 확정 실적은 아닙니다.</p>
+            </div>
+            <div className="cost-overview-summary">
+              <span>광고비 포함 총비용<strong>{formatMoney(financialSummary.totalCost)}</strong></span>
+              <span>추정 영업이익<strong style={{ color: financialSummary.profit === null ? '#b45309' : financialSummary.profit < 0 ? '#dc2626' : '#16a34a' }}>{financialSummary.profit === null ? '계산 보류' : formatMoney(financialSummary.profit)}</strong></span>
+            </div>
+            <p className="page-note">비용이 총매출을 초과할 수 있으므로 원 조각의 비중은 <strong>총비용 대비 비중</strong>입니다. 원을 클릭하면 상세 계산을 볼 수 있습니다.</p>
           </div>
-        </article>
+        </div>
       </section>
 
+      {financialModalOpen && (
+        <div className="dashboard-modal">
+          <button className="dashboard-modal-backdrop" type="button" onClick={() => setFinancialModalOpen(false)} aria-label="닫기" />
+          <section className="dashboard-modal-panel" role="dialog" aria-modal="true" aria-labelledby="financialModalTitle">
+            <div className="dashboard-modal-header">
+              <div><small>FINANCIAL DETAIL</small><h2 id="financialModalTitle">매출·비용·추정 영업이익 상세</h2></div>
+              <button className="dashboard-modal-close" type="button" onClick={() => setFinancialModalOpen(false)} aria-label="닫기">×</button>
+            </div>
+            <div className="dashboard-modal-body">
+              <div className="financial-rings">
+                <article className="financial-ring-panel">
+                  <h3>① 전체 매출</h3>
+                  <div className="financial-ring-chart"><canvas id="revenueRingChart" /><div className="financial-ring-center"><small>Total Revenue</small><strong>{formatMoney(financialSummary.revenue)}</strong></div></div>
+                  <p>정산서 Total Revenue 합계</p>
+                </article>
+                <article className="financial-ring-panel">
+                  <h3>② 광고비 + 시딩비</h3>
+                  <div className="financial-ring-chart"><canvas id="marketingRingChart" /><div className="financial-ring-center"><small>마케팅 투자</small><strong>{formatMoney(financialSummary.marketing)}</strong></div></div>
+                  <div className="financial-ring-meta"><span><i style={{ background: '#7c3aed' }} />광고비 <b>{formatMoney(financialSummary.adSpend)}</b></span><span><i style={{ background: '#f59e0b' }} />시딩비 <b>{formatMoney(financialSummary.seeding)}</b></span></div>
+                </article>
+                <article className="financial-ring-panel">
+                  <h3>③ 추정 영업이익</h3>
+                  <div className="financial-ring-chart"><canvas id="operatingProfitRingChart" /><div className="financial-ring-center"><small>{financialSummary.profit === null ? '비용 미수집' : financialSummary.profit < 0 ? '영업손실' : '영업이익'}</small><strong style={{ color: financialSummary.profit === null ? '#b45309' : financialSummary.profit < 0 ? '#dc2626' : '#16a34a' }}>{financialSummary.profit === null ? '계산 보류' : formatMoney(financialSummary.profit)}</strong></div></div>
+                  <p>{financialSummary.margin === null ? '8월 광고비·총비용 필요' : `영업이익률 ${financialSummary.margin.toFixed(1)}%`}</p>
+                </article>
+              </div>
+              <div className="financial-equation-strip">
+                <span>전체 매출 <strong>{formatMoney(financialSummary.revenue)}</strong></span><b>−</b>
+                <span>광고비 포함 총비용 <strong>{formatMoney(financialSummary.totalCost)}</strong></span><b>=</b>
+                <span>추정 영업이익 <strong style={{ color: financialSummary.profit === null ? '#b45309' : financialSummary.profit < 0 ? '#dc2626' : '#16a34a' }}>{financialSummary.profit === null ? '계산 보류' : formatMoney(financialSummary.profit)}</strong></span>
+              </div>
+              <div className="chart-title modal-table-title"><div><h3>비용 항목 상세</h3><small>선택 기간 총 {formatMoney(financialSummary.totalCost)}</small></div><span className="badge warn">실적 원장 미연동</span></div>
+              <table className="table">
+                <thead><tr><th>항목</th><th>금액</th><th>총비용 대비 비중</th></tr></thead>
+                <tbody>
+                  {financialSummary.costSegments.map((item) => (
+                    <tr key={item.label}><td>{item.label}</td><td>{formatMoney(item.value)}</td><td>{financialSummary.totalCost ? (item.value / financialSummary.totalCost * 100).toFixed(1) : '0.0'}%</td></tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className="cost-source-note"><strong>계산 기준</strong><p>시딩비 등 Admin 비용은 선택 기간의 매출 비중으로 배부합니다. 추정 영업이익은 광고비·제품 원가·시딩비·수수료·물류비·기타 비용을 모두 차감합니다.</p></div>
+            </div>
+          </section>
+        </div>
+      )}
+
       <section className="card" style={{ marginTop: 20 }}>
-        <div className="chart-title"><div><h2>월별 상세</h2><small>매출·총비용·순이익·마진율</small></div></div>
+        <div className="chart-title"><div><h2>월별 상세</h2><small>매출 → 광고비 → 광고비 차감 후 → 총비용 → 추정 순수익</small></div></div>
         <table className="table">
           <thead>
-            <tr><th>월</th><th>매출</th><th>총비용</th><th>순이익</th><th>마진율</th><th>상태</th></tr>
+            <tr><th>월</th><th>Total Revenue</th><th>광고비</th><th>광고비 차감 후</th><th>광고비 포함 총비용</th><th>추정 순수익</th><th>마진율</th><th>상태</th></tr>
           </thead>
           <tbody>
             {filteredMonthlyData.map((item, index) => {
+              if (!hasCompleteCostData(item)) return (
+                <tr key={`${item.month}-${index}`}><td>{item.month}<small style={{ display: 'block' }}>~{item.actualThrough || '진행 중'}</small></td><td>{formatMoney(item.revenue)}</td><td>미수집</td><td>계산 보류</td><td>미수집</td><td><strong>계산 보류</strong></td><td>—</td><td><span className="badge warn">비용 필요</span></td></tr>
+              );
               const profit = item.revenue - item.totalCost;
+              const adSpend = Number(item.adSpend || 0);
+              const afterAdProfit = item.revenue - adSpend;
               const margin = item.revenue ? (profit / item.revenue) * 100 : 0;
               return (
                 <tr key={`${item.month}-${index}`}>
                   <td>{item.month}</td>
-                  <td>{formatCurrency(item.revenue)}</td>
-                  <td>{formatCurrency(item.totalCost)}</td>
-                  <td>{formatCurrency(profit)}</td>
+                  <td>{formatMoney(item.revenue)}</td>
+                  <td>{formatMoney(adSpend)}</td>
+                  <td>{formatMoney(afterAdProfit)}</td>
+                  <td>{formatMoney(item.totalCost)}</td>
+                  <td><strong style={{ color: profit < 0 ? '#dc2626' : '#16a34a' }}>{formatMoney(profit)}</strong></td>
                   <td>{margin.toFixed(1)}%</td>
                   <td><span className={`badge ${profit < 0 ? 'bad' : 'good'}`}>{profit < 0 ? '적자' : '흑자'}</span></td>
                 </tr>

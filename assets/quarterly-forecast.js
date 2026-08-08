@@ -1,11 +1,11 @@
-// Q3/Q4 forecast, derived live from monthlyData's target rows (2026.08~12) instead of
-// being entered separately. Q3 = the first 3 target-only rows in date order, Q4 = the
-// next 2 — matches performance-outlook-detail.html's math exactly (verified: revenue
-// $141,000/$250,000, adSpend $141,333/$150,000, profit -$56,169/$1,001 for the
-// current 2026.08~12 target plan).
+// 2026 calendar Q3/Q4 forecast derived live from the monthly target plan.
 function computeQuarterlyForecast(monthlyData, costItems) {
-  const actualRows = monthlyData.filter(hasActualData);
-  const targetRows = monthlyData.filter(m => !hasActualData(m));
+  // Partial revenue without matching advertising/total-cost data must not change
+  // the cost allocation ratio used by the forecast model.
+  const actualRows = monthlyData.filter(m => hasActualData(m) && hasCompleteCostData(m));
+  // A month can contain partial actuals and its original target at the same time.
+  // Select forecast rows by target fields, not by the absence of actual data.
+  const targetRows = monthlyData.filter(m => (Number(m.targetRevenue) || 0) > 0 || (Number(m.targetAdSpend) || 0) > 0);
   const totalRevenue = actualRows.reduce((s, m) => s + m.revenue, 0);
   const costItemsTotal = costItems.reduce((s, c) => s + c.value, 0);
   const nonAdRatio = totalRevenue ? costItemsTotal / totalRevenue : 0;
@@ -17,5 +17,7 @@ function computeQuarterlyForecast(monthlyData, costItems) {
     return { months: rows.map(m => m.month), revenue, adSpend, totalCost, profit: revenue - totalCost };
   }
 
-  return { nonAdRatio, q3: sumQuarter(targetRows.slice(0, 3)), q4: sumQuarter(targetRows.slice(3, 5)) };
+  const q3Rows = targetRows.filter(m => String(m.month).startsWith('2026-') && [7, 8, 9].includes(Number(String(m.month).slice(5, 7))));
+  const q4Rows = targetRows.filter(m => String(m.month).startsWith('2026-') && [10, 11, 12].includes(Number(String(m.month).slice(5, 7))));
+  return { nonAdRatio, q3: sumQuarter(q3Rows), q4: sumQuarter(q4Rows) };
 }

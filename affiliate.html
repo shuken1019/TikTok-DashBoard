@@ -75,24 +75,24 @@
         <section class="card affiliate-plan-range-card">
           <div>
             <span class="eyebrow">PLAN RANGE</span>
-            <strong id="affiliatePlanPeriod">2026-08-01 ~ 2026-12-31</strong>
-            <small>제공된 MIZON 8–12월 계획 데이터</small>
+            <strong id="affiliatePlanPeriod">2026-08-01 ~ 2027-12-31</strong>
+            <small>2026.08~2027.12 예산·ROI 계획 원본</small>
           </div>
           <div class="affiliate-plan-granularity" aria-label="계획 집계 기준">
             <button type="button" id="affiliatePlanDayButton" onclick="setAffiliatePlanGranularity('day')">날짜별</button>
             <button type="button" id="affiliatePlanMonthButton" class="active" onclick="setAffiliatePlanGranularity('month')">월별</button>
           </div>
           <div class="affiliate-plan-date-controls hidden" id="affiliatePlanDayControls">
-            <label>시작일<input type="date" id="affiliatePlanStartDate" min="2026-08-01" max="2026-12-31" value="2026-08-01" onchange="calculateAffiliatePlanRange()"></label>
+            <label>시작일<input type="date" id="affiliatePlanStartDate" min="2026-08-01" max="2027-12-31" value="2026-08-01" onchange="calculateAffiliatePlanRange()"></label>
             <span>→</span>
-            <label>종료일<input type="date" id="affiliatePlanEndDate" min="2026-08-01" max="2026-12-31" value="2026-12-31" onchange="calculateAffiliatePlanRange()"></label>
+            <label>종료일<input type="date" id="affiliatePlanEndDate" min="2026-08-01" max="2027-12-31" value="2027-12-31" onchange="calculateAffiliatePlanRange()"></label>
           </div>
           <div class="affiliate-plan-date-controls" id="affiliatePlanMonthControls">
-            <label>시작월<input type="month" id="affiliatePlanStartMonth" min="2026-08" max="2026-12" value="2026-08" onchange="calculateAffiliatePlanRange()"></label>
+            <label>시작월<input type="month" id="affiliatePlanStartMonth" min="2026-08" max="2027-12" value="2026-08" onchange="calculateAffiliatePlanRange()"></label>
             <span>→</span>
-            <label>종료월<input type="month" id="affiliatePlanEndMonth" min="2026-08" max="2026-12" value="2026-12" onchange="calculateAffiliatePlanRange()"></label>
+            <label>종료월<input type="month" id="affiliatePlanEndMonth" min="2026-08" max="2027-12" value="2027-12" onchange="calculateAffiliatePlanRange()"></label>
           </div>
-          <span class="badge warn">12월 목표는 원본 검토값</span>
+          <span class="badge good">17개월 원본 반영</span>
         </section>
 
         <section class="card affiliate-overview-only affiliate-overview-funnel">
@@ -101,7 +101,7 @@
             <div><span>현재 발송</span><strong>2,099</strong></div><i>→</i>
             <div><span>목표 샘플</span><strong id="affiliateOverviewSamples">22,708</strong></div><i>→</i>
             <div><span>예상 영상</span><strong id="affiliateOverviewVideos">14,410</strong></div><i>→</i>
-            <div><span>매출 목표</span><strong id="affiliateOverviewRevenue">$391,000</strong></div>
+            <div><span>매출 목표</span><strong id="affiliateOverviewRevenue">$1,665,000</strong></div>
           </div>
           <a href="affiliate.html?detail=samples">실행계획 자세히 보기 →</a>
         </section>
@@ -153,14 +153,14 @@
 
         <section class="card affiliate-detail-section affiliate-finance-content affiliate-finance-breakdown">
           <div class="affiliate-plan-heading">
-            <div><span class="eyebrow">COST &amp; RETURN</span><h2>현재 실적과 8–12월 계획 비용</h2><p>실적과 미래 계획을 섞지 않고 나란히 비교합니다.</p></div>
+            <div><span class="eyebrow">COST &amp; RETURN</span><h2>현재 실적과 17개월 계획 비용</h2><p>실적과 미래 계획을 섞지 않고 나란히 비교합니다.</p></div>
             <span class="badge warn">계획값은 가정 기반</span>
           </div>
           <div class="grid cards-4">
             <article><span>현재 귀속 GMV</span><strong>$7,007.76</strong><small>7/1–7/25 Core</small></article>
             <article><span>현재 수수료</span><strong>$2,282.78</strong><small>현재 ROI 3.07x</small></article>
-            <article><span>8–12월 예상 수수료</span><strong id="affiliatePlanTotalCommission">$83,088</strong><small>크리에이터 매출 85% × 25%</small></article>
-            <article><span>8–12월 예상 샘플비</span><strong id="affiliatePlanTotalSampleCost">$201,052</strong><small>번들 중복 제거 기준</small></article>
+            <article><span>전체 계획 예상 수수료</span><strong id="affiliatePlanTotalCommission">$353,813</strong><small>크리에이터 매출 85% × 25%</small></article>
+            <article><span>전체 계획 예상 샘플비</span><strong id="affiliatePlanTotalSampleCost">$856,143</strong><small>번들 중복 제거 기준</small></article>
           </div>
           <p class="affiliate-plan-footnote" id="affiliatePlanTotalCostNote">계획 총비용은 수수료와 샘플비 합계 $284,140입니다. 물류비와 광고비는 포함하지 않았습니다.</p>
           <p class="page-note"><a href="admin.html#affiliatePlan">계획 수정하기 →</a></p>
@@ -170,7 +170,7 @@
           <div class="affiliate-plan-heading">
             <div>
               <span class="eyebrow">SAMPLE → CONTENT → REVENUE</span>
-              <h2><span id="affiliatePlanHeadingPeriod">2026-08-01 ~ 2026-12-31</span> 샘플·영상·매출 실행계획</h2>
+              <h2><span id="affiliatePlanHeadingPeriod">2026-08-01 ~ 2027-12-31</span> 샘플·영상·매출 실행계획</h2>
               <p>제품별 샘플 발송량에서 예상 영상과 매출 목표, 수수료·샘플비까지 한 번에 연결합니다.</p>
             </div>
             <span class="badge warn">MIZON 5개 제품 · Village/PETINUBE 제외</span>
@@ -183,7 +183,7 @@
             <i>→</i>
             <div><span>03 크리에이터 매출</span><strong id="affiliatePlanCreatorRevenue">$332,350</strong><small>전체 목표의 85%</small></div>
             <i>→</i>
-            <div><span>04 전체 매출 목표</span><strong id="affiliatePlanRevenue">$391,000</strong><small id="affiliatePlanFlowPeriod">2026-08-01 ~ 2026-12-31</small></div>
+            <div><span>04 전체 매출 목표</span><strong id="affiliatePlanRevenue">$1,665,000</strong><small id="affiliatePlanFlowPeriod">2026-08-01 ~ 2027-12-31</small></div>
           </div>
 
           <div class="grid affiliate-plan-summary">
@@ -209,7 +209,7 @@
             </article>
 
             <article class="affiliate-month-plan">
-              <div class="chart-title"><div><h3 id="affiliatePlanRowsTitle">월별 목표와 비용</h3><small>2026년 8월부터 12월까지 제공 자료 기준</small></div></div>
+              <div class="chart-title"><div><h3 id="affiliatePlanRowsTitle">월별 목표와 비용</h3><small>2026년 8월부터 2027년 12월까지 원본 기준</small></div></div>
               <div id="affiliatePlanRows"></div>
             </article>
           </div>
@@ -223,7 +223,7 @@
 
           <p class="affiliate-plan-footnote">
             계산 가정: 샘플→콘텐츠 63.5%(1,332/2,099), 크리에이터 채널 85%, 수수료 25%, 샘플 COGS 30%.
-            수수료 상한은 선택 기간 전체 매출에 25%를 적용합니다. 12월 매출 $150,000·예산 $90,000은 제공 파일에 추정 검토값으로 표시되어 있어 실제 목표 확정 시 갱신이 필요합니다.
+            수수료 상한은 선택 기간 전체 매출에 25%를 적용합니다. 예산과 목표 매출은 2026.08~2027.12 예산·ROI 플랜 원본을 사용합니다.
           </p>
         </section>
 
@@ -384,8 +384,8 @@
   </section>
 
   <script src="assets/nav.js?v=dashboard-20260724"></script>
-  <script src="assets/data-store.js?v=data-sync-20260727"></script>
-  <script src="assets/affiliate-plan-data.js?v=data-sync-20260727"></script>
+  <script src="assets/data-store.js?v=budget-plan-20260730"></script>
+  <script src="assets/affiliate-plan-data.js?v=budget-plan-20260730"></script>
   <script>
     let AFFILIATE_PLAN_INPUTS = loadData(DATA_KEYS.affiliatePlan, defaultAffiliatePlanMonths);
     let AFFILIATE_PLAN_PRODUCTS = loadData(DATA_KEYS.affiliatePlanProducts, defaultAffiliatePlanProducts);

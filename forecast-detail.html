@@ -47,7 +47,7 @@
             <div class="logo">TT</div>
             <div>
               <h1>3/4분기 Forecast 상세</h1>
-              <p>MIZON 목표 매출·광고비와 현재 비용 배부율을 적용한 모델 손익을 확인합니다.</p>
+              <p>새 예산·ROI 플랜의 2026년 3·4분기와 내부 모델 손익을 확인합니다.</p>
             </div>
           </div>
         </div>
@@ -75,7 +75,7 @@
 
         <section class="grid cards-2" style="margin-top: 20px;">
           <article class="card chart-card">
-            <div class="chart-title"><div><h2>분기별 매출·광고비·순이익</h2><small>목표치</small></div></div>
+            <div class="chart-title"><div><h2>분기별 매출·마케팅 예산·모델 순이익</h2><small>목표치</small></div></div>
             <canvas id="forecastDetailChart"></canvas>
           </article>
           <article class="card chart-card">
@@ -90,16 +90,16 @@
         </section>
 
         <section class="card" style="margin-top: 20px;">
-          <div class="chart-title"><div><h2>분기별 상세</h2><small>목표 매출·광고비·순이익·마진율·ROAS</small></div></div>
+          <div class="chart-title"><div><h2>분기별 상세</h2><small>목표 매출·마케팅 예산·모델 순이익·마케팅 ROI</small></div></div>
           <table class="table" id="forecastTable">
             <thead>
-              <tr><th>분기</th><th>목표 매출</th><th>목표 광고비</th><th>목표 순이익</th><th>목표 마진율</th><th>ROAS</th></tr>
+              <tr><th>분기</th><th>목표 매출</th><th>마케팅 예산</th><th>모델 순이익</th><th>모델 마진율</th><th>마케팅 ROI</th></tr>
             </thead>
             <tbody></tbody>
           </table>
           <p class="page-note" style="font-size: 12px;">
-            ※ 매출·광고비는 제공된 MIZON 분석리포트의 2026.08~12 목표 플랜이며, 순이익은 현재 비광고비 배부율을 적용한 모델값입니다.
-            12월 매출 $150,000·광고비 $90,000은 리포트에서 원본 이상치를 대체한 검토값이므로 최종 목표 확정 전 재확인이 필요합니다.
+            ※ 3분기는 2026년 8~9월(7월 목표 없음), 4분기는 10~12월입니다. 원본 ROI는 매출 ÷ 마케팅 예산이며 제품 원가·플랫폼 수수료를 포함하지 않습니다.
+            순이익은 현재 비광고비 배부율을 추가 적용한 내부 모델값입니다. 17개월 전체 계획은 매출·광고비·손익 전망 페이지에서 확인할 수 있습니다.
           </p>
         </section>
       </div>
@@ -107,11 +107,11 @@
   </section>
 
   <script src="assets/nav.js?v=dashboard-20260724"></script>
-  <script src="assets/data-store.js?v=data-sync-20260724"></script>
-  <script src="assets/monthly-data.js?v=data-sync-20260724"></script>
-  <script src="assets/forecast-data.js?v=data-sync-20260724"></script>
+  <script src="assets/data-store.js?v=verified-20260808"></script>
+  <script src="assets/monthly-data.js?v=verified-20260808"></script>
+  <script src="assets/forecast-data.js?v=budget-plan-20260730"></script>
   <script>
-    let monthlyData = loadData(DATA_KEYS.monthly, defaultMonthlyData).filter(hasActualData);
+    let monthlyData = loadData(DATA_KEYS.monthly, defaultMonthlyData).filter(item => hasActualData(item) && hasCompleteCostData(item));
     let forecastData = loadData(DATA_KEYS.forecast, defaultForecastData);
     let forecastDetailChart, marginByQuarterChart;
 
@@ -150,7 +150,7 @@
           labels: ['3분기', '4분기'],
           datasets: [
             { label: '매출', data: [forecastData.q3.revenue, forecastData.q4.revenue], backgroundColor: '#2563eb' },
-            { label: '광고비', data: [forecastData.q3.adSpend, forecastData.q4.adSpend], backgroundColor: '#f59e0b' },
+            { label: '마케팅 예산', data: [forecastData.q3.adSpend, forecastData.q4.adSpend], backgroundColor: '#f59e0b' },
             { label: '순이익', data: [forecastData.q3.profit, forecastData.q4.profit], backgroundColor: '#14b8a6' }
           ]
         },
@@ -168,7 +168,7 @@
     }
 
     function refreshAll() {
-      monthlyData = loadData(DATA_KEYS.monthly, defaultMonthlyData).filter(hasActualData);
+      monthlyData = loadData(DATA_KEYS.monthly, defaultMonthlyData).filter(item => hasActualData(item) && hasCompleteCostData(item));
       forecastData = loadData(DATA_KEYS.forecast, defaultForecastData);
       renderKPIs();
       renderTable();

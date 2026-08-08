@@ -97,15 +97,16 @@
         <section class="card admin-section data-source-card" id="section-dataSources" style="margin-top: 20px; display: none;">
           <div class="chart-title">
             <div><span class="eyebrow">SOURCE REGISTRY</span><h2>데이터 소스 현황</h2><small>원본마다 기간과 모수가 다르므로 합산 전 반드시 확인</small></div>
-            <span class="badge warn">다음 점검 · 7월 마감 후</span>
+            <span class="badge warn">최신 점검 · 2026-08-08</span>
           </div>
           <div class="table-scroll">
             <table class="table data-source-table">
               <thead><tr><th>소스</th><th>보유 기간 / 기준일</th><th>규모</th><th>갱신 방식</th><th>연결 페이지</th><th>상태</th></tr></thead>
               <tbody>
                 <tr><td><strong>Shop Analytics</strong><small>일별 판매 원본</small></td><td>2025.11.01–2026.07.26</td><td>268일 · GMV $32,621.48</td><td><span class="source-mode auto">Embedded</span></td><td>전체 매출 · 데이터센터 · 상품</td><td><span class="badge warn">7/26 비용 일부 미집계</span></td></tr>
-                <tr><td><strong>Campaign overview</strong><small>일별 Cost·주문·Gross revenue·ROI</small></td><td>2025.07.03–2026.07.27</td><td>390일 · Cost $100,480.97 · ROI 0.55x</td><td><span class="source-mode manual">XLSX + 공식 UI</span></td><td>광고관리 · 전체 매출 · 상세</td><td><span class="badge warn">Cost $0.88 차이</span></td></tr>
-                <tr><td><strong>Monthly Finance 모델</strong><small>월별 GMV·광고비·배부 비용 가정</small></td><td>2025.11–2026.07</td><td>관리자 계획값</td><td><span class="source-mode manual">Embedded</span></td><td>손익 · Forecast 참고</td><td><span class="badge bad">대표보고 비사용</span></td></tr>
+                <tr><td><strong>Campaign overview</strong><small>일별 Cost·주문·Gross revenue·ROI</small></td><td>유효 데이터 2025.07.03–2026.07.27</td><td>390일 · Cost $100,480.97 · ROI 0.55x</td><td><span class="source-mode manual">XLSX + 공식 UI</span></td><td>광고관리 · 전체 매출 · 상세</td><td><span class="badge warn">8/8 파일 데이터 행 0건</span></td></tr>
+                <tr><td><strong>Monthly Finance</strong><small>정산 Total Revenue·광고비·배부 비용</small></td><td>2025.11–2026.08.07</td><td>누적 Total Revenue $60,516.67</td><td><span class="source-mode manual">XLSX + Admin</span></td><td>손익 · Forecast</td><td><span class="badge warn">8월 매출만 확인 · 비용 미수집</span></td></tr>
+                <tr><td><strong>Product campaign</strong><small>상품 캠페인 단위 export</small></td><td>2026.08.08</td><td>데이터 행 0건</td><td><span class="source-mode manual">XLSX</span></td><td>캠페인</td><td><span class="badge warn">헤더만 존재</span></td></tr>
                 <tr><td><strong>Affiliate Videos 2–4월</strong><small>영상 단위 export</small></td><td>2026.02.01–04.30</td><td>182개 영상</td><td><span class="source-mode manual">PDF 수동</span></td><td>어필리에이터</td><td><span class="badge good">완료</span></td></tr>
                 <tr><td><strong>Affiliate Videos 5–7월</strong><small>영상 단위 export</small></td><td>2026.05.01–07.23</td><td>722개 영상</td><td><span class="source-mode manual">PDF 수동</span></td><td>어필리에이터</td><td><span class="badge warn">부분월</span></td></tr>
                 <tr><td><strong>Affiliate Core Metrics</strong><small>영상·LIVE·쇼케이스 귀속</small></td><td>2026.07.01–07.25</td><td>GMV $7,007.76 · 수수료 $2,282.78</td><td><span class="source-mode manual">XLSX</span></td><td>어필리에이터</td><td><span class="badge good">검증 완료</span></td></tr>
@@ -121,14 +122,14 @@
   </section>
 
   <script src="assets/nav.js?v=dashboard-20260724"></script>
-  <script src="assets/data-store.js?v=data-sync-20260724"></script>
+  <script src="assets/data-store.js?v=verified-20260808"></script>
   <script src="assets/inventory-data.js"></script>
-  <script src="assets/monthly-data.js?v=data-sync-20260727"></script>
+  <script src="assets/monthly-data.js?v=verified-20260808"></script>
   <script src="assets/cost-items-data.js?v=data-sync-20260724"></script>
-  <script src="assets/quarterly-forecast.js?v=data-sync-20260727"></script>
+  <script src="assets/quarterly-forecast.js?v=verified-20260808"></script>
   <script src="assets/product-sales-data.js"></script>
   <script src="assets/product-costs-data.js"></script>
-  <script src="assets/affiliate-plan-data.js"></script>
+  <script src="assets/affiliate-plan-data.js?v=budget-plan-20260730"></script>
   <script>
     function showTab(tabName) {
       document.querySelectorAll('.admin-section').forEach(sec => { sec.style.display = 'none'; });
@@ -165,14 +166,14 @@
         const inputType = isNumeric ? 'number' : col.type;
         const step = col.step ? ` step="${col.step}"` : (col.type === 'currency' ? ' step="0.01"' : '');
         const min = isNumeric ? ' min="0"' : '';
-        const val = isNumeric ? (value || 0) : escapeHtml(value || '');
+        const val = isNumeric ? (value == null && col.optional ? '' : (value || 0)) : escapeHtml(value || '');
         return `<input type="${inputType}" id="${id}" value="${val}"${step}${min}>`;
       }
 
       function readFieldValue(col, prefix) {
         const el = document.getElementById(`${containerId}-${prefix}-${col.field}`);
         if (col.type === 'checkbox') return el.checked;
-        if (col.type === 'number' || col.type === 'currency') return Number(el.value) || 0;
+        if (col.type === 'number' || col.type === 'currency') return col.optional && el.value === '' ? null : (Number(el.value) || 0);
         return el.value.trim();
       }
 
@@ -180,7 +181,7 @@
         const cells = columns.map(col => {
           const v = item[col.field];
           if (col.type === 'checkbox') return `<td>${v ? '예' : '-'}</td>`;
-          if (col.type === 'currency') return `<td>${formatMoney(v || 0)}</td>`;
+          if (col.type === 'currency') return `<td>${v == null && col.optional ? '<span class="badge warn">미수집</span>' : formatMoney(v || 0)}</td>`;
           return `<td>${col.type === 'number' ? (v || 0) : escapeHtml(v || '')}</td>`;
         }).join('');
         return `<tr>${cells}<td class="row-actions">
@@ -344,17 +345,17 @@
     buildEditableSection('section-monthly', {
       key: DATA_KEYS.monthly,
       defaultData: defaultMonthlyData,
-      title: '월별 매출(GMV)·광고비 (실적 + 목표)',
-      subtitle: '매출은 Shop Analytics GMV 기준입니다 (전체 매출 대시보드가 쓰는 Campaign Overview "Gross revenue"와는 다른 값). 실적+계획 상세, 손익, 손익분기점, 매출 vs 광고비 상세, Forecast 페이스 페이지에 반영됩니다. 이미 지난 달은 매출·광고비·총비용을, 아직 오지 않은 달은 목표매출·예산을 입력하세요 (목표 달의 총비용·순이익은 비용구조 비율로 자동 계산되어 여기 총비용 값은 쓰이지 않습니다). 월을 선택하면 날짜순으로 자동 정렬됩니다. 아래 Forecast(3Q/4Q)도 이 표에서 자동으로 계산됩니다.',
+      title: '월별 실적·목표·마케팅 예산',
+      subtitle: '실적 매출은 정산 Total Revenue, 2026.08~2027.12 목표와 예산은 예산·ROI 플랜 원본입니다. 저장하면 손익·Forecast에 반영됩니다.',
       sortKey: item => monthSortValue(item.month),
       onChange: renderMonthlyForecastSummary,
       columns: [
         { field: 'month', label: '월', type: 'month' },
-        { field: 'revenue', label: '매출(GMV)', type: 'currency' },
-        { field: 'adSpend', label: '광고비', type: 'currency' },
-        { field: 'totalCost', label: '총비용', type: 'currency' },
-        { field: 'targetRevenue', label: '목표매출(GMV)', type: 'currency' },
-        { field: 'targetAdSpend', label: '예산', type: 'currency' }
+        { field: 'revenue', label: '매출(Total Revenue)', type: 'currency' },
+        { field: 'adSpend', label: '광고비 (미수집은 공란)', type: 'currency', optional: true },
+        { field: 'totalCost', label: '총비용 (미수집은 공란)', type: 'currency', optional: true },
+        { field: 'targetRevenue', label: '목표매출', type: 'currency' },
+        { field: 'targetAdSpend', label: '마케팅 예산', type: 'currency' }
       ]
     });
     renderMonthlyForecastSummary();
@@ -404,7 +405,7 @@
     buildEditableSection('section-affiliatePlan-months', {
       key: DATA_KEYS.affiliatePlan,
       defaultData: defaultAffiliatePlanMonths,
-      title: '월별 목표 계획 (2026.08~12)',
+      title: '월별 목표 계획 (2026.08~2027.12)',
       subtitle: '매출 목표를 바꾸면 크리에이터 매출목표·필요 Active·필요 샘플·예상 영상·수수료·샘플비가 (제품별 샘플 배분 비율을 적용해) 어필리에이터 성장 센터 페이지에서 자동으로 다시 계산됩니다. 월을 선택하면 날짜순으로 자동 정렬됩니다.',
       sortKey: item => monthSortValue(item.month),
       columns: [

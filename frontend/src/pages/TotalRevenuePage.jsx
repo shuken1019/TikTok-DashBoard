@@ -228,7 +228,7 @@ function TotalRevenuePage() {
         labels: ['3분기', '4분기'],
         datasets: [
           { label: '매출', data: [forecastData.q3.revenue, forecastData.q4.revenue], backgroundColor: '#2563eb' },
-          { label: '광고비', data: [forecastData.q3.adSpend, forecastData.q4.adSpend], backgroundColor: '#f59e0b' },
+          { label: '마케팅 예산', data: [forecastData.q3.adSpend, forecastData.q4.adSpend], backgroundColor: '#f59e0b' },
           { label: '순이익', data: [forecastData.q3.profit, forecastData.q4.profit], backgroundColor: '#14b8a6' },
         ],
       },
@@ -298,12 +298,12 @@ function TotalRevenuePage() {
             <h2>재무·손익 상세 분석</h2>
             <small>실적, Forecast, 적자·흑자, 손익분기점을 각각 클릭해 확인하세요.</small>
           </div>
-          <span className="finance-period-badge">2025.11 → 2026.12</span>
+          <span className="finance-period-badge">2025.11 → 2027.12</span>
         </div>
         <div className="finance-entry-grid">
           <Link to="/performance-outlook" className="finance-entry-card primary">
             <span>01 · 실적 + 계획</span>
-            <strong>2025.11~2026.12 매출·광고비·Forecast</strong>
+            <strong>2025.11~2027.12 매출·광고비·Forecast</strong>
             <small>월별 매출·총비용·순이익과 적자→흑자 전환 전망</small>
             <b>통합 전망 보기 →</b>
           </Link>
@@ -338,7 +338,7 @@ function TotalRevenuePage() {
           <canvas id="profitChart" />
         </Link>
         <Link to="/forecast" className="card linked chart-card" style={{ textDecoration: 'none', color: 'inherit' }}>
-          <div className="chart-title"><div><h2>3/4분기 Forecast</h2><small>예상 매출·광고비·순이익 · 클릭하면 상세 페이지</small></div></div>
+          <div className="chart-title"><div><h2>3/4분기 Forecast</h2><small>목표 매출·마케팅 예산·모델 순이익 · 클릭하면 상세 페이지</small></div></div>
           <canvas id="forecastChart" />
         </Link>
       </section>

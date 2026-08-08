@@ -51,9 +51,9 @@ function AffiliatePage({ mode = 'overview' }) {
   const [videosPerCreator, setVideosPerCreator] = useState(1.5);
   const [planGranularity, setPlanGranularity] = useState('month');
   const [planStartDate, setPlanStartDate] = useState('2026-08-01');
-  const [planEndDate, setPlanEndDate] = useState('2026-12-31');
+  const [planEndDate, setPlanEndDate] = useState('2027-12-31');
   const [planStartMonth, setPlanStartMonth] = useState('2026-08');
-  const [planEndMonth, setPlanEndMonth] = useState('2026-12');
+  const [planEndMonth, setPlanEndMonth] = useState('2027-12');
   const chartInstances = useRef({});
 
   const expectedVideos = Math.round(targetCreators * videosPerCreator);
@@ -273,7 +273,7 @@ function AffiliatePage({ mode = 'overview' }) {
           <div>
             <span className="eyebrow">PLAN RANGE</span>
             <strong>{planPeriodLabel}</strong>
-            <small>제공된 MIZON 8–12월 계획 데이터</small>
+            <small>2026.08~2027.12 예산·ROI 계획 원본</small>
           </div>
           <div className="affiliate-plan-granularity" aria-label="계획 집계 기준">
             <button type="button" className={planGranularity === 'day' ? 'active' : ''} onClick={() => setPlanGranularity('day')}>날짜별</button>
@@ -281,18 +281,18 @@ function AffiliatePage({ mode = 'overview' }) {
           </div>
           {planGranularity === 'day' ? (
             <div className="affiliate-plan-date-controls">
-              <label>시작일<input type="date" min="2026-08-01" max="2026-12-31" value={planStartDate} onChange={(event) => { const value = event.target.value; setPlanStartDate(value); if (value > planEndDate) setPlanEndDate(value); }} /></label>
+              <label>시작일<input type="date" min="2026-08-01" max="2027-12-31" value={planStartDate} onChange={(event) => { const value = event.target.value; setPlanStartDate(value); if (value > planEndDate) setPlanEndDate(value); }} /></label>
               <span>→</span>
-              <label>종료일<input type="date" min="2026-08-01" max="2026-12-31" value={planEndDate} onChange={(event) => { const value = event.target.value; setPlanEndDate(value); if (value < planStartDate) setPlanStartDate(value); }} /></label>
+              <label>종료일<input type="date" min="2026-08-01" max="2027-12-31" value={planEndDate} onChange={(event) => { const value = event.target.value; setPlanEndDate(value); if (value < planStartDate) setPlanStartDate(value); }} /></label>
             </div>
           ) : (
             <div className="affiliate-plan-date-controls">
-              <label>시작월<input type="month" min="2026-08" max="2026-12" value={planStartMonth} onChange={(event) => { const value = event.target.value; setPlanStartMonth(value); if (value > planEndMonth) setPlanEndMonth(value); }} /></label>
+              <label>시작월<input type="month" min="2026-08" max="2027-12" value={planStartMonth} onChange={(event) => { const value = event.target.value; setPlanStartMonth(value); if (value > planEndMonth) setPlanEndMonth(value); }} /></label>
               <span>→</span>
-              <label>종료월<input type="month" min="2026-08" max="2026-12" value={planEndMonth} onChange={(event) => { const value = event.target.value; setPlanEndMonth(value); if (value < planStartMonth) setPlanStartMonth(value); }} /></label>
+              <label>종료월<input type="month" min="2026-08" max="2027-12" value={planEndMonth} onChange={(event) => { const value = event.target.value; setPlanEndMonth(value); if (value < planStartMonth) setPlanStartMonth(value); }} /></label>
             </div>
           )}
-          <span className="badge warn">12월 목표는 원본 검토값</span>
+          <span className="badge good">17개월 원본 반영</span>
         </section>
       )}
 
@@ -358,14 +358,14 @@ function AffiliatePage({ mode = 'overview' }) {
 
       <section className="card affiliate-detail-section affiliate-finance-content affiliate-finance-breakdown">
         <div className="affiliate-plan-heading">
-          <div><span className="eyebrow">COST & RETURN</span><h2>현재 실적과 8–12월 계획 비용</h2><p>실적과 미래 계획을 섞지 않고 나란히 비교합니다.</p></div>
+          <div><span className="eyebrow">COST & RETURN</span><h2>현재 실적과 17개월 계획 비용</h2><p>실적과 미래 계획을 섞지 않고 나란히 비교합니다.</p></div>
           <span className="badge warn">계획값은 가정 기반</span>
         </div>
         <div className="grid cards-4">
           <article><span>현재 귀속 GMV</span><strong>{formatCurrency(affiliateSnapshot.creatorAttributedGmv)}</strong><small>Performance 누적</small></article>
           <article><span>현재 수수료</span><strong>{formatCurrency(affiliateSnapshot.commission)}</strong><small>현재 ROI {affiliateRoi.toFixed(2)}x</small></article>
-          <article><span>8–12월 예상 수수료</span><strong>{formatCurrency(affiliatePlanTotals.expectedCommission)}</strong><small>크리에이터 매출 85% × 25%</small></article>
-          <article><span>8–12월 예상 샘플비</span><strong>{formatCurrency(affiliatePlanTotals.sampleCost)}</strong><small>번들 중복 제거 기준</small></article>
+          <article><span>전체 계획 예상 수수료</span><strong>{formatCurrency(affiliatePlanTotals.expectedCommission)}</strong><small>크리에이터 매출 85% × 25%</small></article>
+          <article><span>전체 계획 예상 샘플비</span><strong>{formatCurrency(affiliatePlanTotals.sampleCost)}</strong><small>번들 중복 제거 기준</small></article>
         </div>
         <p className="affiliate-plan-footnote">계획 총비용은 수수료와 샘플비 합계 {formatCurrency(affiliatePlanTotals.expectedCommission + affiliatePlanTotals.sampleCost)}입니다. 물류비와 광고비는 포함하지 않았습니다.</p>
       </section>
@@ -438,7 +438,7 @@ function AffiliatePage({ mode = 'overview' }) {
           </article>
 
           <article className="affiliate-month-plan">
-            <div className="chart-title"><div><h3>{planGranularity === 'day' ? '선택 날짜의 월별 환산' : '월별 목표와 비용'}</h3><small>2026년 8월부터 12월까지 제공 자료 기준</small></div></div>
+            <div className="chart-title"><div><h3>{planGranularity === 'day' ? '선택 날짜의 월별 환산' : '월별 목표와 비용'}</h3><small>2026년 8월부터 2027년 12월까지 원본 기준</small></div></div>
             {selectedPlan.rows.map((item) => (
               <div className="month-plan-row" key={item.month}>
                 <strong>{item.month}{item.fraction < 1 ? ` · ${item.overlapDays}일` : ''}{item.estimated ? ' *' : ''}</strong>
@@ -476,7 +476,7 @@ function AffiliatePage({ mode = 'overview' }) {
         <p className="affiliate-plan-footnote">
           계산 가정: 샘플→콘텐츠 63.5%(1,332/2,099), 크리에이터 채널 85%, 수수료 25%, 샘플 COGS 30%.
           수수료 상한은 선택 기간 전체 매출에 25%를 적용한 {formatCurrency(planTotals.revenueGoal * 0.25)}입니다.
-          12월 매출 $150,000·예산 $90,000은 제공 파일에 추정 검토값으로 표시되어 있어 실제 목표 확정 시 갱신이 필요합니다.
+          예산과 목표 매출은 2026.08~2027.12 예산·ROI 플랜 원본을 사용합니다.
         </p>
       </section>
 

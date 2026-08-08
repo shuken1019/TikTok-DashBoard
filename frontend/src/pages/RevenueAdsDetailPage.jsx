@@ -9,6 +9,9 @@ import { dailyAnalytics, firstDate, lastDate } from '../data/shopAnalytics';
 Chart.register(...registerables);
 
 const RECENT_DAYS = 30;
+const hasCompleteCostData = (item) => item?.costStatus !== 'missing'
+  && item?.adSpend !== null && item?.adSpend !== undefined
+  && item?.totalCost !== null && item?.totalCost !== undefined;
 
 function RevenueAdsDetailPage() {
   const [monthlyData, setMonthlyData] = useState([]);
@@ -37,7 +40,9 @@ function RevenueAdsDetailPage() {
   }
 
   const filteredMonthlyData = useMemo(
-    () => filterByMonthRange(monthlyData, startMonth, endMonth),
+    () => filterByMonthRange(monthlyData, startMonth, endMonth)
+      .filter((item) => hasCompleteCostData(item)
+        && (Number(item.revenue || 0) !== 0 || Number(item.adSpend || 0) !== 0 || Number(item.totalCost || 0) !== 0)),
     [monthlyData, startMonth, endMonth]
   );
 
@@ -140,6 +145,11 @@ function RevenueAdsDetailPage() {
   return (
     <>
       <PageHeader title="월별 매출 vs 광고비 상세" subtitle="광고비 효율(ROAS)과 매출 대비 광고비 비중을 월별로 분석합니다." />
+
+      <section className="source-verification-card card" style={{ marginBottom: 20 }}>
+        <span className="badge warn">비용 기준 2026.07까지</span>
+        <p className="page-note">2026.08.01–08.07 Total Revenue $13,052.48은 확인됐지만 광고비 원본이 비어 있어, ROAS·광고비 비교에서는 8월을 제외했습니다.</p>
+      </section>
 
       <section className="card">
         <div className="control-row" style={{ marginTop: 0 }}>

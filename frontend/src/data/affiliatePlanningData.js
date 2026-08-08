@@ -1,5 +1,4 @@
-// Source: MIZON전용_9-10월_발주계산.xlsx and
-// MIZON전용_TikTokShop_분석리포트.pdf (2026-07-26).
+// Source: TikTok_Shop_예산_ROI_플랜_2026-08_2027-12.xlsx.
 // Bundle revenue and sample cost are counted once at the bundle/group level.
 
 export const affiliatePlanningAssumptions = {
@@ -12,69 +11,38 @@ export const affiliatePlanningAssumptions = {
   currentSamplesSent: 2099,
 };
 
-export const affiliateMonthlyPlan = [
-  {
-    month: '2026-08',
-    revenueGoal: 27000,
-    adBudget: 40000,
-    creatorRevenueGoal: 22950,
-    activeCreatorsNeeded: 296.588265701732,
-    funnelSamplesNeeded: 1392.4331723086,
-    productSamplePackages: 1568.055610058452,
-    expectedVideos: 995.069115101409,
-    expectedCommission: 5737.5,
-    sampleCost: 13883.4,
-  },
-  {
-    month: '2026-09',
-    revenueGoal: 47000,
-    adBudget: 48000,
-    creatorRevenueGoal: 39950,
-    activeCreatorsNeeded: 516.283277332644,
-    funnelSamplesNeeded: 2423.86515179645,
-    productSamplePackages: 2729.578284175824,
-    expectedVideos: 1732.157348509861,
-    expectedCommission: 9987.5,
-    sampleCost: 24167.4,
-  },
-  {
-    month: '2026-10',
-    revenueGoal: 67000,
-    adBudget: 53333,
-    creatorRevenueGoal: 56950,
-    activeCreatorsNeeded: 735.978288963557,
-    funnelSamplesNeeded: 3455.2971312843,
-    productSamplePackages: 3891.100958293196,
-    expectedVideos: 2469.245581918312,
-    expectedCommission: 14237.5,
-    sampleCost: 34451.4,
-  },
-  {
-    month: '2026-11',
-    revenueGoal: 100000,
-    adBudget: 60000,
-    creatorRevenueGoal: 85000,
-    activeCreatorsNeeded: 1098.47505815456,
-    funnelSamplesNeeded: 5157.15989743926,
-    productSamplePackages: 5807.61337058686,
-    expectedVideos: 3685.441167042257,
-    expectedCommission: 21250,
-    sampleCost: 51420,
-  },
-  {
-    month: '2026-12',
-    revenueGoal: 150000,
-    adBudget: 90000,
-    creatorRevenueGoal: 127500,
-    activeCreatorsNeeded: 1647.71258723184,
-    funnelSamplesNeeded: 7735.73984615889,
-    productSamplePackages: 8711.42005588029,
-    expectedVideos: 5528.161750563386,
-    expectedCommission: 31875,
-    sampleCost: 77130,
-    estimated: true,
-  },
+const budgetPlan = [
+  ['2026-08', 20000, 33333], ['2026-09', 25000, 40000], ['2026-10', 30000, 40000],
+  ['2026-11', 50000, 58800], ['2026-12', 50000, 47600], ['2027-01', 55000, 47800],
+  ['2027-02', 60000, 48000], ['2027-03', 70000, 51850], ['2027-04', 90000, 60000],
+  ['2027-05', 100000, 62500], ['2027-06', 115000, 67650], ['2027-07', 125000, 69450],
+  ['2027-08', 150000, 78950], ['2027-09', 160000, 80000], ['2027-10', 175000, 83350],
+  ['2027-11', 190000, 86350], ['2027-12', 200000, 86950],
 ];
+
+const sampleMultiplier = 1.714;
+const productMix = [
+  { share: 0.45, unitPrice: 38.99 },
+  { share: 0.35, unitPrice: 38.89 },
+  { share: 0.20, unitPrice: 14.99 },
+];
+
+export const affiliateMonthlyPlan = budgetPlan.map(([month, revenueGoal, adBudget]) => {
+  const creatorRevenueGoal = revenueGoal * affiliatePlanningAssumptions.creatorRevenueShare;
+  const productSamplePackages = productMix.reduce(
+    (sum, item) => sum + (revenueGoal * item.share / item.unitPrice) * sampleMultiplier,
+    0,
+  );
+  return {
+    month, revenueGoal, adBudget, creatorRevenueGoal,
+    activeCreatorsNeeded: revenueGoal * 0.0109847506,
+    funnelSamplesNeeded: revenueGoal * 0.051571599,
+    productSamplePackages,
+    expectedVideos: productSamplePackages * affiliatePlanningAssumptions.sampleToContentRate,
+    expectedCommission: creatorRevenueGoal * affiliatePlanningAssumptions.commissionRate,
+    sampleCost: revenueGoal * sampleMultiplier * affiliatePlanningAssumptions.sampleCogsRate,
+  };
+});
 
 export const affiliateProductSamplePlan = [
   {
@@ -112,15 +80,21 @@ export const affiliateProductSamplePlan = [
   },
 ];
 
-export const affiliatePlanTotals = {
-  revenueGoal: 391000,
-  creatorRevenueGoal: 332350,
-  activeCreatorMonths: 4295,
-  funnelSamplesNeeded: 20164,
-  productSamplePackages: 22708,
-  expectedVideos: 14410,
-  expectedCommission: 83087.5,
-  commissionUpperBound: 97750,
-  sampleCost: 201052.2,
-  finalOrderUnits: 28385,
-};
+export const affiliatePlanTotals = affiliateMonthlyPlan.reduce((totals, item) => {
+  totals.revenueGoal += item.revenueGoal;
+  totals.creatorRevenueGoal += item.creatorRevenueGoal;
+  totals.activeCreatorMonths += item.activeCreatorsNeeded;
+  totals.funnelSamplesNeeded += item.funnelSamplesNeeded;
+  totals.productSamplePackages += item.productSamplePackages;
+  totals.expectedVideos += item.expectedVideos;
+  totals.expectedCommission += item.expectedCommission;
+  totals.sampleCost += item.sampleCost;
+  return totals;
+}, {
+  revenueGoal: 0, creatorRevenueGoal: 0, activeCreatorMonths: 0,
+  funnelSamplesNeeded: 0, productSamplePackages: 0, expectedVideos: 0,
+  expectedCommission: 0, sampleCost: 0,
+  commissionUpperBound: 1665000 * affiliatePlanningAssumptions.commissionRate,
+  finalOrderUnits: 0,
+});
+affiliatePlanTotals.finalOrderUnits = affiliatePlanTotals.productSamplePackages * 1.25;

@@ -6,6 +6,10 @@ import { formatCurrency } from '../format';
 
 Chart.register(...registerables);
 
+const hasCompleteCostData = (item) => item?.costStatus !== 'missing'
+  && item?.adSpend !== null && item?.adSpend !== undefined
+  && item?.totalCost !== null && item?.totalCost !== undefined;
+
 function ForecastDetailPage() {
   const [monthlyData, setMonthlyData] = useState([]);
   const [forecastData, setForecastData] = useState({ q3: { revenue: 0, adSpend: 0, profit: 0 }, q4: { revenue: 0, adSpend: 0, profit: 0 } });
@@ -20,7 +24,11 @@ function ForecastDetailPage() {
     });
   }, []);
 
-  const lastActualMonth = useMemo(() => (monthlyData.length ? monthlyData[monthlyData.length - 1] : null), [monthlyData]);
+  const lastActualMonth = useMemo(() => {
+    const actual = monthlyData.filter((item) => hasCompleteCostData(item)
+      && (Number(item.revenue || 0) !== 0 || Number(item.adSpend || 0) !== 0 || Number(item.totalCost || 0) !== 0));
+    return actual.length ? actual[actual.length - 1] : null;
+  }, [monthlyData]);
 
   const quarters = useMemo(() => {
     return ['q3', 'q4'].map((key) => {
@@ -54,7 +62,7 @@ function ForecastDetailPage() {
         labels: ['3분기', '4분기'],
         datasets: [
           { label: '매출', data: [forecastData.q3.revenue, forecastData.q4.revenue], backgroundColor: '#2563eb' },
-          { label: '광고비', data: [forecastData.q3.adSpend, forecastData.q4.adSpend], backgroundColor: '#f59e0b' },
+          { label: '마케팅 예산', data: [forecastData.q3.adSpend, forecastData.q4.adSpend], backgroundColor: '#f59e0b' },
           { label: '순이익', data: [forecastData.q3.profit, forecastData.q4.profit], backgroundColor: '#14b8a6' },
         ],
       },
@@ -95,7 +103,7 @@ function ForecastDetailPage() {
 
   return (
     <>
-      <PageHeader title="3/4분기 Forecast 상세" subtitle="MIZON 목표 매출·광고비와 현재 비용 배부율을 적용한 모델 손익을 확인합니다." />
+      <PageHeader title="3/4분기 Forecast 상세" subtitle="새 예산·ROI 플랜의 2026년 3·4분기와 내부 모델 손익을 확인합니다." />
 
       <section className="grid cards-4" style={{ marginTop: 0 }}>
         <article className="card kpi">
@@ -118,7 +126,7 @@ function ForecastDetailPage() {
 
       <section className="grid cards-2" style={{ marginTop: 20 }}>
         <article className="card chart-card">
-          <div className="chart-title"><div><h2>분기별 매출·광고비·순이익</h2><small>목표치</small></div></div>
+          <div className="chart-title"><div><h2>분기별 매출·마케팅 예산·모델 순이익</h2><small>목표치</small></div></div>
           <canvas id="forecastDetailChart" />
         </article>
         <article className="card chart-card">
@@ -139,10 +147,10 @@ function ForecastDetailPage() {
       )}
 
       <section className="card" style={{ marginTop: 20 }}>
-        <div className="chart-title"><div><h2>분기별 상세</h2><small>목표 매출·광고비·순이익·마진율·ROAS</small></div></div>
+        <div className="chart-title"><div><h2>분기별 상세</h2><small>목표 매출·마케팅 예산·모델 순이익·마케팅 ROI</small></div></div>
         <table className="table">
           <thead>
-            <tr><th>분기</th><th>목표 매출</th><th>목표 광고비</th><th>목표 순이익</th><th>목표 마진율</th><th>ROAS</th></tr>
+            <tr><th>분기</th><th>목표 매출</th><th>마케팅 예산</th><th>모델 순이익</th><th>모델 마진율</th><th>마케팅 ROI</th></tr>
           </thead>
           <tbody>
             {quarters.map((q) => (
@@ -158,8 +166,8 @@ function ForecastDetailPage() {
           </tbody>
         </table>
         <p className="page-note" style={{ fontSize: 12 }}>
-          ※ 매출·광고비는 제공된 MIZON 분석리포트의 2026.08~12 목표 플랜이며, 순이익은 현재 비광고비 배부율을 적용한 모델값입니다.
-          12월 매출 $150,000·광고비 $90,000은 리포트에서 원본 이상치를 대체한 검토값이므로 최종 목표 확정 전 재확인이 필요합니다.
+          ※ 3분기는 2026년 8~9월(7월 목표 없음), 4분기는 10~12월입니다. 원본 ROI는 매출 ÷ 마케팅 예산이며 제품 원가·플랫폼 수수료를 포함하지 않습니다.
+          순이익은 현재 비광고비 배부율을 추가 적용한 내부 모델값입니다.
         </p>
       </section>
     </>

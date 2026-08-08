@@ -1,7 +1,9 @@
 // Source: TikTok Shop Campaign calendar / campaign management screenshots
 // supplied on 2026-07-26. Platform campaign dates are subject to change.
 
-export const campaignDataAsOf = '2026-07-26';
+// 2026-08-08 Product campaign export was header-only (0 data rows), so the
+// calendar status is advanced by date while performance values remain at 7/26.
+export const campaignDataAsOf = '2026-08-08 (신규 데이터 행 없음)';
 
 export const platformCampaigns = [
   {
@@ -11,7 +13,7 @@ export const platformCampaigns = [
     start: '2026-07-22',
     end: '2026-08-02',
     tier: 'MEGA',
-    status: 'ongoing',
+    status: 'completed',
     description: '여름 시즌 인기 상품을 집중 노출하는 플랫폼 메가 세일입니다.',
   },
   {
@@ -83,7 +85,7 @@ export const registeredCampaigns = [
     type: '표준 등록',
     start: '2026-07-22 17:00',
     end: '2026-08-02 20:59',
-    status: 'ongoing',
+    status: 'completed',
     registration: '등록 제품',
     approved: 39,
   },
@@ -93,7 +95,7 @@ export const registeredCampaigns = [
     type: '라이브 캠페인',
     start: '2026-07-22 17:00',
     end: '2026-08-02 20:58',
-    status: 'ongoing',
+    status: 'completed',
     registration: '등록된 Tik',
     approved: 1,
   },
@@ -103,7 +105,7 @@ export const registeredCampaigns = [
     type: '프리미엄 오퍼 및 플래시 세일',
     start: '2026-07-22 17:00',
     end: '2026-08-02 20:59',
-    status: 'ongoing',
+    status: 'completed',
     registration: '등록 제품',
     approved: 2,
   },
