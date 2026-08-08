@@ -1,25 +1,55 @@
-// Source: July Transaction Analysis exports supplied on 2026-07-27.
-// Core Metrics covers 2026-07-01–07-25. Creator, Video, LIVE and Product detail
-// lists cover 2026-07-01–07-24. Sample ROI remains the separate 45-day snapshot.
+// Source: Transaction Analysis exports supplied on 2026-08-08.
+// July Core Metrics and Product List cover 2026-07-01–07-31. August Core Metrics
+// covers 2026-08-01–08-05. August fields described as "Avg. daily" remain daily
+// averages and must not be added to July period totals.
 // Never add Core totals to detail totals: the detail lists are a breakdown.
 
 export const affiliateSnapshot = {
-  asOf: '2026-07-25',
+  asOf: '2026-07-31',
   periodStart: '2026-07-01',
-  detailAsOf: '2026-07-24',
-  creatorAttributedGmv: 7007.76,
-  totalShopGmv: 9596.05,
-  attributedItemsSold: 847,
-  activeCollaborations: 314,
-  observedCreatorPool: 6272,
-  videos: 702,
-  commission: 2282.78,
-  periodSamplesShipped: 452,
+  detailAsOf: '2026-07-31',
+  creatorAttributedGmv: 10395.51,
+  totalShopGmv: 13797.74,
+  attributedItemsSold: 1167,
+  activeCollaborations: 646,
+  observedCreatorPool: 6535,
+  videos: 1087,
+  sellingVideos: 167,
+  liveStreams: 177,
+  creatorsWithSales: 120,
+  refunds: 520.44,
+  commission: 3370.93,
+  periodSamplesShipped: 1081,
   samplesShipped: 2099,
   sampleContent: 1332,
   sampleContentGmv: 15654,
   sampleRoi45d: 0.6434,
 };
+
+export const affiliateCurrentPeriod = {
+  label: '8/1–8/5 MTD',
+  start: '2026-08-01',
+  end: '2026-08-05',
+  creatorAttributedGmv: 3302.03,
+  attributedItemsSold: 273,
+  refunds: 156.73,
+  videos: 268,
+  liveStreams: 66,
+  creatorsInCollaborations: 1386,
+  estimatedCommission: 940.85,
+  avgDailyCreatorsPosted: 52,
+  avgDailyCreatorsWithSales: 17,
+  avgDailyVideosWithSales: 24,
+};
+
+export const affiliateJulyProducts = [
+  { rank: 1, name: '7 Vegan Peptide Booster Serum', gmv: 5235.48, items: 648, orders: 638, refunds: 231.69, commission: 1856.30 },
+  { rank: 2, name: 'Rice Water Milky Toner', gmv: 1365.43, items: 135, orders: 133, refunds: 77.31, commission: 424.81 },
+  { rank: 3, name: 'Rice Milky Toner & Glow Mask Bundle', gmv: 1259.67, items: 97, orders: 97, refunds: 103.95, commission: 388.23 },
+  { rank: 4, name: 'Collagen Booster Set', gmv: 851.30, items: 60, orders: 60, refunds: 28.93, commission: 268.35 },
+  { rank: 5, name: 'Under Eye Patches', gmv: 737.82, items: 63, orders: 62, refunds: 14.69, commission: 111.44 },
+  { rank: 6, name: 'Snail Repair Intensive BB Cream SPF30', gmv: 704.69, items: 146, orders: 137, refunds: 39.63, commission: 269.82 },
+];
 
 export const affiliateMonthly = [
   { month: '2026-02', start: '2026-02-01', end: '2026-02-28', videos: 36, activeCreators: 28, newCreators: 28, pool: 28, videoGmv: 64.71, shopGmv: 2088.21, sellingVideos: 3, impressions: 1018 },

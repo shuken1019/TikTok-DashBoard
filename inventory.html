@@ -148,7 +148,8 @@
       const body = document.querySelector('#inventoryTable tbody');
       body.innerHTML = filtered.map(item => {
         const status = statusOf(item);
-        return `<tr><td>${escapeHtml(item.name)}</td><td>${escapeHtml(item.id)}<br>${escapeHtml(item.sku)}</td><td>${item.stock.toLocaleString('en-US')}</td><td>${escapeHtml(item.price)}</td><td>${item.views.toLocaleString('en-US')}</td><td>${item.sold}개 / $${item.sales.toFixed(2)}</td><td><span class="badge ${status.cls}">${status.label}</span></td></tr>`;
+        const priceDetail = item.retailPrice ? `<small>정가 ${escapeHtml(item.retailPrice)} · 프로모션 -${escapeHtml(item.promotionDiscount)}</small>` : '';
+        return `<tr><td>${escapeHtml(item.name)}</td><td>${escapeHtml(item.id)}<br>${escapeHtml(item.sku)}</td><td>${item.stock.toLocaleString('en-US')}</td><td><strong>${escapeHtml(item.price)}</strong>${priceDetail}</td><td>${item.views.toLocaleString('en-US')}</td><td>${item.sold}개 / $${item.sales.toFixed(2)}</td><td><span class="badge ${status.cls}">${status.label}</span></td></tr>`;
       }).join('');
     }
 

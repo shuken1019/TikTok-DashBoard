@@ -57,6 +57,7 @@ export const verifiedProductTraffic = [
   {
     name: 'Collagen Booster Set', fullName: 'Collagen Booster Set', productId: '1732467111829541813',
     category: 'Skincare Set', description: '콜라겐 중심의 탄력 관리 상품을 함께 구성한 부스터 세트', period: '2026-07-01 ~ 2026-07-26', sourceCount: 1,
+    priceSnapshot: { retail: 46.00, promotion: 20.81, final: 25.19, asOf: '2026-08-08' },
     monthly: [{ month: '2026.07', date: '2026-07-26', gmv: 396.51, orders: 20, skuOrders: 20, itemsSold: 20, customers: 20, aov: 19.83, impressions: 33776, clicks: 1665, ctr: 4.93, addToCart: 150, addToCartRate: 9.01, ctor: 1.20, uniqueImpressions: 20723, uniqueClicks: 1308, uniqueCtr: 6.31, shopTabGmv: 19.99, shopTabItemsSold: 1 }],
   },
 ];

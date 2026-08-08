@@ -178,6 +178,7 @@ function ProductsPage() {
                 <span>Product ID {verifiedProfile.productId}</span>
                 <span>{verifiedProfile.category}</span>
                 <span>{verifiedProfile.period}</span>
+                {verifiedProfile.priceSnapshot && <span>현재가 {exactCurrency.format(verifiedProfile.priceSnapshot.final)} · 정가 {exactCurrency.format(verifiedProfile.priceSnapshot.retail)} · 프로모션 -{exactCurrency.format(verifiedProfile.priceSnapshot.promotion)} ({verifiedProfile.priceSnapshot.asOf})</span>}
               </div>
             </div>
             <span className="badge good">원본 {verifiedProfile.sourceCount}개 파일 검증</span>

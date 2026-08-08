@@ -1,5 +1,5 @@
 const defaultInventoryData = [
-  { name: 'Collagen Booster Set', id: '1732467111829541813', sku: 'MIZ_GRC_7VEGAN...', stock: 0, price: '$46.00', views: 33612, sold: 20, sales: 396.51 },
+  { name: 'Collagen Booster Set', id: '1732467111829541813', sku: 'MIZ_GRC_7VEGAN...', stock: 0, price: '$25.19', retailPrice: '$46.00', promotionDiscount: '$20.81', priceAsOf: '2026-08-08', views: 33612, sold: 20, sales: 396.51 },
   { name: 'Rice Milky Toner & Rice Glow Mask Cleanser...', id: '1732480952438330293', sku: '100', stock: 74, price: '$38.89', views: 8644, sold: 17, sales: 250.91 },
   { name: 'Snail Repair Intensive BB Cream Broad Spectrum...', id: '1732456115213538229', sku: '-', stock: 1832, price: '$15.80', views: 90262, sold: 148, sales: 602.99 },
   { name: 'MIZON Rice Water Glow Mask Cleanser, 2-in-1...', id: '-', sku: '-', stock: 424, price: '$20.00', views: 67456, sold: 8, sales: 0 },

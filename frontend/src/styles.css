@@ -1445,3 +1445,8 @@ body.modal-open { overflow: hidden; }
   .corporate-dashboard input[type="month"] { min-width: 0; max-width: 100%; }
   .corporate-dashboard canvas { max-width: 100% !important; }
 }
+/* Affiliate MTD cards: keep partial-period definitions visually separated. */
+.affiliate-mtd-grid { margin-top: 14px; }
+.affiliate-mtd-grid > article { display: grid; gap: 5px; padding: 16px; border: 1px solid var(--border, #e4e7ec); border-radius: 8px; background: #fff; }
+.affiliate-mtd-grid > article > span, .affiliate-mtd-grid > article > small { color: #667085; font-size: 12px; }
+.affiliate-mtd-grid > article > strong { color: #101828; font-size: 20px; }

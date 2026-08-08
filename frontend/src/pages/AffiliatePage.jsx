@@ -2,10 +2,12 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Chart, registerables } from 'chart.js';
 import PageHeader from '../components/PageHeader';
-import { formatCurrency } from '../format';
+import { formatCurrency, formatMoney } from '../format';
 import {
   affiliateLiveMonthly,
   affiliateMonthly,
+  affiliateCurrentPeriod,
+  affiliateJulyProducts,
   affiliateSnapshot,
   affiliateWeekly,
   topAffiliateVideos,
@@ -44,8 +46,8 @@ const affiliateModes = {
 };
 
 function AffiliatePage({ mode = 'overview' }) {
-  const [startDate, setStartDate] = useState('2026-07-18');
-  const [endDate, setEndDate] = useState('2026-07-25');
+  const [startDate, setStartDate] = useState('2026-07-01');
+  const [endDate, setEndDate] = useState('2026-07-31');
   const [contentView, setContentView] = useState('video');
   const [targetCreators, setTargetCreators] = useState(60);
   const [videosPerCreator, setVideosPerCreator] = useState(1.5);
@@ -237,7 +239,7 @@ function AffiliatePage({ mode = 'overview' }) {
       <PageHeader title={pageCopy[0]} subtitle={pageCopy[1]}>
         <div className="affiliate-report-state">
           <span className="status-dot" />
-          Core KPI 2026.07.25 · 상세 목록 2026.07.24
+          7월 Core·제품 2026.07.31 · 8월 MTD 2026.08.05
         </div>
       </PageHeader>
 
@@ -248,10 +250,10 @@ function AffiliatePage({ mode = 'overview' }) {
               <span className="eyebrow">REPORT RANGE</span>
               <strong>{startDate} ~ {endDate}</strong>
             </div>
-            <label>시작일<input type="date" min="2026-02-01" max="2026-07-25" value={startDate} onChange={(event) => { const value = event.target.value; setStartDate(value); if (value > endDate) setEndDate(value); }} /></label>
+            <label>시작일<input type="date" min="2026-02-01" max="2026-08-05" value={startDate} onChange={(event) => { const value = event.target.value; setStartDate(value); if (value > endDate) setEndDate(value); }} /></label>
             <span className="range-separator">→</span>
-            <label>종료일<input type="date" min="2026-02-01" max="2026-07-25" value={endDate} onChange={(event) => { const value = event.target.value; setEndDate(value); if (value < startDate) setStartDate(value); }} /></label>
-            <button type="button" onClick={() => { setStartDate('2026-02-01'); setEndDate('2026-07-25'); }}>전체 데이터</button>
+            <label>종료일<input type="date" min="2026-02-01" max="2026-08-05" value={endDate} onChange={(event) => { const value = event.target.value; setEndDate(value); if (value < startDate) setStartDate(value); }} /></label>
+            <button type="button" onClick={() => { setStartDate('2026-02-01'); setEndDate('2026-08-05'); }}>전체 데이터</button>
           </div>
           <p className="affiliate-source-note">
             선택 {selectedDays}일 · 운영 차트·표에 적용 · 상단 KPI는 원본 전체 기간 누적값
@@ -313,30 +315,48 @@ function AffiliatePage({ mode = 'overview' }) {
 
       <section className="grid affiliate-kpis affiliate-overview-core affiliate-finance-content">
         <article className="card kpi affiliate-kpi purple">
-          <span className="label">영상 내 고유 크리에이터 풀</span>
+          <span className="label">협업 크리에이터</span>
           <span className="value">{number(affiliateSnapshot.observedCreatorPool)}명</span>
-          <span className="desc">7/1–7/24 Creator 상세 목록 고유 계정</span>
+          <span className="desc">7/1–7/31 Core Metrics 협업 참여</span>
         </article>
         <article className="card kpi affiliate-kpi teal">
           <span className="label">분석 영상 / 판매 영상</span>
           <span className="value">{number(affiliateSnapshot.videos)}개</span>
-          <span className="desc">7/1–7/25 게시 영상 · 상세 판매 발생 영상 103개</span>
+          <span className="desc">7/1–7/31 게시 영상 · 판매 발생 {number(affiliateSnapshot.sellingVideos)}개</span>
         </article>
         <article className="card kpi affiliate-kpi blue">
           <span className="label">Creator-attributed GMV</span>
-          <span className="value">{formatCurrency(affiliateSnapshot.creatorAttributedGmv)}</span>
+          <span className="value">{formatMoney(affiliateSnapshot.creatorAttributedGmv)}</span>
           <span className="desc">전체 Shop GMV의 {pct(attributedShare)} · 영상/라이브/쇼케이스 포함</span>
         </article>
         <article className="card kpi affiliate-kpi rose">
           <span className="label">어필리에이터 ROI</span>
           <span className="value">{affiliateRoi.toFixed(2)}x</span>
-          <span className="desc">귀속 GMV ÷ 커미션 {formatCurrency(affiliateSnapshot.commission)}</span>
+          <span className="desc">귀속 GMV ÷ 커미션 {formatMoney(affiliateSnapshot.commission)}</span>
         </article>
         <article className="card kpi affiliate-kpi amber">
           <span className="label">45일 샘플 ROI</span>
           <span className="value">{affiliateSnapshot.sampleRoi45d.toFixed(2)}x</span>
           <span className="desc">샘플 {number(affiliateSnapshot.samplesShipped)}건 → 콘텐츠 {number(affiliateSnapshot.sampleContent)}건</span>
         </article>
+      </section>
+
+      <section className="card affiliate-overview-core" style={{ marginTop: 20 }}>
+        <div className="chart-title"><div><h2>{affiliateCurrentPeriod.label} 현재</h2><small>8월 원본은 5일간 누적값과 일평균 지표를 구분합니다.</small></div><span className="badge warn">부분 기간</span></div>
+        <div className="grid cards-4 affiliate-mtd-grid">
+          <article><span>귀속 GMV</span><strong>{formatMoney(affiliateCurrentPeriod.creatorAttributedGmv)}</strong><small>5일 누적</small></article>
+          <article><span>판매 수량</span><strong>{number(affiliateCurrentPeriod.attributedItemsSold)}개</strong><small>환불 {formatMoney(affiliateCurrentPeriod.refunds)}</small></article>
+          <article><span>영상 / LIVE</span><strong>{number(affiliateCurrentPeriod.videos)} / {number(affiliateCurrentPeriod.liveStreams)}</strong><small>기간 누적</small></article>
+          <article><span>예상 수수료</span><strong>{formatMoney(affiliateCurrentPeriod.estimatedCommission)}</strong><small>ROI {(affiliateCurrentPeriod.creatorAttributedGmv / affiliateCurrentPeriod.estimatedCommission).toFixed(2)}x</small></article>
+        </div>
+        <p className="affiliate-plan-footnote">일평균: 게시 크리에이터 {affiliateCurrentPeriod.avgDailyCreatorsPosted}명 · 판매 크리에이터 {affiliateCurrentPeriod.avgDailyCreatorsWithSales}명 · 판매 영상 {affiliateCurrentPeriod.avgDailyVideosWithSales}개. 7월 합계와 직접 더하지 않습니다.</p>
+      </section>
+
+      <section className="card affiliate-overview-core" style={{ marginTop: 20 }}>
+        <div className="chart-title"><div><h2>7월 제품별 귀속 GMV</h2><small>Transaction Analysis Product List 42개 중 상위 6개</small></div><span className="badge good">Core 합계 일치</span></div>
+        <div className="table-scroll"><table className="table"><thead><tr><th>순위</th><th>제품</th><th>귀속 GMV</th><th>판매</th><th>주문</th><th>환불</th><th>예상 수수료</th></tr></thead><tbody>
+          {affiliateJulyProducts.map((item) => <tr key={item.name}><td>{item.rank}</td><td><strong>{item.name}</strong></td><td>{formatMoney(item.gmv)}</td><td>{number(item.items)}개</td><td>{number(item.orders)}건</td><td>{formatMoney(item.refunds)}</td><td>{formatMoney(item.commission)}</td></tr>)}
+        </tbody></table></div>
       </section>
 
       <section className="card affiliate-share-strip affiliate-overview-core affiliate-finance-content">
@@ -362,8 +382,8 @@ function AffiliatePage({ mode = 'overview' }) {
           <span className="badge warn">계획값은 가정 기반</span>
         </div>
         <div className="grid cards-4">
-          <article><span>현재 귀속 GMV</span><strong>{formatCurrency(affiliateSnapshot.creatorAttributedGmv)}</strong><small>Performance 누적</small></article>
-          <article><span>현재 수수료</span><strong>{formatCurrency(affiliateSnapshot.commission)}</strong><small>현재 ROI {affiliateRoi.toFixed(2)}x</small></article>
+          <article><span>현재 귀속 GMV</span><strong>{formatMoney(affiliateSnapshot.creatorAttributedGmv)}</strong><small>Performance 누적</small></article>
+          <article><span>현재 수수료</span><strong>{formatMoney(affiliateSnapshot.commission)}</strong><small>현재 ROI {affiliateRoi.toFixed(2)}x</small></article>
           <article><span>전체 계획 예상 수수료</span><strong>{formatCurrency(affiliatePlanTotals.expectedCommission)}</strong><small>크리에이터 매출 85% × 25%</small></article>
           <article><span>전체 계획 예상 샘플비</span><strong>{formatCurrency(affiliatePlanTotals.sampleCost)}</strong><small>번들 중복 제거 기준</small></article>
         </div>
@@ -688,8 +708,8 @@ function AffiliatePage({ mode = 'overview' }) {
       <section className="affiliate-definition-note affiliate-detail-section affiliate-shared-detail">
         <strong>데이터 정의</strong>
         <p>
-          고유 크리에이터 풀 6,272명은 7/1–7/24 Creator 상세 목록의 중복 제거값, 협업 크리에이터 314명은 7/1–7/25 Core Metrics 값입니다.
-          Creator-attributed GMV {formatCurrency(affiliateSnapshot.creatorAttributedGmv)}에는 영상·LIVE·쇼케이스의 후행 구매가 포함되며,
+          7월 요약은 7/1–7/31 Core Metrics, 제품 상세는 동일 기간 Product List 기준입니다. 8월의 크리에이터·판매 영상 일부 항목은 일평균입니다.
+          Creator-attributed GMV {formatMoney(affiliateSnapshot.creatorAttributedGmv)}에는 영상·LIVE·쇼케이스의 후행 구매가 포함되며,
           월별 표의 영상 GMV와 직접 합산되지 않습니다. Core와 상세 목록은 종료일이 하루 다릅니다.
         </p>
       </section>

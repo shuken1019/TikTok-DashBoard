@@ -32,7 +32,7 @@
         </nav>
         <div class="sidebar-footer">
           <strong>데이터 기준</strong>
-          <p>Shop 7/26 · Campaign 7/27 · Affiliate Core 7/25 · 상세 7/24</p>
+          <p>Shop 8/7 · Campaign 8/8 · Affiliate Core 8/5 · 제품 7/31</p>
         </div>
       </aside>
 
@@ -45,7 +45,7 @@
               <p>크리에이터 풀 → 콘텐츠 생산 → 매출 전환을 관리합니다.</p>
             </div>
           </div>
-          <div class="affiliate-report-state"><span class="status-dot"></span>요약 2026.07.25 · 상세 2026.07.24</div>
+          <div class="affiliate-report-state"><span class="status-dot"></span>7월 Core·제품 2026.07.31 · 8월 MTD 2026.08.05</div>
         </div>
 
         <section class="card affiliate-shared-filter">
@@ -53,11 +53,11 @@
             <div class="affiliate-date-filter">
               <div>
                 <span class="eyebrow">REPORT RANGE</span>
-                <strong id="affiliateSelectedRange">2026-07-19 ~ 2026-07-25</strong>
+                <strong id="affiliateSelectedRange">2026-07-01 ~ 2026-07-31</strong>
               </div>
-              <label>시작일<input type="date" id="affiliateStartDate" min="2026-02-01" max="2026-07-25" value="2026-07-19" onchange="applyAffiliateDateRange()"></label>
+              <label>시작일<input type="date" id="affiliateStartDate" min="2026-02-01" max="2026-08-05" value="2026-07-01" onchange="applyAffiliateDateRange()"></label>
               <span class="range-separator">→</span>
-              <label>종료일<input type="date" id="affiliateEndDate" min="2026-02-01" max="2026-07-25" value="2026-07-25" onchange="applyAffiliateDateRange()"></label>
+              <label>종료일<input type="date" id="affiliateEndDate" min="2026-02-01" max="2026-08-05" value="2026-07-31" onchange="applyAffiliateDateRange()"></label>
               <button type="button" onclick="setAffiliateFullRange()">전체 데이터</button>
             </div>
             <p class="affiliate-source-note" id="affiliateRangeNote">선택 7일 · 운영 차트·표에 적용 · 상단 KPI는 원본 전체 기간 누적값</p>
@@ -108,24 +108,24 @@
 
         <section class="grid affiliate-kpis affiliate-overview-core affiliate-finance-content">
           <article class="card kpi affiliate-kpi purple">
-            <span class="label">영상 내 고유 크리에이터 풀</span>
-            <span class="value">6,272명</span>
-            <span class="desc">7/1–7/24 Creator 상세 목록 고유 계정</span>
+            <span class="label">협업 크리에이터</span>
+            <span class="value">6,535명</span>
+            <span class="desc">7/1–7/31 Core Metrics 협업 참여</span>
           </article>
           <article class="card kpi affiliate-kpi teal">
             <span class="label">분석 영상 / 판매 영상</span>
-            <span class="value">702개</span>
-            <span class="desc">7/1–7/25 게시 영상 · 상세 판매 발생 영상 103개</span>
+            <span class="value">1,087개</span>
+            <span class="desc">7/1–7/31 게시 영상 · 판매 발생 167개</span>
           </article>
           <article class="card kpi affiliate-kpi blue">
             <span class="label">Creator-attributed GMV</span>
-            <span class="value">$7,007.76</span>
-            <span class="desc">동일 기간 Shop GMV의 73.03% · 영상/LIVE/쇼케이스 포함</span>
+            <span class="value">$10,395.51</span>
+            <span class="desc">동일 기간 Shop GMV의 75.34% · 영상/LIVE/쇼케이스 포함</span>
           </article>
           <article class="card kpi affiliate-kpi rose">
             <span class="label">어필리에이터 ROI</span>
-            <span class="value">3.07x</span>
-            <span class="desc">귀속 GMV ÷ 커미션 $2,282.78</span>
+            <span class="value">3.08x</span>
+            <span class="desc">귀속 GMV ÷ 예상 수수료 $3,370.93</span>
           </article>
           <article class="card kpi affiliate-kpi amber">
             <span class="label">45일 샘플 ROI</span>
@@ -134,10 +134,33 @@
           </article>
         </section>
 
+        <section class="card affiliate-overview-core" style="margin-top:20px">
+          <div class="chart-title"><div><h2>8/1–8/5 현재</h2><small>8월은 5일간 부분 기간입니다. 일평균 항목은 합계로 바꾸지 않았습니다.</small></div><span class="badge warn">MTD</span></div>
+          <div class="grid cards-4 affiliate-mtd-grid">
+            <article><span>귀속 GMV</span><strong>$3,302.03</strong><small>5일 누적</small></article>
+            <article><span>판매 수량</span><strong>273개</strong><small>환불 $156.73</small></article>
+            <article><span>영상 / LIVE</span><strong>268 / 66</strong><small>기간 누적</small></article>
+            <article><span>예상 수수료</span><strong>$940.85</strong><small>ROI 3.51x</small></article>
+          </div>
+          <p class="affiliate-plan-footnote">일평균: 게시 크리에이터 52명 · 판매 크리에이터 17명 · 판매 영상 24개.</p>
+        </section>
+
+        <section class="card affiliate-overview-core" style="margin-top:20px">
+          <div class="chart-title"><div><h2>7월 제품별 귀속 GMV</h2><small>Product List 42개 중 상위 6개</small></div><span class="badge good">Core 합계 일치</span></div>
+          <div class="table-scroll"><table class="table"><thead><tr><th>순위</th><th>제품</th><th>귀속 GMV</th><th>판매</th><th>주문</th><th>환불</th><th>예상 수수료</th></tr></thead><tbody>
+            <tr><td>1</td><td><strong>7 Vegan Peptide Booster Serum</strong></td><td>$5,235.48</td><td>648개</td><td>638건</td><td>$231.69</td><td>$1,856.30</td></tr>
+            <tr><td>2</td><td><strong>Rice Water Milky Toner</strong></td><td>$1,365.43</td><td>135개</td><td>133건</td><td>$77.31</td><td>$424.81</td></tr>
+            <tr><td>3</td><td><strong>Rice Milky Toner &amp; Glow Mask Bundle</strong></td><td>$1,259.67</td><td>97개</td><td>97건</td><td>$103.95</td><td>$388.23</td></tr>
+            <tr><td>4</td><td><strong>Collagen Booster Set</strong></td><td>$851.30</td><td>60개</td><td>60건</td><td>$28.93</td><td>$268.35</td></tr>
+            <tr><td>5</td><td><strong>Under Eye Patches</strong></td><td>$737.82</td><td>63개</td><td>62건</td><td>$14.69</td><td>$111.44</td></tr>
+            <tr><td>6</td><td><strong>Snail Repair Intensive BB Cream SPF30</strong></td><td>$704.69</td><td>146개</td><td>137건</td><td>$39.63</td><td>$269.82</td></tr>
+          </tbody></table></div>
+        </section>
+
         <section class="card affiliate-share-strip affiliate-overview-core affiliate-finance-content">
           <div class="affiliate-share-score">
             <span class="eyebrow">REVENUE CONTRIBUTION</span>
-            <strong>73.03%</strong>
+            <strong>75.34%</strong>
             <p>전체 Shop GMV 중<br>Creator-attributed GMV 비중</p>
           </div>
           <div class="affiliate-share-reasons">
@@ -157,8 +180,8 @@
             <span class="badge warn">계획값은 가정 기반</span>
           </div>
           <div class="grid cards-4">
-            <article><span>현재 귀속 GMV</span><strong>$7,007.76</strong><small>7/1–7/25 Core</small></article>
-            <article><span>현재 수수료</span><strong>$2,282.78</strong><small>현재 ROI 3.07x</small></article>
+            <article><span>현재 귀속 GMV</span><strong>$10,395.51</strong><small>7/1–7/31 Core</small></article>
+            <article><span>현재 수수료</span><strong>$3,370.93</strong><small>현재 ROI 3.08x</small></article>
             <article><span>전체 계획 예상 수수료</span><strong id="affiliatePlanTotalCommission">$353,813</strong><small>크리에이터 매출 85% × 25%</small></article>
             <article><span>전체 계획 예상 샘플비</span><strong id="affiliatePlanTotalSampleCost">$856,143</strong><small>번들 중복 제거 기준</small></article>
           </div>
@@ -254,7 +277,7 @@
           </div>
 
           <section class="card affiliate-table-card">
-            <div class="chart-title"><div><span class="eyebrow">SELECTED RANGE</span><h2>선택 날짜와 겹치는 운영 구간</h2></div><span class="badge warn">Core 7/25 · 상세 7/24</span></div>
+            <div class="chart-title"><div><span class="eyebrow">SELECTED RANGE</span><h2>선택 날짜와 겹치는 운영 구간</h2></div><span class="badge warn">운영 주간 상세 7/23</span></div>
             <div class="table-scroll">
               <table class="table affiliate-table">
                 <thead><tr><th>기간</th><th>영상</th><th>활성 크리에이터</th><th>누적 풀</th><th>영상 증감</th><th>판매 영상</th><th>영상 GMV</th><th>노출</th></tr></thead>
@@ -377,7 +400,7 @@
 
         <section class="affiliate-definition-note affiliate-detail-section affiliate-shared-detail">
           <strong>데이터 정의</strong>
-          <p>고유 풀 6,272명은 7/1–7/24 Creator 상세 목록 값, 협업 314명은 7/1–7/25 Core Metrics 값입니다. Creator-attributed GMV에는 영상·LIVE·쇼케이스의 후행 구매가 포함됩니다.</p>
+          <p>7월 요약은 7/1–7/31 Core Metrics, 제품 상세는 동일 기간 Product List 기준입니다. Creator-attributed GMV에는 영상·LIVE·쇼케이스의 후행 구매가 포함됩니다. 8월의 크리에이터·판매 영상 일부 항목은 일평균입니다.</p>
         </section>
       </div>
     </div>
@@ -529,7 +552,7 @@
 
     function setAffiliateFullRange() {
       document.getElementById('affiliateStartDate').value = '2026-02-01';
-      document.getElementById('affiliateEndDate').value = '2026-07-25';
+      document.getElementById('affiliateEndDate').value = '2026-08-05';
       applyAffiliateDateRange();
     }
 

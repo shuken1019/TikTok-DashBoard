@@ -207,6 +207,9 @@
       document.getElementById('trafficProductId').textContent = `Product ID ${verified.productId}`;
       document.getElementById('trafficProductCategory').textContent = verified.category;
       document.getElementById('trafficProductPeriod').textContent = verified.period;
+      if (verified.priceSnapshot) {
+        document.getElementById('trafficProductPeriod').textContent = `${verified.period} · 현재가 ${formatExactCurrency(verified.priceSnapshot.final)} (정가 ${formatExactCurrency(verified.priceSnapshot.retail)} - 프로모션 ${formatExactCurrency(verified.priceSnapshot.promotion)}, ${verified.priceSnapshot.asOf})`;
+      }
       document.getElementById('trafficSourceBadge').textContent = `원본 ${verified.sourceCount}개 파일 검증`;
       document.getElementById('trafficPeriodLabel').textContent = `${first.month}~${latest.month} 누적 GMV`;
       document.getElementById('trafficTotalGmv').textContent = formatExactCurrency(totalGmv);

@@ -83,6 +83,7 @@ const verifiedProductTraffic = [
     productId: '1732467111829541813',
     category: 'Skincare Set',
     description: '콜라겐 중심의 탄력 관리 상품을 함께 구성한 부스터 세트',
+    priceSnapshot: { retail: 46.00, promotion: 20.81, final: 25.19, asOf: '2026-08-08' },
     period: '2026-07-01 ~ 2026-07-26',
     sourceCount: 1,
     monthly: [
