@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Chart, registerables } from 'chart.js';
 import PageHeader from '../components/PageHeader';
-import { formatCurrency } from '../format';
+import { formatMoney } from '../format';
 import { aggregateRange, dailyAnalytics, firstDate, groupMonths, lastDate, topSpikeDays } from '../data/shopAnalytics';
 
 Chart.register(...registerables);
@@ -126,7 +126,7 @@ function DataCenterPage() {
   const useDailyTrend = calendarDays <= 62;
   const primaryTrendRows = useDailyTrend ? filteredDaily : filteredMonths;
   const filteredSpikeDays = useMemo(
-    () => topSpikeDays.filter((d) => d.date >= startDate && d.date <= endDate),
+    () => topSpikeDays.filter((d) => d.date >= startDate && d.date <= endDate).slice(0, 5),
     [startDate, endDate]
   );
   const recentDaily = useMemo(() => dailyAnalytics.slice(-RECENT_DAYS), []);
@@ -259,7 +259,7 @@ function DataCenterPage() {
         title="데이터센터"
         subtitle="TikTok Shop 실제 판매 데이터 기반 요약 리포트 (Shop Analytics 원본 기준, 일별 데이터 보유)"
       >
-        <div className="data-center-live"><span className="status-dot" /><strong>Shop Analytics 최신</strong><small>2026.07.26</small></div>
+        <div className="data-center-live"><span className="status-dot" /><strong>Shop Analytics 최신</strong><small>2026.08.07</small></div>
       </PageHeader>
 
       <section className="card">
@@ -287,20 +287,20 @@ function DataCenterPage() {
       <section className="grid data-health-grid">
         <article className="card data-health-score">
           <div className="data-score-ring"><strong>QA</strong><small>검증</small></div>
-          <div><span className="eyebrow">DATA HEALTH</span><h2>운영 가능 · 4개 주의사항</h2><p>Shop·Campaign·Affiliate 원본을 기간별로 분리 검증했습니다. 서로 다른 종료일의 수치를 같은 기간처럼 합산하지 않습니다.</p></div>
+          <div><span className="eyebrow">DATA HEALTH</span><h2>검증 완료 · 1개 주의</h2><p>7월 전체 31일과 8월 1–7일의 일별 합계가 각 원본 총계와 일치합니다.</p></div>
         </article>
         <article className="card data-health-summary">
-          <div><span className="health-icon good">✓</span><p><strong>Campaign 27일</strong><small>중복 날짜 0건</small></p></div>
-          <div><span className="health-icon warn">!</span><p><strong>Cost $0.88</strong><small>공식 총계와 행 합계 차이</small></p></div>
-          <div><span className="health-icon neutral">268</span><p><strong>Shop 일별 행</strong><small>GMV $32,621.48</small></p></div>
+          <div><span className="health-icon good">✓</span><p><strong>7월 31일 완전 집계</strong><small>GMV $13,797.74</small></p></div>
+          <div><span className="health-icon warn">!</span><p><strong>8월 7일 비용 열 공란</strong><small>세금·배송비만 미집계</small></p></div>
+          <div><span className="health-icon neutral">280</span><p><strong>Shop 일별 행</strong><small>누적 GMV $42,438.52</small></p></div>
         </article>
       </section>
 
       <section className="grid cards-4" style={{ marginTop: 20 }}>
         <article className="card kpi">
           <span className="label metric-term">누적 GMV <span className="term-help" tabIndex="0" role="button" aria-label="GMV 설명" data-tooltip="총 거래액이에요. 선택 기간에 판매된 상품 금액을 모두 더한 값입니다.">?</span></span>
-          <span className="value">{formatCurrency(stats.gmv)}</span>
-          <span className="desc">세금 포함 {formatCurrency(stats.gmvWithTax)}</span>
+          <span className="value">{formatMoney(stats.gmv)}</span>
+          <span className="desc">세금 포함 {formatMoney(stats.gmvWithTax)}</span>
         </article>
         <article className="card kpi">
           <span className="label">누적 주문 / 고객</span>
@@ -309,13 +309,13 @@ function DataCenterPage() {
         </article>
         <article className="card kpi">
           <span className="label metric-term">평균 주문액(AOV) <span className="term-help" tabIndex="0" role="button" aria-label="AOV 설명" data-tooltip="주문 1건당 평균 결제 금액이에요. 총매출을 주문 수로 나눠 계산합니다.">?</span></span>
-          <span className="value">{formatCurrency(stats.aov)}</span>
+          <span className="value">{formatMoney(stats.aov)}</span>
           <span className="desc">판매 아이템 {stats.itemsSold.toLocaleString('en-US')}개</span>
         </article>
         <article className="card kpi">
           <span className="label">취소·반품율</span>
           <span className="value">{stats.refundRate}%</span>
-          <span className="desc">환불액 {formatCurrency(stats.itemsRefunded)}</span>
+          <span className="desc">환불액 {formatMoney(stats.itemsRefunded)}</span>
         </article>
       </section>
 
@@ -332,8 +332,8 @@ function DataCenterPage() {
         </article>
         <article className="card kpi">
           <span className="label">배송비 합계</span>
-          <span className="value">{formatCurrency(stats.shippingFees)}</span>
-          <span className="desc">세금 합계 {formatCurrency(stats.tax)}</span>
+          <span className="value">{formatMoney(stats.shippingFees)}</span>
+          <span className="desc">세금 합계 {formatMoney(stats.tax)}</span>
         </article>
         <article className="card kpi">
           <span className="label metric-term">채널 GMV 비중 <span className="term-help" tabIndex="0" role="button" aria-label="채널 GMV 설명" data-tooltip="전체 매출이 상품 카드·영상·라이브 중 어디에서 발생했는지 보여주는 비율이에요.">?</span></span>
@@ -351,7 +351,7 @@ function DataCenterPage() {
               {filteredSpikeDays.map((d) => (
                 <tr key={d.date}>
                   <td>{d.date}</td>
-                  <td>{formatCurrency(d.gmv)}</td>
+                  <td>{formatMoney(d.gmv)}</td>
                   <td>{d.orders}건</td>
                   <td>{d.customers}명</td>
                 </tr>
@@ -408,15 +408,15 @@ function DataCenterPage() {
             {filteredMonths.map((m) => (
               <tr key={m.key}>
                 <td>{m.year}.{m.monthName}</td>
-                <td>{formatCurrency(m.gmv)}</td>
+                <td>{formatMoney(m.gmv)}</td>
                 <td>{m.orders.toLocaleString('en-US')}</td>
                 <td>{m.customers.toLocaleString('en-US')}</td>
-                <td>{formatCurrency(m.aov)}</td>
+                <td>{formatMoney(m.aov)}</td>
                 <td>{m.refundRate}%</td>
                 <td>{m.ctr}%</td>
-                <td>{formatCurrency(m.liveGmv)}</td>
-                <td>{formatCurrency(m.videoGmv)}</td>
-                <td>{formatCurrency(m.productCardGmv)}</td>
+                <td>{formatMoney(m.liveGmv)}</td>
+                <td>{formatMoney(m.videoGmv)}</td>
+                <td>{formatMoney(m.productCardGmv)}</td>
               </tr>
             ))}
           </tbody>

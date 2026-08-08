@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Merge the reviewed July Shop Analytics XLSX into the historical daily dataset."""
+"""Merge reviewed July/August Shop Analytics XLSX files into the daily dataset."""
 
 from __future__ import annotations
 
@@ -11,7 +11,20 @@ from xml.etree import ElementTree as ET
 from zipfile import ZipFile
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = Path("/Users/serena/Downloads/Shop Analytics_Key metrics_20260727.xlsx")
+SOURCES = (
+    (
+        Path("/Users/serena/Downloads/Shop Analytics_Key metrics_20260808 (2).xlsx"),
+        "2026-07-01",
+        "2026-07-31",
+        31,
+    ),
+    (
+        Path("/Users/serena/Downloads/Shop Analytics_Key metrics_20260808.xlsx"),
+        "2026-08-01",
+        "2026-08-07",
+        7,
+    ),
+)
 NS = {"a": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
 
 FIELD_COLUMNS = {
@@ -106,8 +119,10 @@ def render(records: list[dict], footer: str, react: bool) -> str:
     declaration = "export const" if react else "const"
     lines = [
         "// Shop Analytics source of truth:",
-        "// Shop Analytics_Key metrics_20260727.xlsx",
-        "// File label date: 2026-07-27; internal analysis period: 2026-07-01–2026-07-26.",
+        "// Shop Analytics_Key metrics_20260808 (2).xlsx (2026-07-01–2026-07-31)",
+        "// Shop Analytics_Key metrics_20260808.xlsx (2026-08-01–2026-08-07)",
+        "// Shop Analytics_Key metrics_20260808 (1).xlsx is a byte-identical duplicate and is excluded.",
+        "// 2026-08-07 has no source values for GMV with tax, tax, or shipping fees; stored as 0.",
         "// Historical daily rows through 2026-06-30 are retained from the reviewed 2026-07-24 export.",
         f"{declaration} dailyAnalytics = [",
     ]
@@ -119,22 +134,45 @@ def render(records: list[dict], footer: str, react: bool) -> str:
 
 
 def main() -> None:
-    if not SOURCE.exists():
-        raise FileNotFoundError(SOURCE)
+    source_rows: list[dict] = []
+    source_summaries: list[str] = []
+    for source, start, end, expected_days in SOURCES:
+        if not source.exists():
+            raise FileNotFoundError(source)
 
-    raw = worksheet_rows(SOURCE)
-    total_row = raw[3]
-    july_rows = [normalize(row) for row in raw if re.fullmatch(r"\d{2}/\d{2}/\d{4}", str(row.get("A")))]
-    if len(july_rows) != 26 or len({row["date"] for row in july_rows}) != 26:
-        raise ValueError("Expected 26 unique daily rows for 2026-07-01–2026-07-26")
+        raw = worksheet_rows(source)
+        total_row = raw[3]
+        daily_rows = [
+            normalize(row)
+            for row in raw
+            if re.fullmatch(r"\d{2}/\d{2}/\d{4}", str(row.get("A")))
+        ]
+        dates = {row["date"] for row in daily_rows}
+        if (
+            len(daily_rows) != expected_days
+            or len(dates) != expected_days
+            or min(dates) != start
+            or max(dates) != end
+        ):
+            raise ValueError(f"Expected {expected_days} unique daily rows for {start}–{end}")
 
-    for field, column in FIELD_COLUMNS.items():
-        expected = number(total_row.get(column), field in INTEGER_FIELDS)
-        actual = sum(row[field] for row in july_rows)
-        if field not in INTEGER_FIELDS:
-            actual = round(actual, 2)
-        if actual != expected:
-            raise ValueError(f"{field} failed source reconciliation: {actual} != {expected}")
+        for field, column in FIELD_COLUMNS.items():
+            expected = number(total_row.get(column), field in INTEGER_FIELDS)
+            actual = sum(row[field] for row in daily_rows)
+            if field not in INTEGER_FIELDS:
+                actual = round(actual, 2)
+            if actual != expected:
+                raise ValueError(
+                    f"{source.name}: {field} failed source reconciliation: {actual} != {expected}"
+                )
+
+        source_rows.extend(daily_rows)
+        source_summaries.append(
+            f"{start}–{end}: {expected_days} days · GMV ${sum(row['gmv'] for row in daily_rows):,.2f}"
+        )
+
+    if len({row["date"] for row in source_rows}) != len(source_rows):
+        raise ValueError("Source date ranges overlap")
 
     for relative, react in (
         ("assets/shop-analytics-data.js", False),
@@ -143,15 +181,16 @@ def main() -> None:
         target = ROOT / relative
         old, footer = existing_rows(target)
         merged = {row["date"]: row for row in old if row["date"] < "2026-07-01"}
-        merged.update({row["date"]: row for row in july_rows})
+        merged.update({row["date"]: row for row in source_rows})
         records = [merged[key] for key in sorted(merged)]
-        if len(records) != 268 or records[-1]["date"] != "2026-07-26":
+        if len(records) != 280 or records[-1]["date"] != "2026-08-07":
             raise ValueError(f"Unexpected merged range in {relative}")
         target.write_text(render(records, footer, react), encoding="utf-8")
 
-    print("Shop source checks: 26 unique days, all 17 stored metrics match Total value")
-    print("July totals: GMV $9,861.16 · orders 1,089 · customers 1,070 · items 1,128")
-    print("Merged range: 268 days, 2025-11-01 through 2026-07-26")
+    print("Shop source checks: all 17 stored metrics match each source Total value")
+    for summary in source_summaries:
+        print(summary)
+    print("Merged range: 280 days, 2025-11-01 through 2026-08-07")
 
 
 if __name__ == "__main__":

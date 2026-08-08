@@ -4,7 +4,7 @@ import EditableTable from '../components/EditableTable';
 import ForecastEditor from '../components/ForecastEditor';
 
 const DATA_SOURCES = [
-  { name: 'Shop Analytics', detail: '일별 판매 원본', period: '2025.11.01–2026.07.26', size: '268일 · GMV $32,621.48', mode: 'Embedded', pages: '전체 매출 · 데이터센터 · 상품', status: '7/26 비용 일부 미집계', tone: 'warn' },
+  { name: 'Shop Analytics', detail: '일별 판매 원본', period: '2025.11.01–2026.08.07', size: '280일 · GMV $42,438.52', mode: 'Embedded', pages: '전체 매출 · 데이터센터 · 상품', status: '8/7 세금·배송비 미집계', tone: 'warn' },
   { name: 'Campaign overview', detail: '일별 Cost·주문·Gross revenue·ROI', period: '유효 데이터 2025.07.03–2026.07.27', size: '390일 · Cost $100,480.97 · ROI 0.55x', mode: 'XLSX + 공식 UI', pages: '광고관리 · 전체 매출 · 상세', status: '8/8 파일 데이터 행 0건', tone: 'warn' },
   { name: 'Monthly Finance', detail: '정산 Total Revenue·광고비·배부 비용', period: '2025.11–2026.08.07', size: '누적 Total Revenue $60,516.67', mode: 'XLSX + Admin', pages: '손익 · Forecast', status: '8월 매출만 확인 · 비용 미수집', tone: 'warn' },
   { name: 'Product campaign', detail: '상품 캠페인 단위 export', period: '2026.08.08', size: '데이터 행 0건', mode: 'XLSX', pages: '캠페인', status: '헤더만 존재', tone: 'warn' },

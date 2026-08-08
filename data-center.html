@@ -36,7 +36,7 @@
         </nav>
         <div class="sidebar-footer">
           <strong>데이터 기준</strong>
-          <p>Shop 7/26 · Campaign 7/27 · Affiliate Core 7/25 · 상세 7/24</p>
+          <p>Shop 8/7 · Campaign 7/27 · Affiliate Core 7/25 · 상세 7/24</p>
         </div>
       </aside>
 
@@ -47,10 +47,10 @@
             <div class="logo">TT</div>
             <div>
               <h1>데이터센터</h1>
-              <p>TikTok Shop 실제 판매 데이터 기반 요약 리포트 (2025.11 ~ 2026.07, Shop Analytics 원본 기준)</p>
+              <p>TikTok Shop 실제 판매 데이터 요약 · 2025.11.01–2026.08.07</p>
             </div>
           </div>
-          <div class="data-center-live"><span class="status-dot"></span><strong>Shop Analytics 최신</strong><small>2026.07.26</small></div>
+          <div class="data-center-live"><span class="status-dot"></span><strong>Shop Analytics 최신</strong><small>2026.08.07</small></div>
         </div>
 
         <section class="card">
@@ -80,14 +80,14 @@
             <div class="data-score-ring"><strong>QA</strong><small>검증</small></div>
             <div>
               <span class="eyebrow">DATA HEALTH</span>
-              <h2>운영 가능 · 4개 주의사항</h2>
-              <p>Shop·Campaign·Affiliate 원본을 기간별로 분리 검증했습니다. 서로 다른 종료일의 수치를 같은 기간처럼 합산하지 않습니다.</p>
+              <h2>검증 완료 · 1개 주의</h2>
+              <p>7월 전체 31일과 8월 1–7일의 일별 합계가 각 원본 총계와 일치합니다.</p>
             </div>
           </article>
           <article class="card data-health-summary">
-            <div><span class="health-icon good">✓</span><p><strong>Campaign 27일</strong><small>중복 날짜 0건</small></p></div>
-            <div><span class="health-icon warn">!</span><p><strong>Cost $0.88</strong><small>공식 총계와 행 합계 차이</small></p></div>
-            <div><span class="health-icon neutral">268</span><p><strong>Shop 일별 행</strong><small>GMV $32,621.48</small></p></div>
+            <div><span class="health-icon good">✓</span><p><strong>7월 31일 완전 집계</strong><small>GMV $13,797.74</small></p></div>
+            <div><span class="health-icon warn">!</span><p><strong>8월 7일 비용 열 공란</strong><small>세금·배송비만 미집계</small></p></div>
+            <div><span class="health-icon neutral">280</span><p><strong>Shop 일별 행</strong><small>누적 GMV $42,438.52</small></p></div>
           </article>
         </section>
 
@@ -188,7 +188,7 @@
   </section>
 
   <script src="assets/nav.js?v=dashboard-20260724"></script>
-  <script src="assets/shop-analytics-data.js"></script>
+  <script src="assets/shop-analytics-data.js?v=20260808"></script>
   <script>
     function toLocalIsoDate(date) {
       const year = date.getFullYear();
@@ -310,21 +310,21 @@
     }
 
     function renderKPIs(stats) {
-      document.getElementById('kpiGmv').textContent = formatCurrency(stats.gmv);
-      document.getElementById('kpiGmvDesc').textContent = `세금 포함 ${formatCurrency(stats.gmvWithTax)}`;
+      document.getElementById('kpiGmv').textContent = formatMoney(stats.gmv);
+      document.getElementById('kpiGmvDesc').textContent = `세금 포함 ${formatMoney(stats.gmvWithTax)}`;
       document.getElementById('kpiOrders').textContent = `${stats.orders.toLocaleString('en-US')}건`;
       document.getElementById('kpiOrdersDesc').textContent = `고객 ${stats.customers.toLocaleString('en-US')}명 · SKU 주문 ${stats.skuOrders.toLocaleString('en-US')}건`;
-      document.getElementById('kpiAov').textContent = formatCurrency(stats.aov);
+      document.getElementById('kpiAov').textContent = formatMoney(stats.aov);
       document.getElementById('kpiAovDesc').textContent = `판매 아이템 ${stats.itemsSold.toLocaleString('en-US')}개`;
       document.getElementById('kpiRefundRate').textContent = `${stats.refundRate}%`;
-      document.getElementById('kpiRefundDesc').textContent = `환불액 ${formatCurrency(stats.itemsRefunded)}`;
+      document.getElementById('kpiRefundDesc').textContent = `환불액 ${formatMoney(stats.itemsRefunded)}`;
 
       document.getElementById('kpiCtr').textContent = `${stats.ctr}%`;
       document.getElementById('kpiCtrDesc').textContent = `노출 ${stats.productImpressions.toLocaleString('en-US')}회 · 클릭 ${stats.productClicks.toLocaleString('en-US')}회`;
       document.getElementById('kpiUniqueClicks').textContent = stats.uniqueClicks.toLocaleString('en-US');
       document.getElementById('kpiUniqueImprDesc').textContent = `고유 노출 ${stats.uniqueProductImpressions.toLocaleString('en-US')}회`;
-      document.getElementById('kpiShipping').textContent = formatCurrency(stats.shippingFees);
-      document.getElementById('kpiTaxDesc').textContent = `세금 합계 ${formatCurrency(stats.tax)}`;
+      document.getElementById('kpiShipping').textContent = formatMoney(stats.shippingFees);
+      document.getElementById('kpiTaxDesc').textContent = `세금 합계 ${formatMoney(stats.tax)}`;
 
       const channelTotal = stats.productCardGmv + stats.videoGmv + stats.liveGmv;
       const pct = (v) => (channelTotal ? Math.round((v / channelTotal) * 1000) / 10 : 0);
@@ -333,9 +333,9 @@
     }
 
     function renderSpikeTable() {
-      const filtered = topSpikeDays.filter(d => d.date >= startDate && d.date <= endDate);
+      const filtered = topSpikeDays.filter(d => d.date >= startDate && d.date <= endDate).slice(0, 5);
       const body = document.querySelector('#spikeTable tbody');
-      body.innerHTML = filtered.map(d => `<tr><td>${d.date}</td><td>${formatCurrency(d.gmv)}</td><td>${d.orders}건</td><td>${d.customers}명</td></tr>`).join('');
+      body.innerHTML = filtered.map(d => `<tr><td>${d.date}</td><td>${formatMoney(d.gmv)}</td><td>${d.orders}건</td><td>${d.customers}명</td></tr>`).join('');
       document.getElementById('spikeTable').style.display = filtered.length ? '' : 'none';
       document.getElementById('noSpikeNote').style.display = filtered.length ? 'none' : '';
     }
@@ -344,15 +344,15 @@
       const body = document.querySelector('#monthlyTable tbody');
       body.innerHTML = filteredMonths().map(m => `<tr>
         <td>${m.year}.${m.monthName}</td>
-        <td>${formatCurrency(m.gmv)}</td>
+        <td>${formatMoney(m.gmv)}</td>
         <td>${m.orders.toLocaleString('en-US')}</td>
         <td>${m.customers.toLocaleString('en-US')}</td>
-        <td>${formatCurrency(m.aov)}</td>
+        <td>${formatMoney(m.aov)}</td>
         <td>${m.refundRate}%</td>
         <td>${m.ctr}%</td>
-        <td>${formatCurrency(m.liveGmv)}</td>
-        <td>${formatCurrency(m.videoGmv)}</td>
-        <td>${formatCurrency(m.productCardGmv)}</td>
+        <td>${formatMoney(m.liveGmv)}</td>
+        <td>${formatMoney(m.videoGmv)}</td>
+        <td>${formatMoney(m.productCardGmv)}</td>
       </tr>`).join('');
       document.getElementById('monthlyTableRangeLabel').textContent = `${startDate} ~ ${endDate} · 실제 Shop Analytics 리포트 집계 기준`;
     }

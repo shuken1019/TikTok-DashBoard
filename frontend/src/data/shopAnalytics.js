@@ -1,6 +1,8 @@
 // Shop Analytics source of truth:
-// Shop Analytics_Key metrics_20260727.xlsx
-// File label date: 2026-07-27; internal analysis period: 2026-07-01–2026-07-26.
+// Shop Analytics_Key metrics_20260808 (2).xlsx (2026-07-01–2026-07-31)
+// Shop Analytics_Key metrics_20260808.xlsx (2026-08-01–2026-08-07)
+// Shop Analytics_Key metrics_20260808 (1).xlsx is a byte-identical duplicate and is excluded.
+// 2026-08-07 has no source values for GMV with tax, tax, or shipping fees; stored as 0.
 // Historical daily rows through 2026-06-30 are retained from the reviewed 2026-07-24 export.
 export const dailyAnalytics = [
   { date: '2025-11-01', gmv: 0.0, orders: 0, customers: 0, itemsSold: 0, itemsCanceledReturned: 0, itemsRefunded: 0, skuOrders: 0, liveGmv: 0.0, videoGmv: 0.0, productCardGmv: 0.0, gmvWithTax: 0, tax: 0, shippingFees: 0, productImpressions: 1377, uniqueProductImpressions: 0, productClicks: 22, uniqueClicks: 0 },
@@ -270,7 +272,19 @@ export const dailyAnalytics = [
   { date: '2026-07-23', gmv: 559.2, orders: 54, customers: 52, itemsSold: 61, itemsCanceledReturned: 5, itemsRefunded: 39.98, skuOrders: 54, liveGmv: 0.0, productCardGmv: 85.04, videoGmv: 474.16, gmvWithTax: 604.69, tax: 45.49, shippingFees: 301.75, productImpressions: 53962, uniqueProductImpressions: 33416, productClicks: 2320, uniqueClicks: 1746 },
   { date: '2026-07-24', gmv: 834.83, orders: 80, customers: 78, itemsSold: 83, itemsCanceledReturned: 7, itemsRefunded: 64.26, skuOrders: 82, liveGmv: 0.0, productCardGmv: 83.22, videoGmv: 751.61, gmvWithTax: 910.24, tax: 75.41, shippingFees: 438.61, productImpressions: 94415, uniqueProductImpressions: 63662, productClicks: 2745, uniqueClicks: 2137 },
   { date: '2026-07-25', gmv: 333.17, orders: 36, customers: 36, itemsSold: 36, itemsCanceledReturned: 7, itemsRefunded: 67.75, skuOrders: 36, liveGmv: 11.38, productCardGmv: 27.38, videoGmv: 294.41, gmvWithTax: 361.96, tax: 28.79, shippingFees: 208.74, productImpressions: 50676, uniqueProductImpressions: 31688, productClicks: 1893, uniqueClicks: 1451 },
-  { date: '2026-07-26', gmv: 265.11, orders: 28, customers: 27, itemsSold: 28, itemsCanceledReturned: 0, itemsRefunded: 0, skuOrders: 28, liveGmv: 0.0, productCardGmv: 47.1, videoGmv: 218.01, gmvWithTax: 0, tax: 0, shippingFees: 0, productImpressions: 35407, uniqueProductImpressions: 22231, productClicks: 1266, uniqueClicks: 971 },
+  { date: '2026-07-26', gmv: 506.16, orders: 54, customers: 52, itemsSold: 54, itemsCanceledReturned: 1, itemsRefunded: 7.58, skuOrders: 54, liveGmv: 0.0, productCardGmv: 58.6, videoGmv: 447.56, gmvWithTax: 551.1, tax: 44.94, shippingFees: 319.03, productImpressions: 54172, uniqueProductImpressions: 32559, productClicks: 2044, uniqueClicks: 1524 },
+  { date: '2026-07-27', gmv: 684.62, orders: 65, customers: 63, itemsSold: 65, itemsCanceledReturned: 7, itemsRefunded: 91.87, skuOrders: 65, liveGmv: 10.0, productCardGmv: 40.62, videoGmv: 634.0, gmvWithTax: 742.78, tax: 58.16, shippingFees: 385.56, productImpressions: 60926, uniqueProductImpressions: 35686, productClicks: 2353, uniqueClicks: 1614 },
+  { date: '2026-07-28', gmv: 571.65, orders: 55, customers: 54, itemsSold: 55, itemsCanceledReturned: 1, itemsRefunded: 11.11, skuOrders: 55, liveGmv: 0.0, productCardGmv: 65.63, videoGmv: 506.02, gmvWithTax: 620.58, tax: 48.93, shippingFees: 327.62, productImpressions: 59685, uniqueProductImpressions: 32975, productClicks: 2007, uniqueClicks: 1365 },
+  { date: '2026-07-29', gmv: 682.99, orders: 59, customers: 56, itemsSold: 60, itemsCanceledReturned: 4, itemsRefunded: 34.29, skuOrders: 59, liveGmv: 0.0, productCardGmv: 97.88, videoGmv: 585.11, gmvWithTax: 746.35, tax: 63.36, shippingFees: 345.45, productImpressions: 81585, uniqueProductImpressions: 49550, productClicks: 2617, uniqueClicks: 1931 },
+  { date: '2026-07-30', gmv: 985.66, orders: 82, customers: 77, itemsSold: 84, itemsCanceledReturned: 6, itemsRefunded: 91.4, skuOrders: 83, liveGmv: 0.0, productCardGmv: 115.61, videoGmv: 870.05, gmvWithTax: 1070.95, tax: 85.29, shippingFees: 474.35, productImpressions: 99936, uniqueProductImpressions: 63661, productClicks: 3001, uniqueClicks: 2167 },
+  { date: '2026-07-31', gmv: 770.61, orders: 64, customers: 59, itemsSold: 69, itemsCanceledReturned: 12, itemsRefunded: 181.18, skuOrders: 68, liveGmv: 0.0, productCardGmv: 138.67, videoGmv: 631.94, gmvWithTax: 837.83, tax: 67.22, shippingFees: 367.79, productImpressions: 88658, uniqueProductImpressions: 54670, productClicks: 2902, uniqueClicks: 2229 },
+  { date: '2026-08-01', gmv: 727.38, orders: 67, customers: 64, itemsSold: 67, itemsCanceledReturned: 6, itemsRefunded: 51.11, skuOrders: 67, liveGmv: 0.0, productCardGmv: 30.0, videoGmv: 697.38, gmvWithTax: 788.95, tax: 61.57, shippingFees: 388.2, productImpressions: 75459, uniqueProductImpressions: 44675, productClicks: 2649, uniqueClicks: 1920 },
+  { date: '2026-08-02', gmv: 556.32, orders: 48, customers: 47, itemsSold: 48, itemsCanceledReturned: 2, itemsRefunded: 21.38, skuOrders: 48, liveGmv: 0.0, productCardGmv: 87.33, videoGmv: 468.99, gmvWithTax: 601.02, tax: 44.7, shippingFees: 283.82, productImpressions: 84937, uniqueProductImpressions: 54619, productClicks: 3279, uniqueClicks: 2541 },
+  { date: '2026-08-03', gmv: 527.35, orders: 38, customers: 36, itemsSold: 38, itemsCanceledReturned: 4, itemsRefunded: 27.45, skuOrders: 38, liveGmv: 38.9, productCardGmv: 19.1, videoGmv: 469.35, gmvWithTax: 566.72, tax: 39.37, shippingFees: 223.74, productImpressions: 69689, uniqueProductImpressions: 41516, productClicks: 3332, uniqueClicks: 2390 },
+  { date: '2026-08-04', gmv: 989.46, orders: 77, customers: 76, itemsSold: 79, itemsCanceledReturned: 6, itemsRefunded: 52.37, skuOrders: 78, liveGmv: 0.0, productCardGmv: 34.1, videoGmv: 955.36, gmvWithTax: 1080.05, tax: 90.59, shippingFees: 454.42, productImpressions: 173394, uniqueProductImpressions: 120389, productClicks: 4139, uniqueClicks: 3125 },
+  { date: '2026-08-05', gmv: 1042.53, orders: 81, customers: 80, itemsSold: 83, itemsCanceledReturned: 4, itemsRefunded: 40.3, skuOrders: 81, liveGmv: 0.0, productCardGmv: 12.5, videoGmv: 1030.03, gmvWithTax: 1132.82, tax: 90.29, shippingFees: 472.61, productImpressions: 212105, uniqueProductImpressions: 158829, productClicks: 3902, uniqueClicks: 3064 },
+  { date: '2026-08-06', gmv: 1115.58, orders: 81, customers: 80, itemsSold: 81, itemsCanceledReturned: 6, itemsRefunded: 58.84, skuOrders: 81, liveGmv: 5.06, productCardGmv: 30.86, videoGmv: 1079.66, gmvWithTax: 1217.41, tax: 101.83, shippingFees: 471.29, productImpressions: 194040, uniqueProductImpressions: 139741, productClicks: 3859, uniqueClicks: 2851 },
+  { date: '2026-08-07', gmv: 921.84, orders: 65, customers: 61, itemsSold: 69, itemsCanceledReturned: 0, itemsRefunded: 0, skuOrders: 66, liveGmv: 38.8, productCardGmv: 107.15, videoGmv: 775.89, gmvWithTax: 0, tax: 0, shippingFees: 0, productImpressions: 90919, uniqueProductImpressions: 59628, productClicks: 3206, uniqueClicks: 2396 },
 ];
 
 const MONTH_NAMES_KR = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
@@ -322,10 +336,6 @@ export const overallAnalytics = aggregateRange(dailyAnalytics, dailyAnalytics[0]
 export const firstDate = dailyAnalytics[0].date;
 export const lastDate = dailyAnalytics[dailyAnalytics.length - 1].date;
 
-export const topSpikeDays = [
-  { date: '2026-07-10', gmv: 3224.05, orders: 496, customers: 491 },
-  { date: '2026-07-18', gmv: 911.01, orders: 98, customers: 96 },
-  { date: '2026-04-24', gmv: 844.82, orders: 80, customers: 80 },
-  { date: '2026-07-20', gmv: 775.71, orders: 80, customers: 78 },
-  { date: '2026-04-17', gmv: 773.83, orders: 71, customers: 67 },
-];
+export const topSpikeDays = [...dailyAnalytics]
+  .sort((a, b) => b.gmv - a.gmv)
+  .map(({ date, gmv, orders, customers }) => ({ date, gmv, orders, customers }));
