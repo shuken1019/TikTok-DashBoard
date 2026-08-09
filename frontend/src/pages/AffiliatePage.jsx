@@ -7,6 +7,8 @@ import {
   affiliateLiveMonthly,
   affiliateMonthly,
   affiliateCurrentPeriod,
+  affiliateCreatorListSummary,
+  affiliateJulyCreators,
   affiliateJulyProducts,
   affiliateSnapshot,
   affiliateWeekly,
@@ -524,13 +526,48 @@ function AffiliatePage({ mode = 'overview' }) {
         </article>
       </section>
 
+      <section className="card affiliate-detail-section affiliate-creators-content affiliate-creator-ranking">
+        <div className="chart-title">
+          <div>
+            <span className="eyebrow">CREATOR LIST · JULY</span>
+            <h2>7월 크리에이터 성과</h2>
+            <small>2026-07-01 ~ 2026-07-31 · Creator List 6,747명 전수 집계</small>
+          </div>
+          <span className="badge good">중복 0건 · GMV 합계 일치</span>
+        </div>
+        <div className="grid cards-4 affiliate-mtd-grid">
+          <article><span>목록 크리에이터</span><strong>{number(affiliateCreatorListSummary.listedCreators)}명</strong><small>고유 이름 6,747명</small></article>
+          <article><span>콘텐츠 게시</span><strong>{number(affiliateCreatorListSummary.creatorsPostedContent)}명</strong><small>영상 또는 LIVE 1개 이상</small></article>
+          <article><span>판매 발생</span><strong>{number(affiliateCreatorListSummary.creatorsWithSales)}명</strong><small>귀속 GMV $0 초과</small></article>
+          <article><span>상위 3명 GMV 비중</span><strong>{pct(affiliateCreatorListSummary.top3Share)}</strong><small>상위 10명은 76.0%</small></article>
+        </div>
+        <div className="affiliate-source-reconcile">
+          <strong>합계 확인</strong>
+          <span>Creator List GMV {formatMoney(affiliateCreatorListSummary.creatorAttributedGmv)} · 수수료 {formatMoney(affiliateCreatorListSummary.estimatedCommission)} · 판매 {number(affiliateCreatorListSummary.itemsSold)}개</span>
+          <small>Core KPI와 GMV·수수료·판매 수량은 일치합니다. 영상은 List 1,025개 / Core 1,087개, LIVE는 List 178회 / Core 177회로 정의·집계 차이가 있어 각각의 원본 값을 유지합니다.</small>
+        </div>
+        <div className="table-scroll">
+          <table className="table affiliate-table creator-ranking-table">
+            <thead><tr><th>순위</th><th>크리에이터</th><th>귀속 GMV</th><th>비중</th><th>주문</th><th>판매</th><th>영상 / LIVE</th><th>환불</th><th>예상 수수료</th></tr></thead>
+            <tbody>{affiliateJulyCreators.map((item) => (
+              <tr key={item.creator}>
+                <td><strong>{item.rank}</strong></td><td><strong>@{item.creator}</strong></td>
+                <td>{formatMoney(item.gmv)}</td><td>{pct(item.gmv / affiliateCreatorListSummary.creatorAttributedGmv * 100)}</td>
+                <td>{number(item.orders)}건</td><td>{number(item.items)}개</td><td>{number(item.videos)} / {number(item.liveStreams)}</td>
+                <td>{formatMoney(item.refunds)}</td><td>{formatMoney(item.commission)}</td>
+              </tr>
+            ))}</tbody>
+          </table>
+        </div>
+      </section>
+
       <section className="card affiliate-table-card affiliate-detail-section affiliate-creators-content">
         <div className="chart-title">
           <div>
             <span className="eyebrow">SELECTED RANGE</span>
             <h2>{startDate} ~ {endDate} 운영 변화</h2>
           </div>
-          <span className="badge warn">운영 집계 최신 2026.07.23</span>
+          <span className={`badge ${view === 'monthly' ? 'good' : 'warn'}`}>{view === 'monthly' ? '월간 Creator List 7/31' : '주간 상세 7/23'}</span>
         </div>
         <div className="table-scroll">
           <table className="table affiliate-table">
@@ -587,8 +624,8 @@ function AffiliatePage({ mode = 'overview' }) {
           <span className="eyebrow">WHY THE POOL GREW</span>
           <h2>7월 풀 급증 진단</h2>
           <div className="insight-callout">
-            <strong>신규 +341명 · 영상 +509개</strong>
-            <p>7월은 전월 대비 관찰 풀과 게시량이 동시에 급증했습니다.</p>
+            <strong>목록 6,747명 · 콘텐츠 게시 640명</strong>
+            <p>7월 Creator List에서 120명이 실제 매출을 만들었고 상위 3명에 GMV 53.9%가 집중됐습니다.</p>
           </div>
           <ul className="reason-list">
             <li><span>01</span><div><strong>샘플 운영 확대</strong><p>누적 2,099건 발송, 샘플 기반 콘텐츠 1,332건으로 대규모 시딩 흔적이 확인됩니다.</p></div></li>
@@ -708,9 +745,9 @@ function AffiliatePage({ mode = 'overview' }) {
       <section className="affiliate-definition-note affiliate-detail-section affiliate-shared-detail">
         <strong>데이터 정의</strong>
         <p>
-          7월 요약은 7/1–7/31 Core Metrics, 제품 상세는 동일 기간 Product List 기준입니다. 8월의 크리에이터·판매 영상 일부 항목은 일평균입니다.
+          7월 대표 KPI는 7/1–7/31 Core Metrics, 크리에이터 순위와 상세 합계는 동일 기간 Creator List, 제품 상세는 Product List 기준입니다. 8월의 크리에이터·판매 영상 일부 항목은 일평균입니다.
           Creator-attributed GMV {formatMoney(affiliateSnapshot.creatorAttributedGmv)}에는 영상·LIVE·쇼케이스의 후행 구매가 포함되며,
-          월별 표의 영상 GMV와 직접 합산되지 않습니다. Core와 상세 목록은 종료일이 하루 다릅니다.
+          월별 표의 영상 GMV와 직접 합산되지 않습니다. Core와 Creator List의 영상·LIVE 건수 차이는 각 원본 정의를 유지합니다.
         </p>
       </section>
     </div>

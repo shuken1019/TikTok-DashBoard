@@ -26,6 +26,42 @@ export const affiliateSnapshot = {
   sampleRoi45d: 0.6434,
 };
 
+// Source: Transaction_Analysis_Creator_List_20260701-20260731.xlsx.
+// The two files supplied on 2026-08-09 are byte-identical copies. Creator List
+// is authoritative for creator-level ranking and detail sums; Core Metrics stays
+// authoritative for the headline Performance cards because its definitions differ.
+export const affiliateCreatorListSummary = {
+  periodStart: '2026-07-01',
+  asOf: '2026-07-31',
+  listedCreators: 6747,
+  creatorsPostedContent: 640,
+  creatorsWithSales: 120,
+  creatorAttributedGmv: 10395.51,
+  videoGmv: 10044.92,
+  liveGmv: 57.58,
+  productCardGmv: 293.01,
+  orders: 1145,
+  itemsSold: 1167,
+  videos: 1025,
+  liveStreams: 178,
+  refunds: 520.44,
+  estimatedCommission: 3370.93,
+  top3Share: 53.8567131387,
+};
+
+export const affiliateJulyCreators = [
+  { rank: 1, creator: 'blankitaoro17', gmv: 2552.47, refunds: 194.87, orders: 273, items: 276, videos: 61, liveStreams: 0, impressions: 294416, commission: 864.62 },
+  { rank: 2, creator: 'nathaliegaby1', gmv: 1755.53, refunds: 26.04, orders: 221, items: 225, videos: 22, liveStreams: 0, impressions: 87644, commission: 590.03 },
+  { rank: 3, creator: 'marbelizolivieri', gmv: 1290.68, refunds: 58.47, orders: 131, items: 133, videos: 5, liveStreams: 0, impressions: 54751, commission: 441.57 },
+  { rank: 4, creator: 'radiel141', gmv: 727.84, refunds: 14.69, orders: 59, items: 60, videos: 1, liveStreams: 2, impressions: 162109, commission: 106.77 },
+  { rank: 5, creator: 'aguilarluzangel', gmv: 443.77, refunds: 15.00, orders: 49, items: 50, videos: 8, liveStreams: 0, impressions: 10538, commission: 152.71 },
+  { rank: 6, creator: 'legendarylavv', gmv: 312.33, refunds: 0, orders: 46, items: 46, videos: 0, liveStreams: 0, impressions: 25234, commission: 101.72 },
+  { rank: 7, creator: 'lynnlouisewonders', gmv: 255.29, refunds: 18.69, orders: 33, items: 33, videos: 2, liveStreams: 0, impressions: 10326, commission: 103.46 },
+  { rank: 8, creator: 'anita_love310', gmv: 250.93, refunds: 10.00, orders: 26, items: 26, videos: 3, liveStreams: 0, impressions: 8154, commission: 106.65 },
+  { rank: 9, creator: 'aeny323', gmv: 156.68, refunds: 6.81, orders: 14, items: 14, videos: 5, liveStreams: 1, impressions: 11991, commission: 56.53 },
+  { rank: 10, creator: 'alexarod_official', gmv: 151.02, refunds: 6.18, orders: 13, items: 13, videos: 1, liveStreams: 0, impressions: 12431, commission: 41.60 },
+];
+
 export const affiliateCurrentPeriod = {
   label: '8/1–8/5 MTD',
   start: '2026-08-01',
@@ -57,7 +93,7 @@ export const affiliateMonthly = [
   { month: '2026-04', start: '2026-04-01', end: '2026-04-30', videos: 89, activeCreators: 78, newCreators: 73, pool: 140, videoGmv: 112.04, shopGmv: 10463.52, sellingVideos: 4, impressions: 4050 },
   { month: '2026-05', start: '2026-05-01', end: '2026-05-31', videos: 69, activeCreators: 59, newCreators: 52, pool: 192, videoGmv: 0, shopGmv: 1972.69, sellingVideos: 0, impressions: 927 },
   { month: '2026-06', start: '2026-06-01', end: '2026-06-30', videos: 72, activeCreators: 39, newCreators: 23, pool: 215, videoGmv: 328.08, shopGmv: 2446.03, sellingVideos: 8, impressions: 14322 },
-  { month: '2026-07', start: '2026-07-01', end: '2026-07-25', videos: 702, activeCreators: 314, newCreators: 341, pool: 6272, videoGmv: 6566.57, shopGmv: 9596.05, sellingVideos: 103, impressions: 576817, partial: true },
+  { month: '2026-07', start: '2026-07-01', end: '2026-07-31', videos: 1025, activeCreators: 640, newCreators: null, pool: 6747, videoGmv: 10044.92, shopGmv: 13797.74, sellingVideos: 167, impressions: 1201442 },
 ];
 
 export const affiliateWeekly = [

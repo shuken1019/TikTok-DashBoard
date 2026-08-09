@@ -1645,3 +1645,10 @@ body.modal-open { overflow: hidden; }
 .affiliate-mtd-grid > article { display: grid; gap: 5px; padding: 16px; border: 1px solid var(--border, #e4e7ec); border-radius: 8px; background: #fff; }
 .affiliate-mtd-grid > article > span, .affiliate-mtd-grid > article > small { color: #667085; font-size: 12px; }
 .affiliate-mtd-grid > article > strong { color: #101828; font-size: 20px; }
+.affiliate-creator-ranking { margin-top: 20px; }
+.affiliate-source-reconcile { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 14px; align-items: center; margin: 14px 0; padding: 14px 16px; border: 1px solid #dbe3ee; border-radius: 12px; background: #f8fafc; }
+.affiliate-source-reconcile strong { color: #1d4ed8; }
+.affiliate-source-reconcile span { color: #334155; font-weight: 700; }
+.affiliate-source-reconcile small { grid-column: 2; color: #64748b; line-height: 1.5; }
+.creator-ranking-table { min-width: 1020px; }
+@media (max-width: 700px) { .affiliate-source-reconcile { grid-template-columns: 1fr; } .affiliate-source-reconcile small { grid-column: 1; } }
