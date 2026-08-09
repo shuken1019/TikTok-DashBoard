@@ -215,6 +215,18 @@ function migrateLegacyData(key, data, defaultData) {
     return migrated;
   }
 
+  if (key === DATA_KEYS.productCosts && Array.isArray(data)) {
+    const oldBundle = data.find(item => String(item.name || '').startsWith('Collagen Booster Set'));
+    const isPreviousDefault = oldBundle
+      && Math.abs((Number(oldBundle.salePrice) || 0) - 38.99) < 0.001
+      && !Object.prototype.hasOwnProperty.call(oldBundle, 'maxDiscount');
+    if (isPreviousDefault) {
+      const migrated = JSON.parse(JSON.stringify(defaultData));
+      saveData(key, migrated);
+      return migrated;
+    }
+  }
+
   return data;
 }
 

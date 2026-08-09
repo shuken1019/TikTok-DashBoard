@@ -239,19 +239,24 @@ function ProductsPage() {
 
       <section className="card" style={{ marginTop: 20 }}>
         <div className="chart-title">
-          <div><h2>제품 가격·원가·Affiliate 마진</h2><small>2026-07-26 제공 MIZON 마진표 전사 · 본표와 별도 계산 시나리오 구분</small></div>
+          <div><h2>제품 가격·원가·Affiliate 마진</h2><small>2026-08-08 제공 번들 할인 마진표 · 검증된 번들 계산 구간 기준</small></div>
           <span className="badge good">계산식 대조 완료</span>
         </div>
         <div className="product-cost-audit">
           <strong>보고 기준</strong>
           <span>Affiliate 순이익 = 실판매가 − Affiliate 적용 상품비 − Affiliate 수수료</span>
-          <span>7 Vegan: $20.00 − $14.12 − $5.00 = <b>$0.88 (4.40%)</b></span>
+          <span>Collagen bundle: $39.10 − $27.88 − $13.80 = <b className="negative">-$2.58 (-6.60%)</b></span>
+        </div>
+        <div className="bundle-margin-summary">
+          <article className="bundle-margin-card danger"><strong>Collagen Booster Set</strong><span>15% 할인 시 -$2.58</span><small>손익 0 가격 $41.68 · 최대 할인 9.39%</small></article>
+          <article className="bundle-margin-card good"><strong>Rice Bundle Set</strong><span>현재 기준 +$6.67</span><small>손익 0 가격 $38.33 · 최대 할인 14.82%</small></article>
+          <article className="bundle-margin-card warning"><strong>현재 프로모션 확인</strong><span>Seller Center 최종가 $25.19</span><small>같은 비용 가정 시 -$16.49 (-65.47%) · 할인 부담 주체 확인 필요</small></article>
         </div>
         <div className="table-scroll">
           <table className="table product-cost-table">
             <thead>
               <tr>
-                <th>SKU / 제품</th><th>구분</th><th>소비자가</th><th>실판매가</th>
+                <th>SKU / 제품</th><th>구분</th><th>소비자가</th><th>실판매가</th><th>할인율</th><th>손익 0 기준</th>
                 <th>FOB <span className="term-help" title="해외 운송 전, 공급처에서 출고되는 기준 가격입니다.">?</span></th>
                 <th>생산원가</th><th>유통비</th>
                 <th>MCF <span className="term-help" title="마진표에 입력된 주문 처리·풀필먼트 기준값입니다.">?</span></th>
@@ -268,6 +273,8 @@ function ProductsPage() {
                     <td><strong>{item.name}</strong></td>
                     <td><span className={`cost-scope ${item.scope === '본표' ? 'current' : 'scenario'}`}>{item.scope || '-'}</span></td>
                     <td>{exactCurrency.format(item.retailPrice)}</td><td><strong>{exactCurrency.format(item.salePrice)}</strong></td>
+                    <td>{Number(item.discount || 0).toFixed(2)}%</td>
+                    <td>{item.breakEvenPrice != null ? `${exactCurrency.format(item.breakEvenPrice)} / ${Number(item.maxDiscount).toFixed(2)}%` : '-'}</td>
                     <td>{exactCurrency.format(item.fobPrice)}</td><td>{exactCurrency.format(item.productionCost)}</td>
                     <td>{exactCurrency.format(item.distribution)}</td><td>{exactCurrency.format(item.mcf)}</td>
                     <td>{exactCurrency.format(item.tiktokFee)}</td><td>{exactCurrency.format(item.affiliateFee)}</td>
@@ -280,7 +287,7 @@ function ProductsPage() {
             </tbody>
           </table>
         </div>
-        <p className="product-cost-source">※ `본표`는 상단 현재값, `별도 계산`은 원본 하단의 별도 마진 계산값입니다. 두 구간의 값은 합산하지 않습니다. 마진율은 원본 표기값을 보존했으며, 원본의 숨은 소수점 때문에 화면 금액만으로 재계산하면 최대 0.02%p 차이가 날 수 있습니다.</p>
+        <p className="product-cost-source">※ `번들 계산`은 원본 하단 전용 계산 구간입니다. 원본의 오류 수식 8행과 비정상 수수료 입력 행은 자동 반영하지 않았습니다. $25.19는 Seller Center 화면의 현재 프로모션 최종가이며, 플랫폼 부담 할인 여부가 확인되기 전에는 확정 손익으로 보고하지 않습니다.</p>
       </section>
     </>
   );

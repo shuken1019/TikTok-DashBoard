@@ -969,7 +969,19 @@ body.modal-open { overflow: hidden; }
 .product-cost-audit { display: flex; flex-wrap: wrap; gap: 9px 18px; align-items: center; margin: 16px 0; padding: 13px 15px; border: 1px solid #bfdbfe; border-radius: 14px; background: #eff6ff; color: #334155; font-size: 12px; }
 .product-cost-audit strong { color: #1d4ed8; font-size: 13px; }
 .product-cost-audit b { color: #047857; }
-.product-cost-table { min-width: 1650px; }
+.bundle-margin-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0 0 16px; }
+.bundle-margin-card { display: grid; gap: 5px; padding: 15px 16px; border: 1px solid #dbe3ee; border-radius: 14px; background: #fff; }
+.bundle-margin-card strong { font-size: 13px; color: #334155; }
+.bundle-margin-card span { font-size: 18px; font-weight: 800; color: #0f172a; }
+.bundle-margin-card small { color: #64748b; line-height: 1.45; }
+.bundle-margin-card.danger { border-color: #fecaca; background: #fff7f7; }
+.bundle-margin-card.danger span { color: #b91c1c; }
+.bundle-margin-card.good { border-color: #bbf7d0; background: #f5fff8; }
+.bundle-margin-card.good span { color: #047857; }
+.bundle-margin-card.warning { border-color: #fde68a; background: #fffbeb; }
+.bundle-margin-card.warning span { color: #92400e; }
+.product-cost-audit b.negative { color: #b91c1c; }
+.product-cost-table { min-width: 1840px; }
 .product-cost-table th, .product-cost-table td { white-space: nowrap; }
 .product-cost-table td:first-child { min-width: 250px; }
 .term-help { display: inline-grid; place-items: center; width: 17px; height: 17px; margin-left: 3px; border: 1px solid #94a3b8; border-radius: 50%; color: #64748b; font-size: 10px; font-weight: 900; cursor: help; }
@@ -980,6 +992,7 @@ body.modal-open { overflow: hidden; }
 .cost-profit.positive { background: #dcfce7; color: #166534; }
 .cost-profit.negative { background: #fee2e2; color: #991b1b; }
 .product-cost-source { margin: 12px 0 0; color: #64748b; font-size: 12px; line-height: 1.6; }
+@media (max-width: 900px) { .bundle-margin-summary { grid-template-columns: 1fr; } }
 @media (max-width: 720px) {
   .product-profile-head { flex-direction: column; }
   .product-profile-head h2 { font-size: 20px; }

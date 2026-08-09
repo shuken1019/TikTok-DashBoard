@@ -393,11 +393,16 @@
       searchable: true,
       columns: [
         { field: 'name', label: 'SKU / 제품', type: 'text' },
-        { field: 'price', label: '판매가', type: 'currency' },
-        { field: 'cost', label: '원가', type: 'currency' },
-        { field: 'commission', label: '수수료', type: 'currency' },
-        { field: 'logistics', label: '물류비', type: 'currency' },
+        { field: 'scope', label: '구분', type: 'text' },
+        { field: 'retailPrice', label: '소비자가', type: 'currency' },
+        { field: 'salePrice', label: '실판매가', type: 'currency' },
+        { field: 'discount', label: '할인 %', type: 'number' },
+        { field: 'breakEvenPrice', label: '손익 0 가격', type: 'currency' },
+        { field: 'maxDiscount', label: '최대 할인 %', type: 'number' },
+        { field: 'affiliateProductCost', label: 'Affiliate 적용 상품비', type: 'currency' },
+        { field: 'affiliateFee', label: 'Affiliate 수수료', type: 'currency' },
         { field: 'totalCost', label: '총비용', type: 'currency' },
+        { field: 'netProfit', label: '순이익', type: 'currency' },
         { field: 'margin', label: '마진 %', type: 'number' }
       ]
     });
