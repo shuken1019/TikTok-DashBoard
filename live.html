@@ -29,7 +29,7 @@
           <a href="ads.html" id="nav-ads">광고관리</a>
           <a href="admin.html" id="nav-admin">Admin</a>
         </nav>
-        <div class="sidebar-footer"><strong>데이터 기준</strong><p>Shop 7/26 · Campaign 7/27 · Affiliate Core 7/25 · 상세 7/24</p></div>
+        <div class="sidebar-footer"><strong>데이터 기준</strong><p>Shop 8/7 · Campaign 8/8 · Creator 7/31 · LIVE 8/9</p></div>
       </aside>
 
       <div class="main-content">
@@ -41,30 +41,30 @@
               <p>LIVE별 노출·시청·상품 클릭·주문·매출을 연결해 판매 전환이 막히는 지점을 확인합니다.</p>
             </div>
           </div>
-          <div class="affiliate-report-state"><span class="status-dot"></span>LIVE 원본 2026.04.01 ~ 2026.07.26</div>
+          <div class="affiliate-report-state"><span class="status-dot"></span>LIVE 최신 원본 8월 9일 · 최근 방송 8월 5일</div>
         </div>
 
         <section class="card live-filter-card">
           <div>
             <span class="eyebrow">LIVE REPORT RANGE</span>
-            <strong id="liveSelectedRange">2026-04-01 ~ 2026-07-26</strong>
-            <small>선택 기간의 KPI·차트·세션 표에 적용</small>
+            <strong id="liveSelectedRange">2026-04-01 ~ 2026-08-09</strong>
+            <small>누적 이력 4월 1일~8월 9일 · 최신 추출 7월 1일~8월 9일</small>
           </div>
           <div class="affiliate-plan-date-controls">
-            <label>시작일<input type="date" id="liveStartDate" min="2026-04-01" max="2026-07-26" value="2026-04-01" onchange="applyLiveRange()"></label>
+            <label>시작일<input type="date" id="liveStartDate" min="2026-04-01" max="2026-08-09" value="2026-04-01" onchange="applyLiveRange()"></label>
             <span>→</span>
-            <label>종료일<input type="date" id="liveEndDate" min="2026-04-01" max="2026-07-26" value="2026-07-26" onchange="applyLiveRange()"></label>
+            <label>종료일<input type="date" id="liveEndDate" min="2026-04-01" max="2026-08-09" value="2026-08-09" onchange="applyLiveRange()"></label>
             <button type="button" onclick="resetLiveRange()">전체 기간</button>
           </div>
-          <span class="badge good" id="liveSessionBadge">총 5회 LIVE</span>
+          <span class="badge good" id="liveSessionBadge">총 7회 LIVE</span>
         </section>
 
         <section class="grid live-kpi-grid">
-          <article class="card kpi live-kpi blue"><span class="label">LIVE 귀속 GMV</span><span class="value" id="liveGmv">$25.31</span><span class="desc" id="liveSellingRate">판매 LIVE 1/5회 · 20.0%</span></article>
-          <article class="card kpi live-kpi teal"><span class="label">시청수 / 노출</span><span class="value" id="liveViews">935</span><span class="desc" id="liveViewRate">노출 9,558 · 유입률 9.8%</span></article>
-          <article class="card kpi live-kpi purple"><span class="label">상품 클릭률</span><span class="value" id="liveProductCtr">6.7%</span><span class="desc" id="liveProductClicks">상품 노출 270 → 클릭 18</span></article>
-          <article class="card kpi live-kpi rose"><span class="label">주문 / 클릭→주문</span><span class="value" id="liveOrders">2건</span><span class="desc" id="liveOrderRate">클릭→주문 11.1% · AOV $12.66</span></article>
-          <article class="card kpi live-kpi amber"><span class="label">총 방송시간</span><span class="value" id="liveDuration">2h 52m</span><span class="desc" id="liveEfficiency">평균 시청 14.7초 · 시간당 GMV $8.82</span></article>
+          <article class="card kpi live-kpi blue"><span class="label">LIVE 귀속 GMV</span><span class="value" id="liveGmv">$25.31</span><span class="desc" id="liveSellingRate">판매 LIVE 1/7회 · 14.3%</span></article>
+          <article class="card kpi live-kpi teal"><span class="label">시청수 / 노출</span><span class="value" id="liveViews">1,286</span><span class="desc" id="liveViewRate">노출 11,293 · 유입률 11.4%</span></article>
+          <article class="card kpi live-kpi purple"><span class="label">상품 클릭률</span><span class="value" id="liveProductCtr">5.0%</span><span class="desc" id="liveProductClicks">상품 노출 458 → 클릭 23</span></article>
+          <article class="card kpi live-kpi rose"><span class="label">주문 / 클릭→주문</span><span class="value" id="liveOrders">2건</span><span class="desc" id="liveOrderRate">클릭→주문 8.7% · AOV $12.66</span></article>
+          <article class="card kpi live-kpi amber"><span class="label">총 방송시간</span><span class="value" id="liveDuration">3h 51m</span><span class="desc" id="liveEfficiency">평균 시청 12.6초 · 시간당 GMV $6.58</span></article>
         </section>
 
         <section class="card live-funnel-card">
@@ -73,10 +73,10 @@
             <span class="badge good" id="liveOrderBadge">주문 발생</span>
           </div>
           <div class="live-funnel">
-            <div><span>LIVE 노출</span><strong id="funnelImpressions">9,558</strong></div><i id="funnelViewRate">유입 9.8% →</i>
-            <div><span>시청</span><strong id="funnelViews">935</strong></div><i>상품 노출 →</i>
-            <div><span>상품 노출</span><strong id="funnelProductImpressions">270</strong></div><i id="funnelProductCtr">CTR 6.7% →</i>
-            <div><span>상품 클릭</span><strong id="funnelClicks">18</strong></div><i id="funnelOrderRate">주문 11.1% →</i>
+            <div><span>LIVE 노출</span><strong id="funnelImpressions">11,293</strong></div><i id="funnelViewRate">유입 11.4% →</i>
+            <div><span>시청</span><strong id="funnelViews">1,286</strong></div><i>상품 노출 →</i>
+            <div><span>상품 노출</span><strong id="funnelProductImpressions">458</strong></div><i id="funnelProductCtr">CTR 5.0% →</i>
+            <div><span>상품 클릭</span><strong id="funnelClicks">23</strong></div><i id="funnelOrderRate">주문 8.7% →</i>
             <div><span>주문</span><strong id="funnelOrders">2</strong></div>
           </div>
         </section>
@@ -95,15 +95,15 @@
         <section class="grid live-insight-grid">
           <article class="card live-insight win">
             <span class="eyebrow">판매 LIVE</span>
-            <h3>2026-04-01 21:37</h3>
-            <strong>$25.31 · 주문 2건</strong>
-            <p>판매 세션은 상품 노출 202회와 클릭 11회를 확보했습니다. 다른 세션보다 상품을 실제로 보여준 비중이 높고 LIVE CTR도 4.93%였습니다.</p>
+            <h3 id="liveWinningTitle">2026-04-01 21:37</h3>
+            <strong id="liveWinningValue">$25.31 · 주문 2건</strong>
+            <p id="liveWinningNote">상품 노출 202회와 클릭 11회를 확보했습니다.</p>
           </article>
           <article class="card live-insight attention">
             <span class="eyebrow">참여는 높지만 매출 0</span>
-            <h3>MIZON LIVE</h3>
-            <strong>좋아요 287 · 공유 10</strong>
-            <p>관심 반응은 충분하지만 상품 노출 34회·클릭 3회에 머물렀습니다. 제품 고정 노출과 반복 CTA를 늘려야 합니다.</p>
+            <h3 id="liveEngagementTitle">MIZON LIVE</h3>
+            <strong id="liveEngagementValue">좋아요 287 · 공유 10</strong>
+            <p id="liveEngagementNote">상품 노출 34회에서 클릭 3회, 주문 0건이었습니다.</p>
           </article>
           <article class="card live-insight action">
             <span class="eyebrow">다음 LIVE 운영안</span>
@@ -114,14 +114,14 @@
         </section>
 
         <section class="card live-table-card">
-          <div class="chart-title"><div><h2>LIVE 세션 상세</h2><small>원본 5개 Room ID 기준 · 선택 기간 적용</small></div><span class="badge warn">제목 미제공 3건</span></div>
+          <div class="chart-title"><div><h2>LIVE 세션 상세</h2><small>누적 7개 Room ID · 최신 원본으로 7월 세션 교체</small></div><span class="badge warn">제목 미제공 4건</span></div>
           <div class="table-scroll">
             <table class="table">
               <thead><tr><th>시작시간 / 제목</th><th>방송시간</th><th>GMV</th><th>주문</th><th>시청 / 노출</th><th>상품 노출→클릭</th><th>평균 시청</th><th>반응</th><th>판정</th></tr></thead>
               <tbody id="liveSessionRows"></tbody>
             </table>
           </div>
-          <p class="page-note">LIVE 매출은 Creator LIVE export의 세션 귀속값입니다. 기존 Shop Analytics 월별 LIVE 채널 귀속 GMV와 집계 범위가 다를 수 있어 직접 합산하지 않습니다.</p>
+          <p class="page-note">최신 Creator LIVE export는 7월 1일~8월 9일의 4개 세션입니다. 기존 4월 3개 세션은 이력으로 유지하고, 겹치는 7월 Room ID는 최신 값으로 교체했습니다. LIVE 귀속 GMV는 Shop Analytics의 채널 GMV와 집계 범위가 달라 직접 합산하지 않습니다.</p>
         </section>
       </div>
     </div>
@@ -134,7 +134,9 @@
       { roomId:'7623969849743657759', title:'제목 미제공 · 판매 발생', start:'2026-04-01 21:37:49', date:'2026-04-01', minutes:22.03, gmv:25.31, items:3, orders:2, views:223, impressions:866, avgWatch:12.25, liveCtr:4.932735, productImpressions:202, clicks:11, productCtr:5.445545, followers:1, comments:0, shares:0, likes:7 },
       { roomId:'7632131265067551519', title:'제목 미제공', start:'2026-04-23 21:28:11', date:'2026-04-23', minutes:41.75, gmv:0, items:0, orders:0, views:10, impressions:416, avgWatch:10.63, liveCtr:0, productImpressions:4, clicks:0, productCtr:0, followers:0, comments:0, shares:0, likes:1 },
       { roomId:'7657728697490819870', title:'New Event', start:'2026-07-01 20:59:27', date:'2026-07-01', minutes:38.33, gmv:0, items:0, orders:0, views:362, impressions:3008, avgWatch:3.64, liveCtr:1.104972, productImpressions:30, clicks:4, productCtr:13.333333, followers:2, comments:0, shares:0, likes:148 },
-      { roomId:'7664780238211369758', title:'MIZON LIVE', start:'2026-07-20 21:02:52', date:'2026-07-20', minutes:59.12, gmv:0, items:0, orders:0, views:261, impressions:4912, avgWatch:35.68, liveCtr:1.149425, productImpressions:34, clicks:3, productCtr:8.823529, followers:0, comments:5, shares:10, likes:287 }
+      { roomId:'7664780238211369758', title:'MIZON LIVE', start:'2026-07-20 21:02:52', date:'2026-07-20', minutes:59.12, gmv:0, items:0, orders:0, views:260, impressions:4912, avgWatch:35.84, liveCtr:1.153846, productImpressions:34, clicks:3, productCtr:8.823529, followers:0, comments:5, shares:10, likes:287 },
+      { roomId:'7670374426429704974', title:'제목 미제공 · 8초 테스트', start:'2026-08-04 22:51:16', date:'2026-08-04', minutes:0.133333, gmv:0, items:0, orders:0, views:0, impressions:12, avgWatch:0, liveCtr:0, productImpressions:0, clicks:0, productCtr:0, followers:0, comments:0, shares:0, likes:0, isTest:true },
+      { roomId:'7670717586958584606', title:'Sale LIVE', start:'2026-08-05 21:03:06', date:'2026-08-05', minutes:58.35, gmv:0, items:0, orders:0, views:352, impressions:1723, avgWatch:7.13, liveCtr:1.420455, productImpressions:188, clicks:5, productCtr:2.659574, followers:0, comments:1, shares:0, likes:6 }
     ];
     let livePerformanceChart;
     let liveEngagementChart;
@@ -182,12 +184,20 @@
       const orderBadge=document.getElementById('liveOrderBadge');
       orderBadge.textContent=totals.orders?'주문 발생':'주문 없음';
       orderBadge.className=`badge ${totals.orders?'good':'bad'}`;
+      const winning=rows.find(item=>item.gmv>0);
+      const best=rows.reduce((current,item)=>item.likes>(current?.likes??-1)?item:current,null);
+      text('liveWinningTitle',winning?`${winning.date} ${winning.start.slice(11,16)}`:'선택 기간 없음');
+      text('liveWinningValue',winning?`${liveCurrency(winning.gmv)} · 주문 ${winning.orders}건`:'매출 없음');
+      text('liveWinningNote',winning?`상품 노출 ${liveNumber(winning.productImpressions)}회와 클릭 ${liveNumber(winning.clicks)}회를 확보했습니다.`:'선택 기간에는 LIVE 귀속 매출과 주문이 없습니다.');
+      text('liveEngagementTitle',best?.title||'선택 기간 없음');
+      text('liveEngagementValue',best?`좋아요 ${liveNumber(best.likes)} · 공유 ${liveNumber(best.shares)}`:'반응 없음');
+      text('liveEngagementNote',best?`상품 노출 ${liveNumber(best.productImpressions)}회에서 클릭 ${liveNumber(best.clicks)}회, 주문 ${liveNumber(best.orders)}건이었습니다.`:'선택 기간에 분석할 세션이 없습니다.');
       document.getElementById('liveSessionRows').innerHTML = rows.map(item => `<tr>
         <td><strong>${item.start}</strong><small>${item.title}</small></td><td>${Math.round(item.minutes)}분</td>
         <td><strong>${liveCurrency(item.gmv)}</strong></td><td>${item.orders}건</td><td>${liveNumber(item.views)} / ${liveNumber(item.impressions)}</td>
         <td>${liveNumber(item.productImpressions)} → ${liveNumber(item.clicks)} <small>${livePercent(item.productCtr)}</small></td>
         <td>${item.avgWatch.toFixed(1)}초</td><td>♥ ${liveNumber(item.likes)} · 공유 ${item.shares} · 댓글 ${item.comments}</td>
-        <td><span class="badge ${item.gmv>0?'good':'bad'}">${item.gmv>0?'판매':'매출 0'}</span></td></tr>`).join('');
+        <td><span class="badge ${item.isTest?'warn':item.gmv>0?'good':'bad'}">${item.isTest?'테스트':item.gmv>0?'판매':'매출 0'}</span></td></tr>`).join('');
       renderLiveCharts(rows);
     }
     function renderLiveCharts(rows) {
@@ -210,7 +220,7 @@
     }
     function resetLiveRange() {
       document.getElementById('liveStartDate').value='2026-04-01';
-      document.getElementById('liveEndDate').value='2026-07-26';
+      document.getElementById('liveEndDate').value='2026-08-09';
       applyLiveRange();
     }
     applyLiveRange();

@@ -138,14 +138,14 @@ function LivePage() {
         title="라이브 분석"
         subtitle="LIVE별 노출·시청·상품 클릭·주문·매출을 연결해 판매 전환이 막히는 지점을 확인합니다."
       >
-        <div className="affiliate-report-state"><span className="status-dot" />LIVE 원본 {livePerformanceRange.start} ~ {livePerformanceRange.end}</div>
+        <div className="affiliate-report-state"><span className="status-dot" />LIVE 최신 원본 8월 9일 · 최근 방송 8월 5일</div>
       </PageHeader>
 
       <section className="card live-filter-card">
         <div>
           <span className="eyebrow">LIVE REPORT RANGE</span>
           <strong>{startDate} ~ {endDate}</strong>
-          <small>선택 기간의 KPI·차트·세션 표에 적용</small>
+          <small>누적 이력 {livePerformanceRange.start}~{livePerformanceRange.end} · 최신 추출 {livePerformanceRange.latestExportStart}~{livePerformanceRange.end}</small>
         </div>
         <div className="affiliate-plan-date-controls">
           <label>시작일<input type="date" min={livePerformanceRange.start} max={livePerformanceRange.end} value={startDate} onChange={(event) => { const value = event.target.value; setStartDate(value); if (value > endDate) setEndDate(value); }} /></label>
@@ -194,13 +194,17 @@ function LivePage() {
           <span className="eyebrow">판매 LIVE</span>
           <h3>{winningSession ? `${winningSession.date} ${winningSession.start.slice(11, 16)}` : '선택 기간 없음'}</h3>
           <strong>{winningSession ? `${currency(winningSession.gmv)} · 주문 ${winningSession.orders}건` : '매출 없음'}</strong>
-          <p>판매 세션은 상품 노출 202회와 클릭 11회를 확보했습니다. 다른 세션보다 상품을 실제로 보여준 비중이 높고 LIVE CTR도 4.93%였습니다.</p>
+          <p>{winningSession
+            ? `상품 노출 ${number(winningSession.productImpressions)}회와 클릭 ${number(winningSession.productClicks)}회를 확보했습니다.`
+            : '선택 기간에는 LIVE 귀속 매출과 주문이 없습니다.'}</p>
         </article>
         <article className="card live-insight attention">
           <span className="eyebrow">참여는 높지만 매출 0</span>
           <h3>{bestEngagement?.title || 'MIZON LIVE'}</h3>
           <strong>좋아요 {number(bestEngagement?.likes || 0)} · 공유 {number(bestEngagement?.shares || 0)}</strong>
-          <p>관심 반응은 충분하지만 상품 노출 34회·클릭 3회에 머물렀습니다. 제품 고정 노출과 반복 CTA를 늘려야 합니다.</p>
+          <p>{bestEngagement
+            ? `상품 노출 ${number(bestEngagement.productImpressions)}회에서 클릭 ${number(bestEngagement.productClicks)}회, 주문 ${number(bestEngagement.orders)}건이었습니다.`
+            : '선택 기간에 분석할 세션이 없습니다.'}</p>
         </article>
         <article className="card live-insight action">
           <span className="eyebrow">다음 LIVE 운영안</span>
@@ -211,7 +215,7 @@ function LivePage() {
       </section>
 
       <section className="card live-table-card">
-        <div className="chart-title"><div><h2>LIVE 세션 상세</h2><small>원본 5개 Room ID 기준 · 선택 기간 적용</small></div><span className="badge warn">제목 미제공 3건</span></div>
+        <div className="chart-title"><div><h2>LIVE 세션 상세</h2><small>누적 7개 Room ID · 최신 원본으로 7월 세션 교체</small></div><span className="badge warn">제목 미제공 4건</span></div>
         <div className="table-scroll">
           <table className="table">
             <thead><tr><th>시작시간 / 제목</th><th>방송시간</th><th>GMV</th><th>주문</th><th>시청 / 노출</th><th>상품 노출→클릭</th><th>평균 시청</th><th>반응</th><th>판정</th></tr></thead>
@@ -226,13 +230,13 @@ function LivePage() {
                   <td>{number(item.productImpressions)} → {number(item.productClicks)} <small>{percent(item.productCtr)}</small></td>
                   <td>{item.avgViewSeconds.toFixed(1)}초</td>
                   <td>♥ {number(item.likes)} · 공유 {item.shares} · 댓글 {item.comments}</td>
-                  <td><span className={`badge ${item.gmv > 0 ? 'good' : 'bad'}`}>{item.gmv > 0 ? '판매' : '매출 0'}</span></td>
+                  <td><span className={`badge ${item.isTest ? 'warn' : item.gmv > 0 ? 'good' : 'bad'}`}>{item.isTest ? '테스트' : item.gmv > 0 ? '판매' : '매출 0'}</span></td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <p className="page-note">LIVE 매출은 이 Creator LIVE export의 세션 귀속값입니다. 기존 Shop Analytics의 월별 LIVE 채널 귀속 GMV와 집계 범위가 다를 수 있어 직접 합산하지 않습니다.</p>
+        <p className="page-note">최신 Creator LIVE export는 7월 1일~8월 9일의 4개 세션입니다. 기존 4월 3개 세션은 이력으로 유지하고, 겹치는 7월 Room ID는 최신 값으로 교체했습니다. LIVE 귀속 GMV는 Shop Analytics의 채널 GMV와 집계 범위가 달라 직접 합산하지 않습니다.</p>
       </section>
     </>
   );

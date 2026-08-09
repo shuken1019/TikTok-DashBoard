@@ -93,7 +93,7 @@ const PAGE_CONTEXT = {
   'product-leaderboard.html': { tone: 'manual', label: '운영 마스터', detail: '판매·재고 입력값 기반 상품 우선순위' },
   'inventory.html': { tone: 'manual', label: '운영 마스터', detail: 'Seller Center 기준 수동 재고 snapshot' },
   'ads.html': { tone: 'actual', label: '광고 실적 + 비용 Snapshot', detail: 'Campaign 광고비 실적과 관리자 입력 비용구조' },
-  'live.html': { tone: 'actual', label: 'Creator LIVE 실제 데이터', detail: '2026-04-01~07-26 export · 세션 5회 원본 기준' },
+  'live.html': { tone: 'actual', label: 'Creator LIVE 실제 데이터', detail: '누적 2026-04-01~08-09 · 최신 export 07-01~08-09 · 세션 7회' },
   'campaigns.html': { tone: 'plan', label: '캠페인 일정 + 진행 실적', detail: 'Seller Center 캘린더·등록 목록·Summer Sale 화면 기준' },
   'admin.html': { tone: 'manual', label: '로컬 관리 데이터', detail: '이 브라우저에 저장되며 다른 기기와 자동 동기화되지 않음' },
   'guide.html': { tone: 'guide', label: '내부 운영 가이드', detail: '정책 변경 가능 · 실제 집행 전 최신 Seller Center 확인' }
