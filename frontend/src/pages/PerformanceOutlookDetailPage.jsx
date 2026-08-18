@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Chart, registerables } from 'chart.js';
 import { Link } from 'react-router-dom';
 import PageHeader from '../components/PageHeader';
+import AdRecoveryDashboard from '../components/AdRecoveryDashboard';
 import { getData } from '../api';
 import { formatCurrency, formatMoney } from '../format';
 
@@ -249,7 +250,9 @@ function PerformanceOutlookDetailPage() {
         <Link to="/admin?tab=monthly" className="detail-edit-button">월별 데이터 수정</Link>
       </section>
 
-      <section className="grid cards-4" style={{ marginTop: 0 }}>
+      <AdRecoveryDashboard />
+
+      <section className="grid cards-4 legacy-outlook-summary" style={{ marginTop: 0 }}>
         <article className="card kpi">
           <span className="label">① 누적 Total Revenue</span>
           <span className="value">{formatMoney(outlook.actualRevenue)}</span>
@@ -272,7 +275,7 @@ function PerformanceOutlookDetailPage() {
         </article>
       </section>
 
-      <section className="grid cards-2" style={{ marginTop: 20 }}>
+      <section className="grid cards-2 legacy-outlook-summary" style={{ marginTop: 20 }}>
         <article className="card kpi">
           <span className="label">⑤ 2026.08~2027.12 매출 목표</span>
           <span className="value">{formatMoney(outlook.targetRevenue)}</span>
@@ -285,7 +288,7 @@ function PerformanceOutlookDetailPage() {
         </article>
       </section>
 
-      <section className="grid cards-3" style={{ marginTop: 20 }}>
+      <section className="grid cards-3 legacy-outlook-summary" style={{ marginTop: 20 }}>
         <article className="card kpi"><span className="label">12월 기존 계획 손익</span><span className="value" style={{ color: '#dc2626' }}>{formatCurrency(outlook.decemberPlan.sourceProfit)}</span><span className="desc">매출 $50k · 마케팅 예산 $47.6k</span></article>
         <article className="card kpi"><span className="label">12월 손익분기 매출</span><span className="value">{formatCurrency(outlook.decemberPlan.breakEvenRevenue)}</span><span className="desc">현재 예산과 비광고비 비율 유지 시</span></article>
         <article className="card kpi"><span className="label">12월 필수 관리 목표</span><span className="value" style={{ color: '#047857' }}>{formatCurrency(outlook.decemberPlan.managementRevenue)}</span><span className="desc">광고비 ≤$47.6k · 추정 이익 {formatCurrency(outlook.decemberPlan.managementProfit)}</span></article>
@@ -355,7 +358,7 @@ function PerformanceOutlookDetailPage() {
         <canvas ref={chartRef} />
       </section>
 
-      <section className="card december-profit-plan" style={{ marginTop: 20 }}>
+      <section className="card december-profit-plan legacy-outlook-summary" style={{ marginTop: 20 }}>
         <div className="chart-title"><div><h2>12월 안에 흑자를 내는 실행안</h2><small>기존 예산은 유지하되 매출·상품 마진·주간 집행 기준을 동시에 관리합니다.</small></div><span className="badge good">12월 월 이익 ≥ $5k</span></div>
         <p className="page-note">
           현재 12월 원본 계획은 매출 {formatCurrency(outlook.decemberPlan.sourceRevenue)}, 마케팅 예산 {formatCurrency(outlook.decemberPlan.sourceAdSpend)}로 추정 손익이 <strong>{formatCurrency(outlook.decemberPlan.sourceProfit)}</strong>입니다.

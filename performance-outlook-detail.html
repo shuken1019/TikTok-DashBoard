@@ -59,7 +59,9 @@
           <a href="admin.html#monthly" class="detail-edit-button">월별 데이터 수정</a>
         </section>
 
-        <section class="grid cards-4">
+        <div id="adRecoveryDashboard"></div>
+
+        <section class="grid cards-4 legacy-outlook-summary">
           <article class="card kpi">
             <span class="label">① 누적 Total Revenue</span>
             <span class="value" id="kpiActualRevenueSum">$0</span>
@@ -82,7 +84,7 @@
           </article>
         </section>
 
-        <section class="grid cards-2" style="margin-top: 20px;">
+        <section class="grid cards-2 legacy-outlook-summary" style="margin-top: 20px;">
           <article class="card kpi">
             <span class="label">⑤ 2026.08~2027.12 매출 목표</span>
             <span class="value" id="kpiTargetRevenueSum">$0.00</span>
@@ -95,7 +97,7 @@
           </article>
         </section>
 
-        <section class="grid cards-3" style="margin-top: 20px;">
+        <section class="grid cards-3 legacy-outlook-summary" style="margin-top: 20px;">
           <article class="card kpi">
             <span class="label">12월 기존 계획 손익</span>
             <span class="value" id="kpiDecemberSourceProfit">$0</span>
@@ -157,7 +159,7 @@
           <canvas id="outlookChart"></canvas>
         </section>
 
-        <section class="card december-profit-plan" style="margin-top: 20px;">
+        <section class="card december-profit-plan legacy-outlook-summary" style="margin-top: 20px;">
           <div class="chart-title"><div><h2>12월 안에 흑자를 내는 실행안</h2><small>기존 예산은 유지하되 매출·상품 마진·주간 집행 기준을 동시에 관리합니다.</small></div><span class="badge good">12월 월 이익 ≥ $5k</span></div>
           <p class="page-note" id="outlookText"></p>
           <div class="december-plan-grid">
@@ -191,6 +193,8 @@
   <script src="assets/nav.js?v=corporate-20260808"></script>
   <script src="assets/data-store.js?v=verified-20260808"></script>
   <script src="assets/monthly-data.js?v=verified-20260818"></script>
+  <script src="assets/ad-recovery-data.js?v=verified-20260818"></script>
+  <script src="assets/ad-recovery-dashboard.js?v=verified-20260818"></script>
   <script src="assets/cost-items-data.js?v=data-sync-20260724"></script>
   <script>
     const FORECAST_DASH = [6, 4];

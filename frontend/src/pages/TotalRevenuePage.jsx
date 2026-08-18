@@ -5,6 +5,8 @@ import PageHeader from '../components/PageHeader';
 import { getData } from '../api';
 import { formatCurrency } from '../format';
 import { campaignOverviewDaily, campaignDailyFirstDate, campaignDailyLastDate } from '../data/campaignDaily';
+import { AD_RECOVERY_CURRENT, buildAdRecoveryScenario } from '../data/adRecovery';
+import '../recovery.css';
 
 Chart.register(...registerables);
 
@@ -327,6 +329,20 @@ function TotalRevenuePage() {
           </Link>
         </div>
       </section>
+
+      <Link to="/performance-outlook" className="card recovery-summary-card" style={{ marginTop: 20 }}>
+        <div>
+          <span>광고 투자 회수</span>
+          <strong>누적 광고 차이 {formatOfficialCurrency(AD_RECOVERY_CURRENT.balance)}</strong>
+          <small>Total Revenue − 동일 기간 광고비 · 회계상 순손실과 구분</small>
+        </div>
+        <dl>
+          <div><dt>현재 ROI</dt><dd>{AD_RECOVERY_CURRENT.roi.toFixed(2)}x</dd></div>
+          <div><dt>관리 목표</dt><dd>2027년 1월</dd></div>
+          <div><dt>100% 계획</dt><dd>{buildAdRecoveryScenario(1).recovery.label}</dd></div>
+        </dl>
+        <b>회수 계획 보기 →</b>
+      </Link>
 
       <section className="grid cards-3" style={{ marginTop: 20 }}>
         <Link to="/revenue-ads" className="card linked chart-card" style={{ textDecoration: 'none', color: 'inherit' }}>
