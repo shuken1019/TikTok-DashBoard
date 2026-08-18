@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Chart, registerables } from 'chart.js';
 import PageHeader from '../components/PageHeader';
-import { livePerformanceRange, liveSessions } from '../data/livePerformanceData';
+import { liveAccountSummary, livePerformanceRange, liveSessions } from '../data/livePerformanceData';
 
 Chart.register(...registerables);
 
@@ -138,8 +138,22 @@ function LivePage() {
         title="라이브 분석"
         subtitle="LIVE별 노출·시청·상품 클릭·주문·매출을 연결해 판매 전환이 막히는 지점을 확인합니다."
       >
-        <div className="affiliate-report-state"><span className="status-dot" />LIVE 최신 원본 8월 9일 · 최근 방송 8월 5일</div>
+        <div className="affiliate-report-state"><span className="status-dot" />계정 요약 8월 17일 · 세션 상세 8월 9일</div>
       </PageHeader>
+
+      <section className="card campaign-performance-card">
+        <div className="chart-title">
+          <div><span className="eyebrow">ACCOUNT SUMMARY</span><h2>8월 LIVE 성과</h2><small>{liveAccountSummary.start} ~ {liveAccountSummary.end} · 계정 전체 기준</small></div>
+          <span className="badge good">8/17 반영</span>
+        </div>
+        <div className="grid campaign-core-metrics">
+          <div><span>LIVE 귀속 GMV</span><strong>{currency(liveAccountSummary.attributedGmv)}</strong><small>계정 전체 집계</small></div>
+          <div><span>SKU 주문</span><strong>{number(liveAccountSummary.skuOrders)}건</strong><small>판매 품목 {number(liveAccountSummary.itemsSold)}개</small></div>
+          <div><span>시청수</span><strong>{number(liveAccountSummary.views)}</strong><small>LIVE CTR {liveAccountSummary.liveCtr.toFixed(2)}%</small></div>
+          <div><span>평균 시청</span><strong>{liveAccountSummary.avgViewingSeconds.toFixed(2)}초</strong><small>Accounts data 원본</small></div>
+        </div>
+        <p className="page-note">아래 세션 표는 크리에이터 LIVE export 기준입니다. 계정 전체 요약과 집계 단위·종료일이 달라 서로 더하지 않습니다.</p>
+      </section>
 
       <section className="card live-filter-card">
         <div>

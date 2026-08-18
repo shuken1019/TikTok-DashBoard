@@ -36,7 +36,7 @@
         </nav>
         <div class="sidebar-footer">
           <strong>데이터 기준</strong>
-          <p>Shop 7/26 · Campaign 7/27 · Affiliate Core 7/25 · 상세 7/24</p>
+          <p>Shop 8/17 · 광고 8/18 · 거래·샘플 8/15</p>
         </div>
       </aside>
 
@@ -55,7 +55,7 @@
         <p class="page-note"><a href="tiktok_shop_dashboard.html">← 전체 매출로 돌아가기</a></p>
 
         <section class="detail-edit-bar">
-          <span>2025.11~2026.07은 마감 실적이며, 2026.08 매출은 8/1~8/7(UTC-7) 부분 실적입니다. 8월 비용은 원본 데이터가 없어 손익 계산을 보류합니다.</span>
+          <span>2025.11~2026.07은 마감 실적입니다. 8월 매출은 8/7, 광고비는 8/18까지라 총비용·손익 계산을 보류합니다.</span>
           <a href="admin.html#monthly" class="detail-edit-button">월별 데이터 수정</a>
         </section>
 
@@ -182,7 +182,7 @@
 
   <script src="assets/nav.js?v=corporate-20260808"></script>
   <script src="assets/data-store.js?v=verified-20260808"></script>
-  <script src="assets/monthly-data.js?v=verified-20260808"></script>
+  <script src="assets/monthly-data.js?v=verified-20260818"></script>
   <script src="assets/cost-items-data.js?v=data-sync-20260724"></script>
   <script>
     const FORECAST_DASH = [6, 4];
@@ -286,7 +286,7 @@
 
       document.getElementById('kpiCumLoss').textContent = formatMoney(o.cumulativeLoss);
       document.getElementById('kpiCumLoss').style.color = o.cumulativeLoss < 0 ? '#dc2626' : '#16a34a';
-      document.getElementById('kpiProfitMonths').textContent = `${o.completeActualMonthCount}개월 비용 확인 · 흑자 ${o.profitMonths}개월 · 8월 비용 미수집`;
+      document.getElementById('kpiProfitMonths').textContent = `${o.completeActualMonthCount}개월 비용 확인 · 흑자 ${o.profitMonths}개월 · 8월 기간 불일치`;
       document.getElementById('kpiQ3Trend').textContent = formatCurrency(o.q3Profit);
       document.getElementById('kpiQ3Trend').style.color = o.q3Profit < 0 ? '#dc2626' : '#16a34a';
       document.getElementById('kpiQ4Trend').textContent = formatCurrency(o.q4Profit);
@@ -304,7 +304,7 @@
         ? `● 목표 플랜: ${o.breakevenRow.label}부터 월 흑자`
         : '● 목표 플랜: 계획 기간 내 월 흑자 없음';
 
-      document.getElementById('outlookText').innerHTML = `비용이 확인된 기간은 <strong>${o.profitMonths === 0 ? `${o.completeActualMonthCount}개월 연속 적자` : `${o.completeActualMonthCount}개월 중 ${o.profitMonths}개월 흑자`}</strong>이며 누적 손익은 ${formatCurrency(o.cumulativeLoss)}입니다. 2026년 8월은 8/7까지 Total Revenue ${formatCurrency(13052.48)}만 확인되어 광고비·총비용·손익 계산에서 제외했습니다.
+      document.getElementById('outlookText').innerHTML = `비용이 확인된 기간은 <strong>${o.profitMonths === 0 ? `${o.completeActualMonthCount}개월 연속 적자` : `${o.completeActualMonthCount}개월 중 ${o.profitMonths}개월 흑자`}</strong>이며 누적 손익은 ${formatCurrency(o.cumulativeLoss)}입니다. 2026년 8월은 Total Revenue가 8/7까지, 광고비 ${formatCurrency(35235.56)}가 8/18까지여서 총비용·손익 계산에서 제외했습니다.
         새 17개월 플랜(2026년 8월 $20,000에서 2027년 12월 $200,000까지 성장)을 그대로 달성한다고 가정하면,
         ${o.breakevenRow ? `<strong>${o.breakevenRow.label}</strong>에 처음으로 월 단위 모델 흑자로 전환됩니다.` : ' 계획 기간 안에도 모델 흑자 전환이 어렵습니다.'}
         원본 ROI는 매출 ÷ 마케팅 예산이며, 여기의 모델 순이익은 마케팅 예산에 현재 비광고비 배부율까지 더한 별도 관리 지표입니다.`;
@@ -316,7 +316,7 @@
         return `<tr style="${r.actual ? '' : 'opacity:0.85'}"><td>${r.label}${r.actualThrough ? `<small style="display:block">~${r.actualThrough}</small>` : ''}</td><td><span class="badge ${costPending ? 'warn' : r.actual ? 'good' : 'warn'}">${costPending ? '부분 실적' : r.actual ? '실적' : '목표'}</span></td><td>${r.actual ? formatMoney(revenue) : '—'}</td><td>${r.actual ? formatMoney(r.targetRevenue) : formatMoney(revenue)}</td><td>${r.actual ? (r.adSpend === null ? '미수집' : formatMoney(r.adSpend)) : '—'}</td><td>${r.actual ? formatMoney(r.targetAdSpend) : formatMoney(r.targetAdSpend)}</td><td>${r.targetAdSpend ? `${(r.targetRevenue / r.targetAdSpend).toFixed(2)}x` : '—'}</td><td>${r.afterAdProfit === null ? '계산 보류' : formatMoney(r.afterAdProfit)}</td><td>${r.totalCost === null ? '미수집' : formatMoney(r.totalCost)}</td><td>${r.profit === null ? '<strong>계산 보류</strong>' : `<strong style="color:${r.profit < 0 ? '#b91c1c' : '#047857'}">${formatMoney(r.profit)}</strong>`}</td><td>${r.profit === null ? '<span class="badge warn">비용 필요</span>' : r.profit < 0 ? '<span class="badge bad">적자</span>' : '<span class="badge good">흑자</span>'}</td></tr>`;
       }).join('');
 
-      document.getElementById('outlookFootnote').textContent = `※ 실적 매출은 정산 Total Revenue입니다. 2026.08은 8/1~8/7(UTC-7) $13,052.48이며, 제공된 8/8 Campaign·Product campaign 파일은 데이터 행이 없어 광고비·총비용·손익을 계산하지 않았습니다. 계획은 TikTok_Shop_예산_ROI_플랜_2026-08_2027-12.xlsx의 17개월 원본값이며 목표 매출 ${formatCurrency(o.targetRevenueSum)}, 마케팅 예산 ${formatCurrency(o.targetBudgetSum)}입니다. 원본 ROI = 매출 ÷ 마케팅 예산(광고비+어필리에이터 수수료)이며 제품 원가·플랫폼 수수료는 포함하지 않습니다.`;
+      document.getElementById('outlookFootnote').textContent = `※ 실적 매출은 정산 Total Revenue입니다. 2026.08 매출은 8/7까지 $13,052.48, 광고비는 8/18까지 $35,235.56이므로 종료일을 맞출 때까지 손익을 계산하지 않습니다. 계획은 TikTok_Shop_예산_ROI_플랜_2026-08_2027-12.xlsx의 17개월 원본값이며 목표 매출 ${formatCurrency(o.targetRevenueSum)}, 마케팅 예산 ${formatCurrency(o.targetBudgetSum)}입니다.`;
 
       const forecastStartIndex = visibleRows.findIndex(r => !r.actual);
       const dashSegment = ctx => (forecastStartIndex !== -1 && ctx.p1DataIndex >= forecastStartIndex ? FORECAST_DASH : undefined);

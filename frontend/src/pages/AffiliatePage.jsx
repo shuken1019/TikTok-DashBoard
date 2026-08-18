@@ -10,6 +10,7 @@ import {
   affiliateCreatorListSummary,
   affiliateJulyCreators,
   affiliateJulyProducts,
+  affiliateAugustProducts,
   affiliateSnapshot,
   affiliateWeekly,
   topAffiliateVideos,
@@ -48,8 +49,8 @@ const affiliateModes = {
 };
 
 function AffiliatePage({ mode = 'overview' }) {
-  const [startDate, setStartDate] = useState('2026-07-01');
-  const [endDate, setEndDate] = useState('2026-07-31');
+  const [startDate, setStartDate] = useState('2026-08-01');
+  const [endDate, setEndDate] = useState('2026-08-15');
   const [contentView, setContentView] = useState('video');
   const [targetCreators, setTargetCreators] = useState(60);
   const [videosPerCreator, setVideosPerCreator] = useState(1.5);
@@ -241,7 +242,7 @@ function AffiliatePage({ mode = 'overview' }) {
       <PageHeader title={pageCopy[0]} subtitle={pageCopy[1]}>
         <div className="affiliate-report-state">
           <span className="status-dot" />
-          7월 Core·제품 2026.07.31 · 8월 MTD 2026.08.05
+          Shop 8/17 · 어필리에이터 상세 8/15
         </div>
       </PageHeader>
 
@@ -252,10 +253,10 @@ function AffiliatePage({ mode = 'overview' }) {
               <span className="eyebrow">REPORT RANGE</span>
               <strong>{startDate} ~ {endDate}</strong>
             </div>
-            <label>시작일<input type="date" min="2026-02-01" max="2026-08-05" value={startDate} onChange={(event) => { const value = event.target.value; setStartDate(value); if (value > endDate) setEndDate(value); }} /></label>
+            <label>시작일<input type="date" min="2026-02-01" max="2026-08-15" value={startDate} onChange={(event) => { const value = event.target.value; setStartDate(value); if (value > endDate) setEndDate(value); }} /></label>
             <span className="range-separator">→</span>
-            <label>종료일<input type="date" min="2026-02-01" max="2026-08-05" value={endDate} onChange={(event) => { const value = event.target.value; setEndDate(value); if (value < startDate) setStartDate(value); }} /></label>
-            <button type="button" onClick={() => { setStartDate('2026-02-01'); setEndDate('2026-08-05'); }}>전체 데이터</button>
+            <label>종료일<input type="date" min="2026-02-01" max="2026-08-15" value={endDate} onChange={(event) => { const value = event.target.value; setEndDate(value); if (value < startDate) setStartDate(value); }} /></label>
+            <button type="button" onClick={() => { setStartDate('2026-02-01'); setEndDate('2026-08-15'); }}>전체 데이터</button>
           </div>
           <p className="affiliate-source-note">
             선택 {selectedDays}일 · 운영 차트·표에 적용 · 상단 KPI는 원본 전체 기간 누적값
@@ -344,9 +345,9 @@ function AffiliatePage({ mode = 'overview' }) {
       </section>
 
       <section className="card affiliate-overview-core" style={{ marginTop: 20 }}>
-        <div className="chart-title"><div><h2>{affiliateCurrentPeriod.label} 현재</h2><small>8월 원본은 5일간 누적값과 일평균 지표를 구분합니다.</small></div><span className="badge warn">부분 기간</span></div>
+        <div className="chart-title"><div><h2>{affiliateCurrentPeriod.label} 현재</h2><small>8월 원본은 15일 누적값과 일평균 지표를 구분합니다.</small></div><span className="badge warn">부분 기간</span></div>
         <div className="grid cards-4 affiliate-mtd-grid">
-          <article><span>귀속 GMV</span><strong>{formatMoney(affiliateCurrentPeriod.creatorAttributedGmv)}</strong><small>5일 누적</small></article>
+          <article><span>귀속 GMV</span><strong>{formatMoney(affiliateCurrentPeriod.creatorAttributedGmv)}</strong><small>15일 누적</small></article>
           <article><span>판매 수량</span><strong>{number(affiliateCurrentPeriod.attributedItemsSold)}개</strong><small>환불 {formatMoney(affiliateCurrentPeriod.refunds)}</small></article>
           <article><span>영상 / LIVE</span><strong>{number(affiliateCurrentPeriod.videos)} / {number(affiliateCurrentPeriod.liveStreams)}</strong><small>기간 누적</small></article>
           <article><span>예상 수수료</span><strong>{formatMoney(affiliateCurrentPeriod.estimatedCommission)}</strong><small>ROI {(affiliateCurrentPeriod.creatorAttributedGmv / affiliateCurrentPeriod.estimatedCommission).toFixed(2)}x</small></article>
@@ -355,9 +356,9 @@ function AffiliatePage({ mode = 'overview' }) {
       </section>
 
       <section className="card affiliate-overview-core" style={{ marginTop: 20 }}>
-        <div className="chart-title"><div><h2>7월 제품별 귀속 GMV</h2><small>Transaction Analysis Product List 42개 중 상위 6개</small></div><span className="badge good">Core 합계 일치</span></div>
+        <div className="chart-title"><div><h2>8월 제품별 귀속 GMV</h2><small>8/1–8/15 Product List 38개 중 상위 6개</small></div><span className="badge good">Core 합계 일치</span></div>
         <div className="table-scroll"><table className="table"><thead><tr><th>순위</th><th>제품</th><th>귀속 GMV</th><th>판매</th><th>주문</th><th>환불</th><th>예상 수수료</th></tr></thead><tbody>
-          {affiliateJulyProducts.map((item) => <tr key={item.name}><td>{item.rank}</td><td><strong>{item.name}</strong></td><td>{formatMoney(item.gmv)}</td><td>{number(item.items)}개</td><td>{number(item.orders)}건</td><td>{formatMoney(item.refunds)}</td><td>{formatMoney(item.commission)}</td></tr>)}
+          {affiliateAugustProducts.map((item) => <tr key={item.name}><td>{item.rank}</td><td><strong>{item.name}</strong></td><td>{formatMoney(item.gmv)}</td><td>{number(item.items)}개</td><td>{number(item.orders)}건</td><td>{formatMoney(item.refunds)}</td><td>{formatMoney(item.commission)}</td></tr>)}
         </tbody></table></div>
       </section>
 

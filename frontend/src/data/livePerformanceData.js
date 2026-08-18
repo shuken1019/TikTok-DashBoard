@@ -10,6 +10,19 @@ export const livePerformanceRange = {
   lastSession: '2026-08-05',
 };
 
+// Account-level LIVE summary. It has a broader grain than the session table,
+// so it is presented separately and never added to session totals.
+export const liveAccountSummary = {
+  start: '2026-08-01',
+  end: '2026-08-17',
+  attributedGmv: 109.76,
+  skuOrders: 7,
+  itemsSold: 7,
+  views: 294357,
+  liveCtr: 1.71,
+  avgViewingSeconds: 34.62,
+};
+
 export const liveSessions = [
   {
     roomId: '7623673557880408862',

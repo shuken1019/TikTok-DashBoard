@@ -6,8 +6,8 @@ export const sevenVeganProductTraffic = {
   productId: '1731725392684225461',
   category: 'Booster Serum · Korean Skincare',
   description: '7가지 비건 펩타이드, 나이아신아마이드, 히알루론산을 담은 가벼운 워터리 타입의 첫 단계 부스터 세럼',
-  period: '2026-02-01 ~ 2026-06-30',
-  sourceCount: 5,
+  period: '2026-02-01 ~ 2026-08-17',
+  sourceCount: 6,
   juneShopGmv: 2446.03,
   monthly: [
     { month: '2026.02', date: '2026-02-28', gmv: 1437.30, orders: 98, skuOrders: 98, itemsSold: 105, customers: 96, aov: 14.67, impressions: 1392050, clicks: 34730, ctr: 2.49, addToCart: 654, addToCartRate: 1.88, ctor: 0.28, uniqueImpressions: 1179789, uniqueClicks: 31548, uniqueCtr: 2.67, shopTabGmv: 103.88, shopTabItemsSold: 7 },
@@ -15,6 +15,7 @@ export const sevenVeganProductTraffic = {
     { month: '2026.04', date: '2026-04-30', gmv: 7398.70, orders: 611, skuOrders: 611, itemsSold: 637, customers: 600, aov: 12.11, impressions: 423922, clicks: 37843, ctr: 8.93, addToCart: 1630, addToCartRate: 4.31, ctor: 1.61, uniqueImpressions: 282084, uniqueClicks: 29928, uniqueCtr: 10.61, shopTabGmv: 976.20, shopTabItemsSold: 62 },
     { month: '2026.05', date: '2026-05-31', gmv: 1557.47, orders: 132, skuOrders: 132, itemsSold: 137, customers: 132, aov: 11.80, impressions: 111075, clicks: 7612, ctr: 6.85, addToCart: 337, addToCartRate: 4.43, ctor: 1.73, uniqueImpressions: 69408, uniqueClicks: 5998, uniqueCtr: 8.64, shopTabGmv: 209.48, shopTabItemsSold: 14 },
     { month: '2026.06', date: '2026-06-30', gmv: 1427.69, orders: 112, skuOrders: 112, itemsSold: 112, customers: 111, aov: 12.75, impressions: 142237, clicks: 5815, ctr: 4.09, addToCart: 247, addToCartRate: 4.25, ctor: 1.93, uniqueImpressions: 108648, uniqueClicks: 4653, uniqueCtr: 4.28, shopTabGmv: 147.79, shopTabItemsSold: 8 },
+    { month: '2026.08', date: '2026-08-17', gmv: 1537.77, orders: 142, skuOrders: 142, itemsSold: 144, customers: 139, aov: 10.83, impressions: 200673, clicks: 10949, ctr: 5.46, addToCart: 500, addToCartRate: 4.57, ctor: 1.30, uniqueImpressions: 136370, uniqueClicks: 8587, uniqueCtr: 6.30, shopTabGmv: 92.59, shopTabItemsSold: 7 },
   ],
 };
 

@@ -13,16 +13,10 @@ from zipfile import ZipFile
 ROOT = Path(__file__).resolve().parents[1]
 SOURCES = (
     (
-        Path("/Users/serena/Downloads/Shop Analytics_Key metrics_20260808 (2).xlsx"),
-        "2026-07-01",
-        "2026-07-31",
-        31,
-    ),
-    (
-        Path("/Users/serena/Downloads/Shop Analytics_Key metrics_20260808.xlsx"),
+        Path("/Users/serena/Downloads/Shop Analytics_Key metrics_20260818.xlsx"),
         "2026-08-01",
-        "2026-08-07",
-        7,
+        "2026-08-17",
+        17,
     ),
 )
 NS = {"a": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
@@ -120,9 +114,9 @@ def render(records: list[dict], footer: str, react: bool) -> str:
     lines = [
         "// Shop Analytics source of truth:",
         "// Shop Analytics_Key metrics_20260808 (2).xlsx (2026-07-01–2026-07-31)",
-        "// Shop Analytics_Key metrics_20260808.xlsx (2026-08-01–2026-08-07)",
+        "// Shop Analytics_Key metrics_20260818.xlsx (2026-08-01–2026-08-17)",
         "// Shop Analytics_Key metrics_20260808 (1).xlsx is a byte-identical duplicate and is excluded.",
-        "// 2026-08-07 has no source values for GMV with tax, tax, or shipping fees; stored as 0.",
+        "// 2026-08-17 has no source values for GMV with tax, tax, or shipping fees; stored as 0.",
         "// Historical daily rows through 2026-06-30 are retained from the reviewed 2026-07-24 export.",
         f"{declaration} dailyAnalytics = [",
     ]
@@ -180,17 +174,17 @@ def main() -> None:
     ):
         target = ROOT / relative
         old, footer = existing_rows(target)
-        merged = {row["date"]: row for row in old if row["date"] < "2026-07-01"}
+        merged = {row["date"]: row for row in old if row["date"] < "2026-08-01"}
         merged.update({row["date"]: row for row in source_rows})
         records = [merged[key] for key in sorted(merged)]
-        if len(records) != 280 or records[-1]["date"] != "2026-08-07":
+        if len(records) != 290 or records[-1]["date"] != "2026-08-17":
             raise ValueError(f"Unexpected merged range in {relative}")
         target.write_text(render(records, footer, react), encoding="utf-8")
 
     print("Shop source checks: all 17 stored metrics match each source Total value")
     for summary in source_summaries:
         print(summary)
-    print("Merged range: 280 days, 2025-11-01 through 2026-08-07")
+    print("Merged range: 290 days, 2025-11-01 through 2026-08-17")
 
 
 if __name__ == "__main__":

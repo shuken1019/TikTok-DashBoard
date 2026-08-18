@@ -57,8 +57,8 @@ function Layout() {
           </nav>
           <div className="sidebar-footer">
             <span className="sidebar-status-label"><i /> DATA STATUS</span>
-            <strong>Shop 8/7 · Campaign 7/27</strong>
-            <p>Shop 검증 완료 · 비용 열 주의 1건</p>
+            <strong>Shop 8/17 · 광고 8/18</strong>
+            <p>상세 거래·샘플 8/15 · 기간별 분리</p>
             <NavLink to="/data-center">데이터 상태 보기 →</NavLink>
           </div>
         </aside>

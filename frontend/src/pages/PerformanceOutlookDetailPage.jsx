@@ -210,7 +210,7 @@ function PerformanceOutlookDetailPage() {
       />
 
       <section className="detail-edit-bar">
-        <span>2026.08 매출은 8/1~8/7(UTC-7) $13,052.48입니다. 8월 광고비·총비용은 제공 파일에 데이터 행이 없어 손익 계산을 보류합니다.</span>
+        <span>2026.08 Total Revenue는 8/1~8/7 $13,052.48, 광고비는 8/1~8/18 $35,235.56입니다. 종료일이 달라 총비용·손익 계산은 보류합니다.</span>
         <Link to="/admin?tab=monthly" className="detail-edit-button">월별 데이터 수정</Link>
       </section>
 
@@ -323,7 +323,7 @@ function PerformanceOutlookDetailPage() {
       <section className="card" style={{ marginTop: 20 }}>
         <div className="chart-title"><div><h2>이 목표대로 되면?</h2><small>2026.08~2027.12 목표 매출·마케팅 예산 기준</small></div></div>
         <p className="page-note">
-          비용이 확인된 <strong>{outlook.completeActualMonthCount}개월 연속 적자</strong>이며 누적 손실은 {formatMoney(outlook.cumulativeLoss)}입니다. 2026년 8월은 8/7까지 Total Revenue만 반영했고 비용이 없어 손익에서 제외했습니다. 새 17개월 플랜(2026년 8월 $20,000에서
+          비용이 확인된 <strong>{outlook.completeActualMonthCount}개월 연속 적자</strong>이며 누적 손실은 {formatMoney(outlook.cumulativeLoss)}입니다. 2026년 8월은 매출과 광고비 종료일이 달라 손익에서 제외했습니다. 새 17개월 플랜(2026년 8월 $20,000에서
           2027년 12월 $200,000까지 성장)을 그대로 달성한다고 가정하면, {outlook.breakevenRow
             ? <><strong>{outlook.breakevenRow.label}</strong>에 처음으로 월 단위 흑자로 전환됩니다.</>
             : ' 계획 기간 안에도 흑자 전환이 어렵습니다.'}
@@ -356,7 +356,7 @@ function PerformanceOutlookDetailPage() {
           </tbody>
         </table>
         <p className="page-note" style={{ fontSize: 12 }}>
-          ※ 2026.08 실적은 8/1~8/7(UTC-7) 정산 Total Revenue $13,052.48입니다. 제공된 8/8 캠페인 파일 2개는 데이터 행이 없어 광고비·총비용·손익에 사용하지 않았습니다. 계획은 TikTok_Shop_예산_ROI_플랜_2026-08_2027-12.xlsx의 17개월 원본값입니다.
+          ※ 2026.08 Total Revenue는 8/7까지 $13,052.48, 광고비는 8/18까지 $35,235.56입니다. 종료일을 맞출 때까지 총비용·손익에 사용하지 않습니다.
           화면의 총비용·모델 순이익은 현재 비광고비 비율 {(outlook.nonAdRatio * 100).toFixed(1)}%를 추가 적용한 내부 시뮬레이션입니다.
         </p>
       </section>

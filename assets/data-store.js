@@ -77,6 +77,20 @@ function migrateLegacyData(key, data, defaultData) {
   // Admin edits while ensuring browsers that cached the old Shop Analytics GMV values
   // receive the newly verified settlement Total Revenue values and recalculated costs.
   if (key === DATA_KEYS.monthly && Array.isArray(data)) {
+    const cachedAugust = data.find(item => normalizeMonthKey(item.month) === '2026-08');
+    if (cachedAugust
+      && Math.abs((Number(cachedAugust.revenue) || 0) - 13052.48) < 0.01
+      && !hasMetricData(cachedAugust, 'adSpend')) {
+      const freshAugust = defaultData.find(item => normalizeMonthKey(item.month) === '2026-08');
+      if (freshAugust) {
+        const migrated = data.map(item => normalizeMonthKey(item.month) === '2026-08'
+          ? { ...item, ...JSON.parse(JSON.stringify(freshAugust)) }
+          : item);
+        saveData(key, migrated);
+        return migrated;
+      }
+    }
+
     const cachedTargets = data.filter(item => !hasActualData(item) && ((Number(item.targetRevenue) || 0) > 0 || (Number(item.targetAdSpend) || 0) > 0));
     const isPreviousTargetPlan = cachedTargets.length === 5 && cachedTargets.every(item => {
       const expected = PREVIOUS_EMBEDDED_MONTHLY_TARGETS[normalizeMonthKey(item.month)];

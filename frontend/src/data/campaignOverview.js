@@ -1,6 +1,6 @@
 // Monthly aggregates through 2026-06 reconcile to the merged daily export
 // "Campaign overview data 20250703 - 20260703.xlsx".
-// 2026-07 is replaced by "Campaign overview data 20260701 - 20260727.xlsx";
+// 2026-07 uses the reviewed XLSX; 2026-08 uses ads.tiktok.csv through 08-18.
 // Cost uses the official Overview card total ($34,164.02), $0.88 above the row sum.
 // ROI is recomputed as grossRevenue / cost for each selected period.
 export const campaignOverviewMonthly = [
@@ -17,6 +17,7 @@ export const campaignOverviewMonthly = [
   { month: '2026-05', cost: 6637.13, orders: 165, grossRevenue: 3531.48 },
   { month: '2026-06', cost: 6739.15, orders: 155, grossRevenue: 3540.47 },
   { month: '2026-07', cost: 34164.02, orders: 1068, grossRevenue: 19210.96 },
+  { month: '2026-08', cost: 35235.56, orders: 968, grossRevenue: 20440.07 },
 ].map((item) => ({
   ...item,
   cpa: item.orders ? item.cost / item.orders : 0,
@@ -25,4 +26,4 @@ export const campaignOverviewMonthly = [
 
 export const campaignOverviewFirstMonth = campaignOverviewMonthly[0].month;
 export const campaignOverviewLastMonth = campaignOverviewMonthly[campaignOverviewMonthly.length - 1].month;
-export const campaignOverviewDataAsOf = '2026-07-27';
+export const campaignOverviewDataAsOf = '2026-08-18';

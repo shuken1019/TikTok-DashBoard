@@ -264,7 +264,7 @@ function DataCenterPage() {
         title="데이터센터"
         subtitle="TikTok Shop 실제 판매 데이터 기반 요약 리포트 (Shop Analytics 원본 기준, 일별 데이터 보유)"
       >
-        <div className="data-center-live"><span className="status-dot" /><strong>Shop Analytics 최신</strong><small>2026.08.07</small></div>
+        <div className="data-center-live"><span className="status-dot" /><strong>Shop Analytics 최신</strong><small>2026.08.17</small></div>
       </PageHeader>
 
       <section className="card">
@@ -292,12 +292,12 @@ function DataCenterPage() {
       <section className="grid data-health-grid">
         <article className="card data-health-score data-health-simple">
           <div className="data-health-status-icon">✓</div>
-          <div><h2>데이터 확인 완료</h2><p>7월 31일과 8월 1–7일 합계가 원본과 일치합니다.</p></div>
+          <div><h2>데이터 확인 완료</h2><p>7월 31일과 8월 1–17일 합계가 원본과 일치합니다.</p></div>
         </article>
         <article className="card data-health-summary">
           <div><span className="health-icon good">✓</span><p><strong>7월 집계 완료</strong><small>$13,797.74</small></p></div>
-          <div><span className="health-icon warn">!</span><p><strong>8/7 비용 미집계</strong><small>세금·배송비</small></p></div>
-          <div><span className="health-icon neutral">280</span><p><strong>280일</strong><small>누적 $42,438.52</small></p></div>
+          <div><span className="health-icon warn">!</span><p><strong>8/17 비용 미집계</strong><small>세금·배송비</small></p></div>
+          <div><span className="health-icon neutral">290</span><p><strong>290일</strong><small>누적 $46,961.65</small></p></div>
         </article>
       </section>
 

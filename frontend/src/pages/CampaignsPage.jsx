@@ -3,6 +3,7 @@ import PageHeader from '../components/PageHeader';
 import {
   campaignDataAsOf,
   platformCampaigns,
+  promotionSnapshot,
   registeredCampaigns,
   smartPromotionPerformance,
   summerSalePerformance,
@@ -68,6 +69,20 @@ function CampaignsPage() {
         <article className="card kpi campaign-kpi purple"><span className="label">주문 / AOV</span><span className="value">{number(summerSalePerformance.orders)}건</span><span className="desc">AOV {currency(summerSalePerformance.aov)}</span></article>
         <article className="card kpi campaign-kpi rose"><span className="label">등록 승인 수</span><span className="value">{approvedTotal}</span><span className="desc">제품·Tik 등록 화면 합계</span></article>
         <article className="card kpi campaign-kpi amber"><span className="label">다음 플랫폼 캠페인</span><span className="value">8월 20일</span><span className="desc">Back To School 시작</span></article>
+      </section>
+
+      <section className="card campaign-performance-card">
+        <div className="chart-title">
+          <div><span className="eyebrow">SHOP PROMOTIONS</span><h2>프로모션 현황</h2><small>{promotionSnapshot.start} ~ {promotionSnapshot.end} · 상위 3개</small></div>
+          <span className="badge good">{promotionSnapshot.rowCount}개 행</span>
+        </div>
+        <div className="grid campaign-core-metrics">
+          {promotionSnapshot.rows.map((item) => (
+            <div key={item.name}><span>{item.name}</span><strong>{currency(item.gmv)}</strong><small>{item.orders}건 · ROI {item.roi.toFixed(2)}x</small></div>
+          ))}
+          <div><span>집계 주의</span><strong>중복 가능</strong><small>쿠폰·무료배송 동시 적용</small></div>
+        </div>
+        <p className="page-note">한 주문에 여러 프로모션이 함께 적용될 수 있어 행별 GMV와 주문은 합산하지 않습니다.</p>
       </section>
 
       <section className="card campaign-calendar-card">

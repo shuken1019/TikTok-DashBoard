@@ -4,15 +4,17 @@ import EditableTable from '../components/EditableTable';
 import ForecastEditor from '../components/ForecastEditor';
 
 const DATA_SOURCES = [
-  { name: 'Shop Analytics', detail: '일별 판매 원본', period: '2025.11.01–2026.08.07', size: '280일 · GMV $42,438.52', mode: 'Embedded', pages: '전체 매출 · 데이터센터 · 상품', status: '8/7 세금·배송비 미집계', tone: 'warn' },
-  { name: 'Campaign overview', detail: '일별 Cost·주문·Gross revenue·ROI', period: '유효 데이터 2025.07.03–2026.07.27', size: '390일 · Cost $100,480.97 · ROI 0.55x', mode: 'XLSX + 공식 UI', pages: '광고관리 · 전체 매출 · 상세', status: '8/8 파일 데이터 행 0건', tone: 'warn' },
-  { name: 'Monthly Finance', detail: '정산 Total Revenue·광고비·배부 비용', period: '2025.11–2026.08.07', size: '누적 Total Revenue $60,516.67', mode: 'XLSX + Admin', pages: '손익 · Forecast', status: '8월 매출만 확인 · 비용 미수집', tone: 'warn' },
+  { name: 'Shop Analytics', detail: '일별 판매 원본', period: '2025.11.01–2026.08.17', size: '290일 · GMV $46,961.65', mode: 'Embedded', pages: '전체 매출 · 데이터센터 · 상품', status: '8/17 세금·배송비 미집계', tone: 'warn' },
+  { name: 'Campaign overview', detail: '일별 Cost·주문·Gross revenue·ROI', period: '유효 데이터 2025.07.03–2026.08.18', size: '8월 Cost $35,235.56 · 매출 $20,440.07', mode: 'XLSX + CSV', pages: '광고관리 · 전체 매출 · 상세', status: '8/18 반영', tone: 'good' },
+  { name: 'Monthly Finance', detail: '정산 Total Revenue·광고비·배부 비용', period: '매출 08.07 · 광고 08.18', size: 'Total Revenue $13,052.48 · 광고비 $35,235.56', mode: 'XLSX + CSV', pages: '손익 · Forecast', status: '종료일 불일치 · 손익 보류', tone: 'warn' },
   { name: 'Product campaign', detail: '상품 캠페인 단위 export', period: '2026.08.08', size: '데이터 행 0건', mode: 'XLSX', pages: '캠페인', status: '헤더만 존재', tone: 'warn' },
   { name: 'Affiliate Videos 2–4월', detail: '영상 단위 export', period: '2026.02.01–04.30', size: '182개 영상', mode: 'PDF 수동', pages: '어필리에이터', status: '완료', tone: 'good' },
   { name: 'Affiliate Videos 5–7월', detail: '영상 단위 export', period: '2026.05.01–07.23', size: '722개 영상', mode: 'PDF 수동', pages: '어필리에이터', status: '부분월', tone: 'warn' },
-  { name: 'Affiliate Core Metrics', detail: '영상·LIVE·쇼케이스 귀속', period: '2026.07.01–07.25', size: 'GMV $7,007.76 · 수수료 $2,282.78', mode: 'XLSX', pages: '어필리에이터', status: '검증 완료', tone: 'good' },
-  { name: 'Affiliate 상세 목록', detail: 'Creator·Video·LIVE·Product', period: '2026.07.01–07.24', size: 'Creator 6,272 · Video 1,510 · LIVE 108 · Product 42', mode: 'XLSX', pages: '어필리에이터 · 라이브', status: 'Core보다 1일 지연', tone: 'warn' },
-  { name: 'Sample Performance', detail: '샘플 발송/콘텐츠 ROI', period: '45일 ROI snapshot', size: '2,099건 발송', mode: 'PDF 수동', pages: '어필리에이터 · 비용', status: '스냅샷', tone: 'warn' },
+  { name: 'Affiliate Core Metrics', detail: '영상·LIVE·쇼케이스 귀속', period: '2026.08.01–08.15', size: 'GMV $8,785.25 · 수수료 $2,452.74', mode: 'XLSX', pages: '어필리에이터', status: '검증 완료', tone: 'good' },
+  { name: 'Affiliate 상세 목록', detail: 'Creator·Video·LIVE·Product', period: '2026.08.01–08.15', size: 'Creator 13,028 · Video 2,260 · LIVE 329 · Product 38', mode: 'XLSX', pages: '어필리에이터 · 라이브', status: 'Core 합계 대조', tone: 'good' },
+  { name: 'Sample Performance', detail: '샘플 발송/콘텐츠 ROI', period: '2026.08.01–08.15', size: '631건 · GMV $7,409.04 · ROI 0.77x', mode: 'XLSX', pages: '어필리에이터 · 비용', status: 'Core 기준', tone: 'good' },
+  { name: 'Accounts LIVE', detail: '계정 전체 LIVE 성과', period: '2026.08.01–08.17', size: 'GMV $109.76 · 주문 7건 · 시청 294,357', mode: 'XLSX', pages: '라이브', status: '계정 요약', tone: 'good' },
+  { name: 'Shop Promotion List', detail: '쿠폰·무료배송 프로모션', period: '2026.08.01–08.17', size: '23개 행 · 중복 적용 가능', mode: 'XLSX', pages: '캠페인', status: '행 합산 금지', tone: 'warn' },
   { name: '운영 마스터', detail: '재고·원가·광고비', period: '관리자 입력 기준', size: 'SKU 단위', mode: '수동 입력', pages: '재고 · 광고 · 손익', status: '최신일 없음', tone: 'warn' },
 ];
 
@@ -79,7 +81,7 @@ function AdminPage() {
           <section className="card source-verification-card" style={{ marginTop: 20 }}>
             <span className="badge good">원본 검증 완료</span>
             <strong>매출 기준은 정산 XLSX의 Total Revenue입니다.</strong>
-            <p className="page-note">2025.11~2026.07 마감 매출에 2026.08.01~08.07(UTC-7) Total Revenue $13,052.48을 추가했습니다. 누적은 $60,516.67입니다. 8월 광고비·총비용은 캠페인 파일에 데이터 행이 없어 미수집 상태로 유지합니다.</p>
+            <p className="page-note">8월 Total Revenue는 8/7까지 $13,052.48, 광고비는 8/18까지 $35,235.56입니다. 기간이 달라 8월 총비용과 손익은 계산하지 않습니다.</p>
           </section>
           <EditableTable
             resource="monthly"

@@ -3,7 +3,20 @@
 
 // 2026-08-08 Product campaign export was header-only (0 data rows), so the
 // calendar status is advanced by date while performance values remain at 7/26.
-export const campaignDataAsOf = '2026-08-08 (신규 데이터 행 없음)';
+export const campaignDataAsOf = '2026-08-18';
+
+// Promotion rows can overlap for one order. Display them individually and do
+// not sum them into a shop or campaign total.
+export const promotionSnapshot = {
+  start: '2026-08-01',
+  end: '2026-08-17',
+  rowCount: 23,
+  rows: [
+    { name: 'Follower coupon 10%', gmv: 5526.00, orders: 470, roi: 5.25 },
+    { name: 'Follower coupon add-on', gmv: 4231.89, orders: 757, roi: 1.12 },
+    { name: 'Store Wide Free Shipping', gmv: 3961.35, orders: 201, roi: 3.94 },
+  ],
+};
 
 export const platformCampaigns = [
   {
