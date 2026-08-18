@@ -8,6 +8,7 @@ import { formatCurrency, formatMoney } from '../format';
 Chart.register(...registerables);
 
 const FORECAST_DASH = [6, 4];
+const DECEMBER_MINIMUM_PROFIT = 5000;
 const ACTUAL_MONTH_LABELS = ['2025.11', '2025.12', '2026.01', '2026.02', '2026.03', '2026.04', '2026.05', '2026.06', '2026.07', '2026.08'];
 const hasCompleteCostData = (item) => item?.costStatus !== 'missing' && item?.adSpend !== null && item?.adSpend !== undefined && item?.totalCost !== null && item?.totalCost !== undefined;
 
@@ -55,7 +56,9 @@ function PerformanceOutlookDetailPage() {
       .map((item) => ({ month: String(item.month).replace('-', '.'), revenue: Number(item.targetRevenue) || 0, adSpend: Number(item.targetAdSpend) || 0 }));
     const targetSource = savedTargets.length ? savedTargets : MONTHLY_TARGETS;
     const completeActualRows = actualRows.filter(hasCompleteCostData);
-    const totalRevenue = completeActualRows.reduce((s, m) => s + m.revenue, 0);
+    // 비광고비 스냅샷은 현재까지 확인된 전체 Total Revenue 대비 비율로 환산한다.
+    // 8월 손익은 종료일 불일치로 제외하지만, 검증된 8월 매출 자체는 비율 분모에 포함한다.
+    const totalRevenue = actualRows.reduce((s, m) => s + m.revenue, 0);
     const costItemsTotal = costItems.reduce((s, c) => s + c.value, 0);
     const nonAdRatio = totalRevenue ? costItemsTotal / totalRevenue : 0;
 
@@ -76,6 +79,38 @@ function PerformanceOutlookDetailPage() {
     const cumulativeLoss = completeActualRows.reduce((s, m) => s + (m.revenue - m.totalCost), 0);
     const profitMonths = completeActualRows.filter((m) => m.revenue - m.totalCost >= 0).length;
     const breakevenRow = targetRows.find((r) => r.profit >= 0);
+    const decemberSource = targetRows.find((r) => r.label === '2026.12');
+    const decemberBreakEvenRevenue = decemberSource && nonAdRatio < 1
+      ? decemberSource.adSpend / (1 - nonAdRatio)
+      : null;
+    const decemberRequiredRevenue = decemberSource && nonAdRatio < 1
+      ? (decemberSource.adSpend + DECEMBER_MINIMUM_PROFIT) / (1 - nonAdRatio)
+      : null;
+    const decemberManagementRevenue = decemberRequiredRevenue
+      ? Math.ceil(decemberRequiredRevenue / 5000) * 5000
+      : null;
+    const decemberManagementProfit = decemberSource && decemberManagementRevenue
+      ? decemberManagementRevenue - decemberSource.adSpend - decemberManagementRevenue * nonAdRatio
+      : null;
+    const decemberAdCapAtSourceRevenue = decemberSource
+      ? Math.max(0, decemberSource.revenue * (1 - nonAdRatio) - DECEMBER_MINIMUM_PROFIT)
+      : null;
+    const decemberManagementRoas = decemberSource && decemberManagementRevenue
+      ? decemberManagementRevenue / decemberSource.adSpend
+      : null;
+    const decemberPlan = decemberSource ? {
+      sourceRevenue: decemberSource.revenue,
+      sourceAdSpend: decemberSource.adSpend,
+      sourceProfit: decemberSource.profit,
+      breakEvenRevenue: decemberBreakEvenRevenue,
+      requiredRevenue: decemberRequiredRevenue,
+      managementRevenue: decemberManagementRevenue,
+      managementProfit: decemberManagementProfit,
+      adCapAtSourceRevenue: decemberAdCapAtSourceRevenue,
+      managementRoas: decemberManagementRoas,
+      weeklyRevenue: decemberManagementRevenue / 4,
+      weeklyAdSpend: decemberSource.adSpend / 4,
+    } : null;
     const q3 = targetRows.filter((r) => r.label.startsWith('2026.')).reduce((s, r) => s + r.profit, 0);
     const q4 = targetRows.filter((r) => r.label.startsWith('2027.')).reduce((s, r) => s + r.profit, 0);
     const targetRevenue = targetRows.reduce((s, r) => s + r.revenue, 0);
@@ -84,7 +119,7 @@ function PerformanceOutlookDetailPage() {
     const actualAdSpend = completeActualRows.reduce((s, m) => s + m.adSpend, 0);
     const actualTotalCost = completeActualRows.reduce((s, m) => s + m.totalCost, 0);
 
-    return { rows, targetRows, cumulativeLoss, profitMonths, breakevenRow, nonAdRatio, q3Profit: q3, q4Profit: q4, targetRevenue, targetBudget, actualRevenue, actualAdSpend, actualTotalCost, completeActualMonthCount: completeActualRows.length, incompleteActualMonthCount: actualRows.length - completeActualRows.length };
+    return { rows, targetRows, cumulativeLoss, profitMonths, breakevenRow, decemberPlan, nonAdRatio, q3Profit: q3, q4Profit: q4, targetRevenue, targetBudget, actualRevenue, actualAdSpend, actualTotalCost, completeActualMonthCount: completeActualRows.length, incompleteActualMonthCount: actualRows.length - completeActualRows.length };
   }, [monthlyData, costItems]);
 
   const visibleRows = useMemo(() => {
@@ -251,9 +286,9 @@ function PerformanceOutlookDetailPage() {
       </section>
 
       <section className="grid cards-3" style={{ marginTop: 20 }}>
-        <article className="card kpi"><span className="label">2026 하반기 모델 순수익</span><span className="value" style={{ color: outlook.q3Profit < 0 ? '#dc2626' : '#16a34a' }}>{formatCurrency(outlook.q3Profit)}</span></article>
-        <article className="card kpi"><span className="label">2027 연간 모델 순수익</span><span className="value" style={{ color: outlook.q4Profit < 0 ? '#dc2626' : '#16a34a' }}>{formatCurrency(outlook.q4Profit)}</span></article>
-        <article className="card kpi"><span className="label">흑자 전환 시점</span><span className="value">{outlook.breakevenRow ? outlook.breakevenRow.label : '계획 기간 내 없음'}</span><span className="desc">마케팅 예산 + 비광고비 모델</span></article>
+        <article className="card kpi"><span className="label">12월 기존 계획 손익</span><span className="value" style={{ color: '#dc2626' }}>{formatCurrency(outlook.decemberPlan.sourceProfit)}</span><span className="desc">매출 $50k · 마케팅 예산 $47.6k</span></article>
+        <article className="card kpi"><span className="label">12월 손익분기 매출</span><span className="value">{formatCurrency(outlook.decemberPlan.breakEvenRevenue)}</span><span className="desc">현재 예산과 비광고비 비율 유지 시</span></article>
+        <article className="card kpi"><span className="label">12월 필수 관리 목표</span><span className="value" style={{ color: '#047857' }}>{formatCurrency(outlook.decemberPlan.managementRevenue)}</span><span className="desc">광고비 ≤$47.6k · 추정 이익 {formatCurrency(outlook.decemberPlan.managementProfit)}</span></article>
       </section>
 
       <section className="card chart-card" style={{ marginTop: 20 }}>
@@ -312,23 +347,27 @@ function PerformanceOutlookDetailPage() {
           </button>
         </div>
         <div className="outlook-profit-status">
-          <strong className="loss">● 비용 확인 {outlook.completeActualMonthCount}개월 연속 적자 · 8월 손익 보류</strong>
+          <strong className="loss">● 기존 12월 계획: 매출 $50k → 추정 {formatCurrency(outlook.decemberPlan.sourceProfit)}</strong>
           <strong className="profit">
-            ● 목표 플랜: {outlook.breakevenRow ? `${outlook.breakevenRow.label}부터 월 흑자` : '계획 기간 내 월 흑자 없음'}
+            ● 필수 관리안: 매출 ≥{formatCurrency(outlook.decemberPlan.managementRevenue)} · 광고비 ≤{formatCurrency(outlook.decemberPlan.sourceAdSpend)} → 추정 {formatCurrency(outlook.decemberPlan.managementProfit)}
           </strong>
         </div>
         <canvas ref={chartRef} />
       </section>
 
-      <section className="card" style={{ marginTop: 20 }}>
-        <div className="chart-title"><div><h2>이 목표대로 되면?</h2><small>2026.08~2027.12 목표 매출·마케팅 예산 기준</small></div></div>
+      <section className="card december-profit-plan" style={{ marginTop: 20 }}>
+        <div className="chart-title"><div><h2>12월 안에 흑자를 내는 실행안</h2><small>기존 예산은 유지하되 매출·상품 마진·주간 집행 기준을 동시에 관리합니다.</small></div><span className="badge good">12월 월 이익 ≥ $5k</span></div>
         <p className="page-note">
-          비용이 확인된 <strong>{outlook.completeActualMonthCount}개월 연속 적자</strong>이며 누적 손실은 {formatMoney(outlook.cumulativeLoss)}입니다. 2026년 8월은 매출과 광고비 종료일이 달라 손익에서 제외했습니다. 새 17개월 플랜(2026년 8월 $20,000에서
-          2027년 12월 $200,000까지 성장)을 그대로 달성한다고 가정하면, {outlook.breakevenRow
-            ? <><strong>{outlook.breakevenRow.label}</strong>에 처음으로 월 단위 흑자로 전환됩니다.</>
-            : ' 계획 기간 안에도 흑자 전환이 어렵습니다.'}
-          {' '}원본 ROI는 매출 ÷ 마케팅 예산이며, 모델 순이익은 마케팅 예산에 현재 비광고비 배부율까지 추가한 계산값입니다.
+          현재 12월 원본 계획은 매출 {formatCurrency(outlook.decemberPlan.sourceRevenue)}, 마케팅 예산 {formatCurrency(outlook.decemberPlan.sourceAdSpend)}로 추정 손익이 <strong>{formatCurrency(outlook.decemberPlan.sourceProfit)}</strong>입니다.
+          반드시 흑자를 내려면 12월 매출을 최소 {formatCurrency(outlook.decemberPlan.requiredRevenue)}까지 높여야 하며, 운영 목표는 여유를 두고 <strong>매출 {formatCurrency(outlook.decemberPlan.managementRevenue)} 이상</strong>으로 잡습니다.
+          같은 매출 $50k를 유지한다면 광고비를 <strong>{formatCurrency(outlook.decemberPlan.adCapAtSourceRevenue)} 이하</strong>로 낮춰야 월 이익 $5k가 남습니다.
         </p>
+        <div className="december-plan-grid">
+          <article><b>1</b><div><strong>적자 상품·할인 중단</strong><p>원가와 수수료를 포함해 이익이 남는 SKU만 광고합니다. Collagen Booster Set의 $25.19 프로모션가는 손익분기 가격 $41.68보다 낮아 재가격 또는 제외가 필요합니다.</p></div></article>
+          <article><b>2</b><div><strong>광고비 상한 고정</strong><p>12월 광고비는 $47.6k를 넘기지 않고, 전체 매출÷광고비를 {outlook.decemberPlan.managementRoas.toFixed(2)}x 이상으로 유지합니다.</p></div></article>
+          <article><b>3</b><div><strong>주간 목표로 쪼개기</strong><p>매주 매출 {formatCurrency(outlook.decemberPlan.weeklyRevenue)} 이상, 광고비 {formatCurrency(outlook.decemberPlan.weeklyAdSpend)} 이하를 확인합니다. 미달 캠페인은 다음 주 예산을 줄입니다.</p></div></article>
+          <article><b>4</b><div><strong>GMV가 아닌 이익으로 증액</strong><p>광고·어필리에이터·샘플은 매출이 아니라 제품 원가와 수수료까지 뺀 기여이익이 플러스인 조합에만 추가 예산을 배정합니다.</p></div></article>
+        </div>
       </section>
 
       <section className="card" style={{ marginTop: 20 }}>
