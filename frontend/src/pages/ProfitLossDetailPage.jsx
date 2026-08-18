@@ -241,7 +241,7 @@ function ProfitLossDetailPage() {
       <PageHeader title="월별 순이익 / 적자 상세" subtitle="비용 구조와 마진율을 함께 확인해 흑자·적자 원인을 분석합니다." />
 
       <section className="detail-edit-bar">
-        <span>2026.08 매출은 8/1~8/7(UTC-7) $13,052.48이며 광고비·총비용은 미수집이라 손익 계산을 보류합니다.</span>
+        <span>2026.08 Total Revenue는 8/1~8/17(UTC-7) $25,439.99, 광고비는 8/1~8/18 $35,235.56입니다. 종료일이 달라 총비용과 손익 계산을 보류합니다.</span>
         <Link to="/admin?tab=monthly" className="detail-edit-button">월별 데이터 수정</Link>
       </section>
 
@@ -354,8 +354,8 @@ function ProfitLossDetailPage() {
                 </article>
                 <article className="financial-ring-panel">
                   <h3>③ 추정 영업이익</h3>
-                  <div className="financial-ring-chart"><canvas id="operatingProfitRingChart" /><div className="financial-ring-center"><small>{financialSummary.profit === null ? '비용 미수집' : financialSummary.profit < 0 ? '영업손실' : '영업이익'}</small><strong style={{ color: financialSummary.profit === null ? '#b45309' : financialSummary.profit < 0 ? '#dc2626' : '#16a34a' }}>{financialSummary.profit === null ? '계산 보류' : formatMoney(financialSummary.profit)}</strong></div></div>
-                  <p>{financialSummary.margin === null ? '8월 광고비·총비용 필요' : `영업이익률 ${financialSummary.margin.toFixed(1)}%`}</p>
+                  <div className="financial-ring-chart"><canvas id="operatingProfitRingChart" /><div className="financial-ring-center"><small>{financialSummary.profit === null ? '기간 불일치' : financialSummary.profit < 0 ? '영업손실' : '영업이익'}</small><strong style={{ color: financialSummary.profit === null ? '#b45309' : financialSummary.profit < 0 ? '#dc2626' : '#16a34a' }}>{financialSummary.profit === null ? '계산 보류' : formatMoney(financialSummary.profit)}</strong></div></div>
+                  <p>{financialSummary.margin === null ? '8월 동일 기간 비용 필요' : `영업이익률 ${financialSummary.margin.toFixed(1)}%`}</p>
                 </article>
               </div>
               <div className="financial-equation-strip">
@@ -387,7 +387,7 @@ function ProfitLossDetailPage() {
           <tbody>
             {filteredMonthlyData.map((item, index) => {
               if (!hasCompleteCostData(item)) return (
-                <tr key={`${item.month}-${index}`}><td>{item.month}<small style={{ display: 'block' }}>~{item.actualThrough || '진행 중'}</small></td><td>{formatMoney(item.revenue)}</td><td>미수집</td><td>계산 보류</td><td>미수집</td><td><strong>계산 보류</strong></td><td>—</td><td><span className="badge warn">비용 필요</span></td></tr>
+                <tr key={`${item.month}-${index}`}><td>{item.month}<small style={{ display: 'block' }}>매출 ~{item.actualThrough || '진행 중'} · 광고 ~{item.adSpendThrough || '미확인'}</small></td><td>{formatMoney(item.revenue)}</td><td>{item.adSpend == null ? '미수집' : formatMoney(item.adSpend)}</td><td>기간 불일치</td><td>계산 보류</td><td><strong>계산 보류</strong></td><td>—</td><td><span className="badge warn">종료일 확인</span></td></tr>
               );
               const profit = item.revenue - item.totalCost;
               const adSpend = Number(item.adSpend || 0);

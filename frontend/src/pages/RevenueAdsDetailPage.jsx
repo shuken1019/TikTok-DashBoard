@@ -147,8 +147,8 @@ function RevenueAdsDetailPage() {
       <PageHeader title="월별 매출 vs 광고비 상세" subtitle="광고비 효율(ROAS)과 매출 대비 광고비 비중을 월별로 분석합니다." />
 
       <section className="source-verification-card card" style={{ marginBottom: 20 }}>
-        <span className="badge warn">비용 기준 2026.07까지</span>
-        <p className="page-note">2026.08.01–08.07 Total Revenue $13,052.48은 확인됐지만 광고비 원본이 비어 있어, ROAS·광고비 비교에서는 8월을 제외했습니다.</p>
+        <span className="badge warn">동일 기간 비교 2026.07까지</span>
+        <p className="page-note">2026.08.01–08.17 Total Revenue는 $25,439.99, 08.01–08.18 광고비는 $35,235.56입니다. 종료일이 하루 달라 같은 기간 ROAS에서는 8월을 제외했습니다.</p>
       </section>
 
       <section className="card">

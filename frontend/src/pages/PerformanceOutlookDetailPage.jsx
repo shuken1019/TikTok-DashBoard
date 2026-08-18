@@ -206,11 +206,11 @@ function PerformanceOutlookDetailPage() {
     <>
       <PageHeader
         title="2025.11~2027.12 매출·광고비·손익 전망"
-        subtitle="2025.11~2026.07 마감 실적, 2026.08은 8/7까지 Total Revenue 부분 실적, 이후 예산·ROI 플랜입니다."
+        subtitle="2025.11~2026.07 마감 실적, 2026.08은 8/17까지 Total Revenue 부분 실적, 이후 예산·ROI 플랜입니다."
       />
 
       <section className="detail-edit-bar">
-        <span>2026.08 Total Revenue는 8/1~8/7 $13,052.48, 광고비는 8/1~8/18 $35,235.56입니다. 종료일이 달라 총비용·손익 계산은 보류합니다.</span>
+        <span>2026.08 Total Revenue는 8/1~8/17 $25,439.99, 정산액은 $11,404.27입니다. 광고비는 8/1~8/18 $35,235.56이므로 총비용·손익 계산은 보류합니다.</span>
         <Link to="/admin?tab=monthly" className="detail-edit-button">월별 데이터 수정</Link>
       </section>
 
@@ -218,7 +218,7 @@ function PerformanceOutlookDetailPage() {
         <article className="card kpi">
           <span className="label">① 누적 Total Revenue</span>
           <span className="value">{formatMoney(outlook.actualRevenue)}</span>
-          <span className="desc">2025.11~2026.08.07 정산 매출</span>
+          <span className="desc">2025.11~2026.08.17 정산 매출</span>
         </article>
         <article className="card kpi">
           <span className="label">② 확인된 누적 광고비</span>
@@ -356,7 +356,7 @@ function PerformanceOutlookDetailPage() {
           </tbody>
         </table>
         <p className="page-note" style={{ fontSize: 12 }}>
-          ※ 2026.08 Total Revenue는 8/7까지 $13,052.48, 광고비는 8/18까지 $35,235.56입니다. 종료일을 맞출 때까지 총비용·손익에 사용하지 않습니다.
+          ※ 2026.08 Total Revenue는 8/17까지 $25,439.99, 정산액은 $11,404.27이며 광고비는 8/18까지 $35,235.56입니다. 종료일을 맞출 때까지 총비용·손익에 사용하지 않습니다.
           화면의 총비용·모델 순이익은 현재 비광고비 비율 {(outlook.nonAdRatio * 100).toFixed(1)}%를 추가 적용한 내부 시뮬레이션입니다.
         </p>
       </section>

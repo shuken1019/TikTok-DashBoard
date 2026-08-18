@@ -87,7 +87,7 @@ const PAGE_CONTEXT = {
   'revenue-ads-detail.html': { tone: 'actual', label: '통합 실제 데이터', detail: 'Shop Analytics GMV + Campaign overview 광고비' },
   'profit-loss-detail.html': { tone: 'actual', label: '실적 + 배부 비용', detail: '실제 GMV·광고비에 비광고 비용을 매출 비중으로 배부' },
   'forecast-detail.html': { tone: 'plan', label: '계획 데이터', detail: '3Q·4Q Forecast · 실제 실적과 구분' },
-  'performance-outlook-detail.html': { tone: 'plan', label: '실적 + 계획 데이터', detail: 'Total Revenue 8/7 · 광고 8/18 · 기간 불일치 손익 보류' },
+  'performance-outlook-detail.html': { tone: 'plan', label: '실적 + 계획 데이터', detail: 'Total Revenue 8/17 · 광고 8/18 · 기간 불일치 손익 보류' },
   'breakeven-detail.html': { tone: 'plan', label: '시뮬레이션', detail: '입력한 가격·비용 가정에 따라 결과 변동' },
   'products.html': { tone: 'manual', label: '운영 마스터', detail: '관리자 입력 상품별 매출·원가 snapshot' },
   'product-leaderboard.html': { tone: 'manual', label: '운영 마스터', detail: '판매·재고 입력값 기반 상품 우선순위' },

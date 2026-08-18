@@ -78,9 +78,16 @@ function migrateLegacyData(key, data, defaultData) {
   // receive the newly verified settlement Total Revenue values and recalculated costs.
   if (key === DATA_KEYS.monthly && Array.isArray(data)) {
     const cachedAugust = data.find(item => normalizeMonthKey(item.month) === '2026-08');
-    if (cachedAugust
+    const isPriorAugustDefault = cachedAugust
       && Math.abs((Number(cachedAugust.revenue) || 0) - 13052.48) < 0.01
-      && !hasMetricData(cachedAugust, 'adSpend')) {
+      && (
+        !hasMetricData(cachedAugust, 'adSpend')
+        || (
+          Math.abs((Number(cachedAugust.adSpend) || 0) - 35235.56) < 0.01
+          && (!cachedAugust.actualThrough || cachedAugust.actualThrough === '2026-08-07')
+        )
+      );
+    if (isPriorAugustDefault) {
       const freshAugust = defaultData.find(item => normalizeMonthKey(item.month) === '2026-08');
       if (freshAugust) {
         const migrated = data.map(item => normalizeMonthKey(item.month) === '2026-08'

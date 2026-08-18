@@ -6,9 +6,9 @@ so the React app starts from the same numbers.
 
 # Revenue for Nov 2025-May 2026 is the exact "Total Revenue" from the user's monthly
 # settlement XLSX exports, cross-checked between Reports and Order details. June Total
-# Revenue is $3,828.00, Jul 1-29 Total Revenue is $14,137.42, and Aug 1-7
-# (UTC-7) Total Revenue is $13,052.48. August cost fields remain None because the
-# provided 8/8 Campaign exports contain headers only and no data rows.
+# Revenue is $3,828.00, Jul 1-29 Total Revenue is $14,137.42, and Aug 1-17
+# (UTC-7) Total Revenue is $25,439.99. August advertising is available through
+# Aug 18, so total cost and profit remain None until the cutoff dates match.
 # adSpend is the REAL daily ad cost from
 # "Campaign overview data 20250725 - 20260725.pdf", with July replaced by
 # "Campaign overview data 20260701 - 20260727.xlsx", cross-validated at cent precision.
@@ -27,7 +27,7 @@ DEFAULT_MONTHLY = [
     {"month": "2026-05", "revenue": 7186.05, "adSpend": 6637.13, "totalCost": 8689.95, "targetRevenue": 0, "targetAdSpend": 0},
     {"month": "2026-06", "revenue": 3828.00, "adSpend": 6739.15, "totalCost": 7832.69, "targetRevenue": 0, "targetAdSpend": 0},
     {"month": "2026-07", "revenue": 14137.42, "adSpend": 34164.02, "totalCost": 38202.62, "targetRevenue": 0, "targetAdSpend": 0},
-    {"month": "2026-08", "revenue": 13052.48, "adSpend": None, "totalCost": None, "actualThrough": "2026-08-07", "costStatus": "missing", "targetRevenue": 20000, "targetAdSpend": 33333},
+    {"month": "2026-08", "revenue": 25439.99, "adSpend": 35235.56, "totalCost": None, "actualThrough": "2026-08-17", "adSpendThrough": "2026-08-18", "settlementAmount": 11404.27, "totalFees": -13191.10, "financeSource": "income_20260817172713(UTC-7).xlsx", "costStatus": "period-mismatch", "targetRevenue": 20000, "targetAdSpend": 33333},
     {"month": "2026-09", "revenue": 0, "adSpend": 0, "totalCost": 0, "targetRevenue": 25000, "targetAdSpend": 40000},
     {"month": "2026-10", "revenue": 0, "adSpend": 0, "totalCost": 0, "targetRevenue": 30000, "targetAdSpend": 40000},
     {"month": "2026-11", "revenue": 0, "adSpend": 0, "totalCost": 0, "targetRevenue": 50000, "targetAdSpend": 58800},

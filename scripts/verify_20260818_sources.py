@@ -18,6 +18,18 @@ def assert_close(label: str, actual: float, expected: float, tolerance: float = 
 
 
 def main() -> None:
+    income = rows(DOWNLOADS / 'income_20260817172713(UTC-7).xlsx')[1:]
+    assert len(income) == 3652
+    assert {r['C'] for r in income} == {'USD'}
+    assert min(r['A'] for r in income) == '2026/08/01'
+    assert max(r['A'] for r in income) == '2026/08/17'
+    assert len({tuple(sorted(r.items())) for r in income}) == len(income)
+    assert_close('Settlement Total Revenue', sum(number(r['K']) for r in income), 25439.99)
+    assert_close('Settlement amount', sum(number(r['J']) for r in income), 11404.27)
+    assert_close('Settlement Total Fees', sum(number(r['R']) for r in income), -13191.10)
+    first_week = [r for r in income if '2026/08/01' <= r['A'] <= '2026/08/07']
+    assert_close('Settlement 08-01~08-07 continuity', sum(number(r['K']) for r in first_week), 13052.48)
+
     shop = rows(DOWNLOADS / 'Shop Analytics_Key metrics_20260818.xlsx')
     total = shop[3]
     daily = shop[9:26]
@@ -55,7 +67,7 @@ def main() -> None:
     assert_close('Ads revenue daily → overview', sum(number(r['Gross revenue (Current shop)']) for r in records), 20440.07)
     assert_close('Ads orders daily → overview', sum(number(r['SKU orders (Current shop)']) for r in records), 968)
 
-    print('PASS cutoff policy: Shop 08-17 · ads 08-18 · affiliate/sample 08-15')
+    print('PASS cutoff policy: Shop/settlement 08-17 · ads 08-18 · affiliate/sample 08-15')
     print('NOTE Product orders sum to 937 vs Shop 936; use SKU orders (939) for product reconciliation.')
     print('NOTE SKU GMV is $10,403.41 vs Shop GMV $10,403.59; $0.18 source-detail gap retained.')
 

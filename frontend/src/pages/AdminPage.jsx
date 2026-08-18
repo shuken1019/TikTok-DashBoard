@@ -6,7 +6,7 @@ import ForecastEditor from '../components/ForecastEditor';
 const DATA_SOURCES = [
   { name: 'Shop Analytics', detail: '일별 판매 원본', period: '2025.11.01–2026.08.17', size: '290일 · GMV $46,961.65', mode: 'Embedded', pages: '전체 매출 · 데이터센터 · 상품', status: '8/17 세금·배송비 미집계', tone: 'warn' },
   { name: 'Campaign overview', detail: '일별 Cost·주문·Gross revenue·ROI', period: '유효 데이터 2025.07.03–2026.08.18', size: '8월 Cost $35,235.56 · 매출 $20,440.07', mode: 'XLSX + CSV', pages: '광고관리 · 전체 매출 · 상세', status: '8/18 반영', tone: 'good' },
-  { name: 'Monthly Finance', detail: '정산 Total Revenue·광고비·배부 비용', period: '매출 08.07 · 광고 08.18', size: 'Total Revenue $13,052.48 · 광고비 $35,235.56', mode: 'XLSX + CSV', pages: '손익 · Forecast', status: '종료일 불일치 · 손익 보류', tone: 'warn' },
+  { name: 'Monthly Finance', detail: '정산 Total Revenue·광고비·배부 비용', period: '매출 08.17 · 광고 08.18', size: 'Total Revenue $25,439.99 · 정산액 $11,404.27 · 광고비 $35,235.56', mode: 'XLSX + CSV', pages: '손익 · Forecast', status: '종료일 불일치 · 손익 보류', tone: 'warn' },
   { name: 'Product campaign', detail: '상품 캠페인 단위 export', period: '2026.08.08', size: '데이터 행 0건', mode: 'XLSX', pages: '캠페인', status: '헤더만 존재', tone: 'warn' },
   { name: 'Affiliate Videos 2–4월', detail: '영상 단위 export', period: '2026.02.01–04.30', size: '182개 영상', mode: 'PDF 수동', pages: '어필리에이터', status: '완료', tone: 'good' },
   { name: 'Affiliate Videos 5–7월', detail: '영상 단위 export', period: '2026.05.01–07.23', size: '722개 영상', mode: 'PDF 수동', pages: '어필리에이터', status: '부분월', tone: 'warn' },
@@ -81,7 +81,7 @@ function AdminPage() {
           <section className="card source-verification-card" style={{ marginTop: 20 }}>
             <span className="badge good">원본 검증 완료</span>
             <strong>매출 기준은 정산 XLSX의 Total Revenue입니다.</strong>
-            <p className="page-note">8월 Total Revenue는 8/7까지 $13,052.48, 광고비는 8/18까지 $35,235.56입니다. 기간이 달라 8월 총비용과 손익은 계산하지 않습니다.</p>
+            <p className="page-note">8월 Total Revenue는 8/17까지 $25,439.99, 정산액은 $11,404.27입니다. 광고비는 8/18까지 $35,235.56이므로 종료일을 맞출 때까지 총비용과 손익은 계산하지 않습니다.</p>
           </section>
           <EditableTable
             resource="monthly"

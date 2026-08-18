@@ -267,8 +267,8 @@
       document.getElementById('ringSeedingValue').textContent = formatMoney(s.seeding);
       document.getElementById('ringProfitValue').textContent = s.profit === null ? '계산 보류' : formatMoney(s.profit);
       document.getElementById('ringProfitValue').style.color = s.profit === null ? '#b45309' : s.profit < 0 ? '#dc2626' : '#16a34a';
-      document.getElementById('ringProfitStatus').textContent = s.profit === null ? '비용 미수집' : s.profit < 0 ? '영업손실' : '영업이익';
-      document.getElementById('ringProfitMargin').textContent = s.margin === null ? '8월 광고비·총비용 필요' : `영업이익률 ${s.margin.toFixed(1)}%`;
+      document.getElementById('ringProfitStatus').textContent = s.profit === null ? '기간 불일치' : s.profit < 0 ? '영업손실' : '영업이익';
+      document.getElementById('ringProfitMargin').textContent = s.margin === null ? '8월 동일 기간 비용 필요' : `영업이익률 ${s.margin.toFixed(1)}%`;
       document.getElementById('equationRevenue').textContent = formatMoney(s.revenue);
       document.getElementById('equationTotalCost').textContent = formatMoney(s.totalCost);
       document.getElementById('equationProfit').textContent = s.profit === null ? '계산 보류' : formatMoney(s.profit);
@@ -316,7 +316,7 @@
       const body = document.querySelector('#profitTable tbody');
       body.innerHTML = filteredMonthlyData().map(item => {
         if (!hasCompleteCostData(item)) {
-          return `<tr><td>${item.month}<small style="display:block">~${item.actualThrough || '진행 중'}</small></td><td>${formatMoney(item.revenue)}</td><td>미수집</td><td>계산 보류</td><td>미수집</td><td><strong>계산 보류</strong></td><td>—</td><td><span class="badge warn">비용 필요</span></td></tr>`;
+          return `<tr><td>${item.month}<small style="display:block">매출 ~${item.actualThrough || '진행 중'} · 광고 ~${item.adSpendThrough || '미확인'}</small></td><td>${formatMoney(item.revenue)}</td><td>${item.adSpend == null ? '미수집' : formatMoney(item.adSpend)}</td><td>기간 불일치</td><td>계산 보류</td><td><strong>계산 보류</strong></td><td>—</td><td><span class="badge warn">종료일 확인</span></td></tr>`;
         }
         const profit = item.revenue - item.totalCost;
         const adSpend = Number(item.adSpend || 0);
